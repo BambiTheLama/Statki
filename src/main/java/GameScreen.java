@@ -92,10 +92,14 @@ public class GameScreen {
     }
     void setShoot(boolean a)
     {
-        if(a==false)
-            enemyMap[enemyY][enemyX]=1;
-        else
-            enemyMap[enemyY][enemyX]=2;
+        if(enemyMap[enemyY][enemyX]==0)
+        {
+            if(a)
+                enemyMap[enemyY][enemyX]=2;
+            else
+                enemyMap[enemyY][enemyX]=1;
+        }
+
 
     }
     int getX()

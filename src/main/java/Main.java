@@ -19,7 +19,6 @@ public class Main {
         InputStreamReader InputStream;
         BufferedReader Input = null;
         PrintWriter toSend = null;
-        boolean sendFlag=false;
         boolean getFlag=false;
         int port= Integer.parseInt(args[1]);
         if(args[0]=="server")
@@ -55,6 +54,10 @@ public class Main {
                 int y=game.getY();
                 if(x!=-1&&y!=-1)
                 {
+                    if(args[0]=="client")
+                    {
+                        getFlag=Boolean.parseBoolean(Input.readLine());
+                    }
                     toSend.println(true);
                     toSend.flush();
                     toSend.println(x);
@@ -82,17 +85,20 @@ public class Main {
                     boolean tmp=game.enemyShot(x,y);
                     toSend.println(tmp);
                     toSend.flush();
+                    getFlag=false;
                 }
 
             }
             if(args[0]=="server")
             {
-                toSend.println(sendFlag);
+
+                toSend.println(getFlag);
                 toSend.flush();
-                if(sendFlag==false)
+                if(getFlag==false)
                 {
                     getFlag=Boolean.parseBoolean(Input.readLine());
                 }
+
 
             }
             else if(args[0]=="client")
@@ -100,7 +106,7 @@ public class Main {
                 getFlag=Boolean.parseBoolean(Input.readLine());
                 if(getFlag==false)
                 {
-                    toSend.println(sendFlag);
+                    toSend.println(getFlag);
                     toSend.flush();
                 }
 
