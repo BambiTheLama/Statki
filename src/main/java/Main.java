@@ -16,13 +16,14 @@ public class Main {
         GameScreen game=new GameScreen((byte) 12);
         while (!WindowShouldClose()) {
 
-            BeginDrawing();
-            ClearBackground(RAYWHITE);
-            game.draw();
             if(game.collision())
             {
 
             }
+            BeginDrawing();
+            ClearBackground(RAYWHITE);
+            game.draw(width);
+
             EndDrawing();
         }
         CloseWindow();

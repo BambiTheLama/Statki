@@ -5,8 +5,8 @@ import static com.raylib.Jaylib.*;
 import static com.raylib.Raylib.*;
 
 public class GameScreen {
-    byte[][] mapShip;
-    byte[][] mapAttack;
+    byte[][] myMap;
+    byte[][] enemyMap;
     final byte n;
     int eqSize=100;
     int sizeBetweenEqAndMap=50;
@@ -20,12 +20,14 @@ public class GameScreen {
     Jaylib.Color shipColor=new Jaylib.Color(55,55,255,25);
     int sizeBetweenMaps=200;
     int startEnemyMapLocation;
+    int enemyX=-1;
+    int enemyY=-1;
 
     GameScreen(byte x)
     {
         n=x;
-        mapShip=new byte[n][n];
-        mapAttack=new byte[n][n];
+        myMap=new byte[n][n];
+        enemyMap=new byte[n][n];
         startEnemyMapLocation=n*cell+sizeBetweenEqAndMap+sizeBetweenMaps;
         clear();
     }
@@ -35,11 +37,12 @@ public class GameScreen {
         {
             for(byte j=0;j<n;j++)
             {
-                mapShip[i][j]=0;
-                mapAttack[i][j]=0;
+                myMap[i][j]=0;
+                enemyMap[i][j]=0;
             }
         }
     }
+
     public boolean collision()
     {
         if(Raylib.IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
@@ -52,17 +55,53 @@ public class GameScreen {
             {
                 x=x/cell;
                 y=y/cell;
-                mapAttack[y][x]=(byte)((mapAttack[y][x]+1)%4);
+                enemyMap[y][x]=(byte)((enemyMap[y][x]+1)%3);
+                return true;
+            }
+            x=Raylib.GetMouseX();
+            x=x-sizeBetweenEqAndMap;
+            if(x>=0&&x<=n*cell&&y>=0&&y<=n*cell)
+            {
+                x=x/cell;
+                y=y/cell;
+                if(myMap[y][x]==0)
+                    myMap[y][x]=3;
+                else
+                    myMap[y][x]=0;
 
+                return true;
             }
         }
         return false;
     }
-
-    public void draw()
+    boolean enemyShot(int x,int y)
     {
-        drawMap(sizeBetweenEqAndMap,mapShip,"Twoja Mapa");
-        drawMap(startEnemyMapLocation,mapAttack,"Mapa Wroga");
+        if(myMap[y][x]==3)
+        {
+            myMap[y][x]=1;
+            return true;
+        }
+        myMap[y][x]=2;
+        return false;
+    }
+    int getX()
+    {
+        int tmp=enemyX;
+        enemyX=-1;
+        return tmp;
+    }
+    int getY()
+    {
+        int tmp=enemyY;
+        enemyY=-1;
+        return tmp;
+    }
+
+    public void draw(int width)
+    {
+        Raylib.DrawLine(0,eqSize,width,eqSize,BLACK);
+        drawMap(sizeBetweenEqAndMap,myMap,"Twoja Mapa");
+        drawMap(startEnemyMapLocation,enemyMap,"Mapa Wroga");
     }
 
     private void drawMap(int x,byte[][] usedMap,String name)
