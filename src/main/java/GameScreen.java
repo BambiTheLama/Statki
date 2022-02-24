@@ -16,23 +16,17 @@ public class GameScreen {
     Raylib.Color mapLineColor= BLACK;
     Raylib.Color mapAttackMiss= DARKBLUE;
     Raylib.Color mapAttackHit= RED;
-    Raylib.Color shipColorContour=new Raylib.Color();
-    Raylib.Color shipColor=new Raylib.Color();
+    Jaylib.Color shipColorContour=new Jaylib.Color(55,55,255,100);
+    Jaylib.Color shipColor=new Jaylib.Color(55,55,255,25);
     int sizeBetweenMaps=200;
+    int startEnemyMapLocation;
 
     GameScreen(byte x)
     {
         n=x;
         mapShip=new byte[n][n];
         mapAttack=new byte[n][n];
-        shipColorContour.r((byte)55);
-        shipColorContour.g((byte)55);
-        shipColorContour.b((byte)255);
-        shipColorContour.a((byte)100);
-        shipColor.r((byte)55);
-        shipColor.g((byte)55);
-        shipColor.b((byte)255);
-        shipColor.a((byte)25);
+        startEnemyMapLocation=n*cell+sizeBetweenEqAndMap+sizeBetweenMaps;
         clear();
     }
     public void clear()
@@ -46,31 +40,50 @@ public class GameScreen {
             }
         }
     }
+    public boolean collision()
+    {
+        if(Raylib.IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
+        {
+            int x=Raylib.GetMouseX();
+            int y=Raylib.GetMouseY();
+            x=x-startEnemyMapLocation;
+            y=y-(eqSize+sizeBetweenEqAndMap);
+            if(x>=0&&x<=n*cell&&y>=0&&y<=n*cell)
+            {
+                x=x/cell;
+                y=y/cell;
+                mapAttack[y][x]=(byte)((mapAttack[y][x]+1)%4);
+
+            }
+        }
+        return false;
+    }
+
     public void draw()
     {
-        drawMap(sizeBetweenEqAndMap,mapAttack,"Mapa Wroga");
-        drawMap(n*cell+sizeBetweenEqAndMap+sizeBetweenMaps,mapShip,"Twoja Mapa");
-
+        drawMap(sizeBetweenEqAndMap,mapShip,"Twoja Mapa");
+        drawMap(startEnemyMapLocation,mapAttack,"Mapa Wroga");
     }
+
     private void drawMap(int x,byte[][] usedMap,String name)
     {
 
         for(byte i=0;i<=n;i++)
         {
-            Raylib.DrawLine(x,i*cell+sizeBetweenEqAndMap+eqSize,x+n*cell,i*cell+sizeBetweenEqAndMap+eqSize,mapLineColor);
+            Jaylib.DrawLine(x,i*cell+sizeBetweenEqAndMap+eqSize,x+n*cell,i*cell+sizeBetweenEqAndMap+eqSize,mapLineColor);
             if(i!=n)
             {
                 String tmp=""+(i+1);
-                Raylib.DrawText(tmp,x-sizeBetweenEqAndMap/2,i*cell+cell/4+sizeBetweenEqAndMap+eqSize,sizeText,textColor);
+                Jaylib.DrawText(tmp,x-sizeBetweenEqAndMap/2,i*cell+cell/4+sizeBetweenEqAndMap+eqSize,sizeText,textColor);
             }
         }
         for(byte i=0;i<=n;i++)
         {
-            Raylib.DrawLine(x+i*cell,sizeBetweenEqAndMap+eqSize,x+i*cell,n*cell+sizeBetweenEqAndMap+eqSize,mapLineColor);
+            Jaylib.DrawLine(x+i*cell,sizeBetweenEqAndMap+eqSize,x+i*cell,n*cell+sizeBetweenEqAndMap+eqSize,mapLineColor);
             if(i!=n)
             {
                 String tmp=(char)('a'+i)+"";
-                Raylib.DrawText(tmp,i*cell+cell*4/9+x,sizeBetweenEqAndMap/2+eqSize,sizeText,textColor);
+                Jaylib.DrawText(tmp,i*cell+cell*4/9+x,sizeBetweenEqAndMap/2+eqSize,sizeText,textColor);
             }
         }
         for(int i=0;i<n;i++)
@@ -80,32 +93,24 @@ public class GameScreen {
                     case 0:
                         break;
                     case 1:
-                        Raylib.DrawCircle(x+j*cell+cell/2,sizeBetweenEqAndMap+eqSize+i*cell+cell/2,cell/2,mapAttackMiss);
-                        Raylib.DrawCircle(x+j*cell+cell/2,sizeBetweenEqAndMap+eqSize+i*cell+cell/2,cell*5/11,WHITE);
+                        Jaylib.DrawCircle(x+j*cell+cell/2,sizeBetweenEqAndMap+eqSize+i*cell+cell/2,cell/2,mapAttackMiss);
+                        Jaylib.DrawCircle(x+j*cell+cell/2,sizeBetweenEqAndMap+eqSize+i*cell+cell/2,cell*5/11,WHITE);
                         break;
                     case 2:
-                        Raylib.Vector2 start=new Raylib.Vector2();
-                        start.x(x+cell*j);
-                        start.y(sizeBetweenEqAndMap+eqSize+i*cell);
-                        Raylib.Vector2 end =new Raylib.Vector2();
-                        end.x(x+cell*(j+1));
-                        end.y(sizeBetweenEqAndMap+eqSize+(i+1)*cell);
-                        Raylib.DrawLineEx(start,end,3,mapAttackHit);
+                        Jaylib.Vector2 start=new Jaylib.Vector2(x+cell*j,sizeBetweenEqAndMap+eqSize+i*cell);
+                        Jaylib.Vector2 end =new Jaylib.Vector2(x+cell*(j+1),sizeBetweenEqAndMap+eqSize+(i+1)*cell);
+                        Jaylib.DrawLineEx(start,end,3,mapAttackHit);
                         start.x(x+cell*(j+1));
                         end.x(x+cell*(j));
-                        Raylib.DrawLineEx(start,end,3,mapAttackHit);
+                        Jaylib.DrawLineEx(start,end,3,mapAttackHit);
                         break;
                     case 3:
-                        Raylib.Rectangle rec=new Raylib.Rectangle();
-                        rec.x(x+cell*j);
-                        rec.y(sizeBetweenEqAndMap+eqSize+i*cell);
-                        rec.height(cell);
-                        rec.width(cell);
-                        Raylib.DrawRectangleRec(rec,shipColor);
-                        Raylib.DrawRectangleLinesEx(rec,3,shipColorContour);
+                        Jaylib.Rectangle rec=new Jaylib.Rectangle(x+cell*j,sizeBetweenEqAndMap+eqSize+i*cell,cell,cell);
+                        Jaylib.DrawRectangleRec(rec,shipColor);
+                        Jaylib.DrawRectangleLinesEx(rec,3,shipColorContour);
                         break;
                 }
             }
-        Raylib.DrawText(name,x,n*cell+eqSize+sizeBetweenEqAndMap,20,textColor);
+        Jaylib.DrawText(name,x,n*cell+eqSize+sizeBetweenEqAndMap,20,textColor);
     }
 }

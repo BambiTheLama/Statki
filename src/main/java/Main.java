@@ -19,6 +19,10 @@ public class Main {
             BeginDrawing();
             ClearBackground(RAYWHITE);
             game.draw();
+            if(game.collision())
+            {
+
+            }
             EndDrawing();
         }
         CloseWindow();
