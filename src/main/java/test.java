@@ -3,7 +3,7 @@ public class test {
         Main m=new Main();
         String[] a=new String[2];
         a[0]="client";
-        a[1]="66";
+        a[1]="49999";
         try{
             Main.main(a);
         }
