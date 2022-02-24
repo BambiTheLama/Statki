@@ -53,9 +53,15 @@ public class GameScreen {
             y=y-(eqSize+sizeBetweenEqAndMap);
             if(x>=0&&x<=n*cell&&y>=0&&y<=n*cell)
             {
+
                 x=x/cell;
                 y=y/cell;
-                enemyMap[y][x]=(byte)((enemyMap[y][x]+1)%3);
+                if(enemyMap[y][x]==0)
+                {
+                    enemyX=x;
+                    enemyY=y;
+                }
+
                 return true;
             }
             x=Raylib.GetMouseX();
@@ -78,23 +84,32 @@ public class GameScreen {
     {
         if(myMap[y][x]==3)
         {
-            myMap[y][x]=1;
+            myMap[y][x]=2;
             return true;
         }
-        myMap[y][x]=2;
+        myMap[y][x]=1;
         return false;
+    }
+    void setShoot(boolean a)
+    {
+        if(a==false)
+            enemyMap[enemyY][enemyX]=1;
+        else
+            enemyMap[enemyY][enemyX]=2;
+
     }
     int getX()
     {
-        int tmp=enemyX;
-        enemyX=-1;
-        return tmp;
+        return enemyX;
     }
     int getY()
     {
-        int tmp=enemyY;
+        return enemyY;
+    }
+    void cleanXY()
+    {
         enemyY=-1;
-        return tmp;
+        enemyX=-1;
     }
 
     public void draw(int width)
