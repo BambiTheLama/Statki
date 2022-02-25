@@ -1,16 +1,13 @@
-import com.raylib.Raylib;
-import org.bytedeco.javacpp.BytePointer;
-import  java.net.*;
-import  java.io.*;
-
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 
 import static com.raylib.Jaylib.*;
-import static com.raylib.Raylib.*;
 
-public class Main {
+public class MainGameCore {
 
     public static void main(String args[]) throws IOException {
 
@@ -57,19 +54,37 @@ public class Main {
                 {
                     if(args[0]=="client")
                     {
-                        getFlag=Boolean.parseBoolean(Input.readLine());
-                    }
-                    toSend.println(true);
-                    toSend.flush();
-                    toSend.println(x);
-                    toSend.flush();
-                    toSend.println(y);
-                    toSend.flush();
 
-                    String a=Input.readLine();
-                    boolean tmp=Boolean.parseBoolean(a);
-                    game.setShoot(tmp);
-                    game.cleanXY();
+                        if(Input != null)
+                        {
+                            getFlag=Boolean.parseBoolean(Input.readLine());
+                        }
+                        else
+                        {
+                            return;
+                        }
+
+                    }
+
+                    if(toSend != null)
+                    {
+                        toSend.println(true);
+                        toSend.flush();
+                        toSend.println(x);
+                        toSend.flush();
+                        toSend.println(y);
+                        toSend.flush();
+
+                        String a=Input.readLine();
+                        boolean tmp=Boolean.parseBoolean(a);
+                        game.setShoot(tmp);
+                        game.cleanXY();
+                    }
+                    else
+                    {
+                        return;
+                    }
+
 
 
                 }
@@ -92,24 +107,39 @@ public class Main {
             }
             if(args[0]=="server")
             {
-
-                toSend.println(getFlag);
-                toSend.flush();
-                if(getFlag==false)
+                if(toSend != null)
                 {
-                    getFlag=Boolean.parseBoolean(Input.readLine());
+                    toSend.println(getFlag);
+                    toSend.flush();
+                    if(getFlag==false)
+                    {
+                        getFlag=Boolean.parseBoolean(Input.readLine());
+                    }
                 }
+                else
+                {
+                    return;
+                }
+
 
 
             }
             else if(args[0]=="client")
             {
-                getFlag=Boolean.parseBoolean(Input.readLine());
-                if(getFlag==false)
+                if(Input != null)
                 {
-                    toSend.println(getFlag);
-                    toSend.flush();
+                    getFlag=Boolean.parseBoolean(Input.readLine());
+                    if(getFlag==false)
+                    {
+                        toSend.println(getFlag);
+                        toSend.flush();
+                    }
                 }
+                else
+                {
+                    return;
+                }
+
 
             }
 

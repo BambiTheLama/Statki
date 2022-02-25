@@ -34,12 +34,11 @@ public class StartMenu {
 
         if(end==1)
         {
-            Main m=new Main();
             String[] a=new String[2];
             a[0]="server";
             a[1]="49999";
             try{
-                Main.main(a);
+                MainGameCore.main(a);
             }
             catch (Exception b){
 
@@ -47,12 +46,12 @@ public class StartMenu {
         }
         else if(end==2)
         {
-            Main m=new Main();
+
             String[] a=new String[2];
             a[0]="client";
             a[1]="49999";
             try{
-                Main.main(a);
+                MainGameCore.main(a);
             }
             catch (Exception b){
 
