@@ -17,18 +17,18 @@ public class StartMenu {
         InitWindow(width, height, "Statki Menu Glowne");
         SetTargetFPS(60);
         byte end=0;
-
+        Jaylib.SetExitKey(KEY_ESCAPE);
         while (!WindowShouldClose()&&end==0) {
+            if(IsKeyPressed(KEY_ESCAPE))
+            {
+                end=3;
+            }
             BeginDrawing();
             ClearBackground(RAYWHITE);
             draw();
             end=colison();
 
             EndDrawing();
-        }
-        if(WindowShouldClose())
-        {
-            return  false;
         }
         CloseWindow();
 
@@ -57,6 +57,9 @@ public class StartMenu {
             catch (Exception b){
 
             }
+        }else
+        {
+            return false;
         }
         return true;
     }
