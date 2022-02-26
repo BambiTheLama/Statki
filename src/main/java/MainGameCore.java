@@ -1,151 +1,400 @@
+import com.raylib.Jaylib;
+import com.raylib.Raylib;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Objects;
 
 import static com.raylib.Jaylib.*;
 
 public class MainGameCore {
 
-    public static void main(String args[]) throws IOException {
+    ServerSocket serverSocket;
+    BufferedReader Input = null;
+    PrintWriter toSend = null;
+    Socket server;
+    Socket player;
+    InputStreamReader InputStream;
+    int placeShipTime=60*10;
+    int numberOfShipToPlace=10;
+    int numberOfShipAlive;
+    boolean isPlacingShipTime=true;
+    boolean isOpponentAttack=false;
+    boolean isOpponentLeft=false;
+    boolean isProgramEnd=false;
+    boolean isMyMove;
 
-        ServerSocket serverSocket;
-        Socket server;
-        Socket player;
-        InputStreamReader InputStream;
-        BufferedReader Input = null;
-        PrintWriter toSend = null;
-        boolean getFlag=false;
+
+
+
+
+    byte[][] myMap;
+    byte[][] enemyMap;
+    byte n;
+    int eqSize=100;
+    int sizeBetweenEqAndMap=50;
+    int sizeText=20;
+    Raylib.Color textColor= BLACK;
+    int cell=40;
+    Raylib.Color mapLineColor= BLACK;
+    Raylib.Color mapAttackMiss= DARKBLUE;
+    Raylib.Color mapAttackHit= RED;
+    Jaylib.Color shipColorContour=new Jaylib.Color(55,55,255,100);
+    Jaylib.Color shipColor=new Jaylib.Color(55,55,255,25);
+    int sizeBetweenMaps=200;
+    int startEnemyMapLocation;
+    int enemyX=-1;
+    int enemyY=-1;
+
+    public void reset()
+    {
+        n=12;
+        myMap=new byte[n][n];
+        enemyMap=new byte[n][n];
+        startEnemyMapLocation=n*cell+sizeBetweenEqAndMap+sizeBetweenMaps;
+        clear();
+    }
+    public void clear()
+    {
+        for(byte i=0;i<n;i++)
+        {
+            for(byte j=0;j<n;j++)
+            {
+                myMap[i][j]=0;
+                enemyMap[i][j]=0;
+            }
+        }
+    }
+
+
+    public void main(String[] args) throws IOException {
         int port= Integer.parseInt(args[1]);
-        if(args[0]=="server")
+        reset();
+
+        if(Objects.equals(args[0], "server"))
         {
             serverSocket=new ServerSocket(port);
             player =serverSocket.accept();
             InputStream=new InputStreamReader(player.getInputStream());
             Input=new BufferedReader(InputStream);
             toSend=new PrintWriter(player.getOutputStream());
+            isMyMove=true;
         }
-        else if(args[0]=="client")
+        else if(Objects.equals(args[0], "client"))
         {
-            server=new Socket("localhost",port);
+            String ip=args[2];
+            if(Objects.equals(ip, ""))
+                server=new Socket("localhost",port);
+            else
+                server=new Socket(ip,port);
             toSend=new PrintWriter(server.getOutputStream());
             InputStream=new InputStreamReader(server.getInputStream());
             Input=new BufferedReader(InputStream);
+            isMyMove=false;
         }
+
         int width=1280,height=720;
 
         InitWindow(width, height, "Statki "+args[0]);
         SetTargetFPS(60);
-        GameScreen game=new GameScreen((byte) 12);
-        while (!WindowShouldClose()) {
-            BeginDrawing();
-            ClearBackground(RAYWHITE);
-            game.draw(width);
+        while (!WindowShouldClose()&&isOpponentLeft==false&&isProgramEnd==false) {
 
-            EndDrawing();
-
-            if(game.collision())
+            if(args[0]=="server")
             {
-                int x=game.getX();
-                int y=game.getY();
-                if(x!=-1&&y!=-1)
+                isClientClose();
+            }
+            else if(args[0]=="client")
+            {
+                isServerClose();
+            }
+            if(isOpponentLeft==false&&isProgramEnd==false)
+            {
+
+                if(collision()&&isMyMove)
                 {
-                    if(args[0]=="client")
-                    {
-
-                        if(Input != null)
-                        {
-                            getFlag=Boolean.parseBoolean(Input.readLine());
-                        }
-                        else
-                        {
-                            return;
-                        }
-
-                    }
-
-                    if(toSend != null)
+                    if(args[0]=="server")
                     {
                         toSend.println(true);
                         toSend.flush();
-                        toSend.println(x);
-                        toSend.flush();
-                        toSend.println(y);
-                        toSend.flush();
-
-                        String a=Input.readLine();
-                        boolean tmp=Boolean.parseBoolean(a);
-                        game.setShoot(tmp);
-                        game.cleanXY();
                     }
-                    else
+                    else if(args[0]=="client")
                     {
-                        return;
+                        isOpponentAttack=Boolean.parseBoolean(Input.readLine());
+                        toSend.println(true);
+                        toSend.flush();
                     }
-
-
-
-                }
-
-            }
-            else
-            {
-                if(getFlag)
-                {
-                    String a=Input.readLine();
-                    String b=Input.readLine();
-                    int x=Integer.parseInt(a);
-                    int y=Integer.parseInt(b);
-                    boolean tmp=game.enemyShot(x,y);
-                    toSend.println(tmp);
+                    int x=enemyX;
+                    toSend.println(x);
                     toSend.flush();
-                    getFlag=false;
-                }
-
-            }
-            if(args[0]=="server")
-            {
-                if(toSend != null)
-                {
-                    toSend.println(getFlag);
+                    int y=enemyY;
+                    toSend.println(y);
                     toSend.flush();
-                    if(getFlag==false)
-                    {
-                        getFlag=Boolean.parseBoolean(Input.readLine());
-                    }
+                    boolean tmp=Boolean.parseBoolean(Input.readLine());
+                    setShoot(tmp);
+                    isMyMove=false;
                 }
                 else
                 {
-                    return;
+
+                    if(args[0]=="server")
+                    {
+                        toSend.println(false);
+                        toSend.flush();
+                        isOpponentAttack=Boolean.parseBoolean(Input.readLine());
+
+                    }
+                    else if(args[0]=="client")
+                    {
+                        isOpponentAttack=Boolean.parseBoolean(Input.readLine());
+                        if(isOpponentAttack==false)
+                        {
+                            toSend.println(false);
+                            toSend.flush();
+                        }
+
+                    }
+                    if(isOpponentAttack)
+                    {
+                        int x=Integer.parseInt(Input.readLine());
+                        int y=Integer.parseInt(Input.readLine());
+                        boolean tmp=enemyShot(x,y);
+                        toSend.println(tmp);
+                        toSend.flush();
+                        isOpponentAttack=false;
+                        isMyMove=true;
+                    }
                 }
+                if(IsKeyPressed(KEY_Q))
+                    isProgramEnd=true;
+                BeginDrawing();
+                ClearBackground(RAYWHITE);
+                draw(width);
+                EndDrawing();
+            }
+        }
 
 
+        if(isOpponentLeft==true)
+        {
+            if(args[0]=="server")
+            {
 
             }
             else if(args[0]=="client")
             {
-                if(Input != null)
+
+            }
+        }
+        else
+        {
+            if(args[0]=="server")
+            {
+                toSend.println(true);
+                toSend.flush();
+            }
+            else if(args[0]=="client")
+            {
+                isOpponentLeft=Boolean.parseBoolean(Input.readLine());
+                toSend.println(true);
+                toSend.flush();
+            }
+        }
+
+        CloseWindow();
+    }
+    void isServerClose() throws IOException {
+
+        isOpponentLeft=Boolean.parseBoolean(Input.readLine());
+        if(isOpponentLeft==false)
+        {
+            toSend.println(isProgramEnd);
+            toSend.flush();
+        }
+
+    }
+    void isClientClose() throws IOException {
+
+        toSend.println(isProgramEnd);
+        toSend.flush();
+        if(isProgramEnd==false)
+        {
+            isOpponentLeft=Boolean.parseBoolean(Input.readLine());
+        }
+    }
+
+
+    public boolean collision()
+    {
+
+        if(placeShipTime>0)
+        {
+            placeShipTime--;
+        }
+
+        else if(placeShipTime==-1)
+        {
+
+        }
+        else
+        {
+            placeShipTime=-1;
+            isPlacingShipTime=false;
+        }
+
+        if(Raylib.IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
+        {
+            int x=Raylib.GetMouseX();
+            int y=Raylib.GetMouseY();
+            x=x-startEnemyMapLocation;
+            y=y-(eqSize+sizeBetweenEqAndMap);
+            if(isPlacingShipTime)
+            {
+                x=Raylib.GetMouseX();
+                x=x-sizeBetweenEqAndMap;
+
+                if(x>=0&&x<=n*cell&&y>=0&&y<=n*cell)
                 {
-                    getFlag=Boolean.parseBoolean(Input.readLine());
-                    if(getFlag==false)
+                    x=x/cell;
+                    y=y/cell;
+                    if(myMap[y][x]==0 && numberOfShipToPlace>0)
                     {
-                        toSend.println(getFlag);
-                        toSend.flush();
+                        myMap[y][x]=3;
+                        numberOfShipToPlace--;
+                    }
+                    else if(myMap[y][x]==3)
+                    {
+                        myMap[y][x]=0;
+                        numberOfShipToPlace++;
                     }
                 }
-                else
+            }
+            else
+            {
+                if(x>=0&&x<=n*cell&&y>=0&&y<=n*cell)
                 {
-                    return;
+
+                    x=x/cell;
+                    y=y/cell;
+                    if(enemyMap[y][x]==0)
+                    {
+                        enemyX=x;
+                        enemyY=y;
+                    }
+
+                    return true;
                 }
-
-
             }
 
 
-
         }
-        CloseWindow();
+        return false;
+    }
+
+
+    boolean enemyShot(int x,int y)
+    {
+        if(myMap[y][x]==3)
+        {
+            myMap[y][x]=2;
+            return true;
+        }
+        myMap[y][x]=1;
+        return false;
+    }
+
+    void setShoot(boolean a)
+    {
+        if(enemyMap[enemyY][enemyX]==0)
+        {
+            if(a)
+                enemyMap[enemyY][enemyX]=2;
+            else
+                enemyMap[enemyY][enemyX]=1;
+        }
+
+    }
+
+    void cleanXY()
+    {
+        enemyY=-1;
+        enemyX=-1;
+    }
+
+    public void draw(int width)
+    {
+        Raylib.DrawLine(0,eqSize,width,eqSize,BLACK);
+
+        drawMap(sizeBetweenEqAndMap,myMap,"Twoja Mapa");
+        drawMap(startEnemyMapLocation,enemyMap,"Mapa Wroga");
+        if(isPlacingShipTime)
+        {
+            Jaylib.DrawText("Pozostaly czas ustawiania :"+placeShipTime/60+" s",0,0,20,BLACK);
+            Jaylib.DrawText("Statki :"+numberOfShipToPlace,0,20,20,BLACK);
+        }
+        else
+        {
+            if(isMyMove)
+            {
+                Jaylib.DrawText("Moja Tura",0,0,20,BLACK);
+            }
+            else
+            {
+                Jaylib.DrawText("Przeciwnika Tura",0,0,20,BLACK);
+            }
+        }
+
+    }
+
+    private void drawMap(int x,byte[][] usedMap,String name)
+    {
+
+        for(byte i=0;i<=n;i++)
+        {
+            Jaylib.DrawLine(x,i*cell+sizeBetweenEqAndMap+eqSize,x+n*cell,i*cell+sizeBetweenEqAndMap+eqSize,mapLineColor);
+            if(i!=n)
+            {
+                String tmp=""+(i+1);
+                Jaylib.DrawText(tmp,x-sizeBetweenEqAndMap/2,i*cell+cell/4+sizeBetweenEqAndMap+eqSize,sizeText,textColor);
+            }
+        }
+        for(byte i=0;i<=n;i++)
+        {
+            Jaylib.DrawLine(x+i*cell,sizeBetweenEqAndMap+eqSize,x+i*cell,n*cell+sizeBetweenEqAndMap+eqSize,mapLineColor);
+            if(i!=n)
+            {
+                String tmp=(char)('a'+i)+"";
+                Jaylib.DrawText(tmp,i*cell+cell*4/9+x,sizeBetweenEqAndMap/2+eqSize,sizeText,textColor);
+            }
+        }
+        for(int i=0;i<n;i++)
+            for(int j=0;j<n;j++)
+            {
+                switch(usedMap[i][j]) {
+                    case 0:
+                        break;
+                    case 1:
+                        Jaylib.DrawCircle(x+j*cell+cell/2,sizeBetweenEqAndMap+eqSize+i*cell+cell/2,cell/2,mapAttackMiss);
+                        Jaylib.DrawCircle(x+j*cell+cell/2,sizeBetweenEqAndMap+eqSize+i*cell+cell/2,cell*5/11,WHITE);
+                        break;
+                    case 2:
+                        Jaylib.Vector2 start=new Jaylib.Vector2(x+cell*j,sizeBetweenEqAndMap+eqSize+i*cell);
+                        Jaylib.Vector2 end =new Jaylib.Vector2(x+cell*(j+1),sizeBetweenEqAndMap+eqSize+(i+1)*cell);
+                        Jaylib.DrawLineEx(start,end,3,mapAttackHit);
+                        start.x(x+cell*(j+1));
+                        end.x(x+cell*(j));
+                        Jaylib.DrawLineEx(start,end,3,mapAttackHit);
+                        break;
+                    case 3:
+                        Jaylib.Rectangle rec=new Jaylib.Rectangle(x+cell*j,sizeBetweenEqAndMap+eqSize+i*cell,cell,cell);
+                        Jaylib.DrawRectangleRec(rec,shipColor);
+                        Jaylib.DrawRectangleLinesEx(rec,3,shipColorContour);
+                        break;
+                }
+            }
+        Jaylib.DrawText(name,x,n*cell+eqSize+sizeBetweenEqAndMap,20,textColor);
     }
 }

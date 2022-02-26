@@ -7,6 +7,7 @@ public class P2 {
         while(play)
         {
             play=p1.main(a);
+            System.gc();
         }
 
     }
