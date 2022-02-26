@@ -20,17 +20,17 @@ public class MainGameCore {
     Socket player;
     InputStreamReader InputStream;
     int placeShipTime=60*10;
-    int numberOfShipToPlace=10;
+    int numberOfShipToPlace;
     int numberOfShipAlive;
     boolean isPlacingShipTime=true;
     boolean isOpponentAttack=false;
     boolean isOpponentLeft=false;
     boolean isProgramEnd=false;
+    boolean isSomeoneWin=false;
     boolean isMyMove;
-
-
-
-
+    boolean enemyLost=false;
+    boolean lost=false;
+    boolean win=false;
 
     byte[][] myMap;
     byte[][] enemyMap;
@@ -50,12 +50,14 @@ public class MainGameCore {
     int enemyX=-1;
     int enemyY=-1;
 
-    public void reset()
+    public void reset(byte mapSize,int numberOfShip)
     {
-        n=12;
+        n=mapSize;
         myMap=new byte[n][n];
         enemyMap=new byte[n][n];
         startEnemyMapLocation=n*cell+sizeBetweenEqAndMap+sizeBetweenMaps;
+        numberOfShipToPlace=numberOfShip;
+        numberOfShipAlive=numberOfShip;
         clear();
     }
     public void clear()
@@ -73,7 +75,7 @@ public class MainGameCore {
 
     public void main(String[] args) throws IOException {
         int port= Integer.parseInt(args[1]);
-        reset();
+        reset((byte) 12,10);
 
         if(Objects.equals(args[0], "server"))
         {
@@ -101,111 +103,133 @@ public class MainGameCore {
 
         InitWindow(width, height, "Statki "+args[0]);
         SetTargetFPS(60);
-        while (!WindowShouldClose()&&isOpponentLeft==false&&isProgramEnd==false) {
-
-            if(args[0]=="server")
+        while (!WindowShouldClose()&&isOpponentLeft==false&&isProgramEnd==false&&isSomeoneWin==false)
+        {
+            gameLoop(args);
+            if(isOpponentLeft==false&&isProgramEnd==false&&isSomeoneWin==false)
             {
-                isClientClose();
-            }
-            else if(args[0]=="client")
-            {
-                isServerClose();
-            }
-            if(isOpponentLeft==false&&isProgramEnd==false)
-            {
-
-                if(collision()&&isMyMove)
-                {
-                    if(args[0]=="server")
-                    {
-                        toSend.println(true);
-                        toSend.flush();
-                    }
-                    else if(args[0]=="client")
-                    {
-                        isOpponentAttack=Boolean.parseBoolean(Input.readLine());
-                        toSend.println(true);
-                        toSend.flush();
-                    }
-                    int x=enemyX;
-                    toSend.println(x);
-                    toSend.flush();
-                    int y=enemyY;
-                    toSend.println(y);
-                    toSend.flush();
-                    boolean tmp=Boolean.parseBoolean(Input.readLine());
-                    setShoot(tmp);
-                    isMyMove=false;
-                }
-                else
-                {
-
-                    if(args[0]=="server")
-                    {
-                        toSend.println(false);
-                        toSend.flush();
-                        isOpponentAttack=Boolean.parseBoolean(Input.readLine());
-
-                    }
-                    else if(args[0]=="client")
-                    {
-                        isOpponentAttack=Boolean.parseBoolean(Input.readLine());
-                        if(isOpponentAttack==false)
-                        {
-                            toSend.println(false);
-                            toSend.flush();
-                        }
-
-                    }
-                    if(isOpponentAttack)
-                    {
-                        int x=Integer.parseInt(Input.readLine());
-                        int y=Integer.parseInt(Input.readLine());
-                        boolean tmp=enemyShot(x,y);
-                        toSend.println(tmp);
-                        toSend.flush();
-                        isOpponentAttack=false;
-                        isMyMove=true;
-                    }
-                }
-                if(IsKeyPressed(KEY_Q))
-                    isProgramEnd=true;
                 BeginDrawing();
                 ClearBackground(RAYWHITE);
                 draw(width);
                 EndDrawing();
             }
+
         }
-
-
-        if(isOpponentLeft==true)
+        while (!WindowShouldClose())
         {
-            if(args[0]=="server")
-            {
-
-            }
-            else if(args[0]=="client")
-            {
-
-            }
-        }
-        else
-        {
-            if(args[0]=="server")
-            {
-                toSend.println(true);
-                toSend.flush();
-            }
-            else if(args[0]=="client")
-            {
-                isOpponentLeft=Boolean.parseBoolean(Input.readLine());
-                toSend.println(true);
-                toSend.flush();
-            }
+            BeginDrawing();
+            ClearBackground(RAYWHITE);
+            draw(width);
+            gameEnd(args,height);
+            EndDrawing();
         }
 
         CloseWindow();
     }
+    void gameLoop(String[] args) throws IOException {
+        if(isSomeoneWin==false) {
+            if (args[0] == "server") {
+                isClientClose();
+            }
+            else if (args[0] == "client") {
+                isServerClose();
+            }
+        }
+        if(isOpponentLeft==false&&isProgramEnd==false&&isSomeoneWin==false)
+        {
+
+            if(collision()&&isMyMove)
+            {
+                if(args[0]=="server")
+                {
+                    toSend.println(true);
+                    toSend.flush();
+                }
+                else if(args[0]=="client")
+                {
+                    isOpponentAttack=Boolean.parseBoolean(Input.readLine());
+                    toSend.println(true);
+                    toSend.flush();
+                }
+                int x=enemyX;
+                toSend.println(x);
+                toSend.flush();
+                int y=enemyY;
+                toSend.println(y);
+                toSend.flush();
+                boolean tmp=Boolean.parseBoolean(Input.readLine());
+                setShoot(tmp);
+                isMyMove=false;
+                String tmp2=Input.readLine();
+                if(Objects.equals(tmp2, "WIN"))
+                {
+                    isSomeoneWin=true;
+                    win=true;
+                }
+            }
+            else if(isPlacingShipTime==false)
+            {
+
+                if(args[0]=="server")
+                {
+                    toSend.println(false);
+                    toSend.flush();
+                    isOpponentAttack=Boolean.parseBoolean(Input.readLine());
+
+                }
+                else if(args[0]=="client")
+                {
+                    isOpponentAttack=Boolean.parseBoolean(Input.readLine());
+                    if(isOpponentAttack==false)
+                    {
+                        toSend.println(false);
+                        toSend.flush();
+                    }
+
+                }
+                if(isOpponentAttack)
+                {
+                    int x=Integer.parseInt(Input.readLine());
+                    int y=Integer.parseInt(Input.readLine());
+                    boolean tmp=enemyShot(x,y);
+                    toSend.println(tmp);
+                    toSend.flush();
+                    isOpponentAttack=false;
+                    isMyMove=true;
+                    if(numberOfShipAlive==0)
+                    {
+                        toSend.println("WIN");
+                        toSend.flush();
+                        isSomeoneWin=true;
+                        lost=true;
+                    }
+                    else
+                    {
+                        toSend.println("NOT");
+                        toSend.flush();
+                    }
+                }
+            }
+        }
+
+    }
+
+    void gameEnd(String[] args,int height) throws IOException{
+        if(isOpponentLeft)
+        {
+            Jaylib.DrawText("WYGRALES",sizeBetweenEqAndMap,1/3*height,200,RED);
+        }
+
+        if(isSomeoneWin) {
+            if (lost) {
+                Jaylib.DrawText("PRZEGRALES", sizeBetweenEqAndMap, 1 / 3 * height, 200, RED);
+            } else if (win) {
+                Jaylib.DrawText("WYGRALES", sizeBetweenEqAndMap, 1 / 3 * height, 200, RED);
+            }
+        }
+
+    }
+
     void isServerClose() throws IOException {
 
         isOpponentLeft=Boolean.parseBoolean(Input.readLine());
@@ -242,6 +266,7 @@ public class MainGameCore {
         else
         {
             placeShipTime=-1;
+            numberOfShipAlive-=numberOfShipToPlace;
             isPlacingShipTime=false;
         }
 
@@ -300,6 +325,7 @@ public class MainGameCore {
         if(myMap[y][x]==3)
         {
             myMap[y][x]=2;
+            numberOfShipAlive--;
             return true;
         }
         myMap[y][x]=1;
@@ -345,6 +371,7 @@ public class MainGameCore {
             {
                 Jaylib.DrawText("Przeciwnika Tura",0,0,20,BLACK);
             }
+            Jaylib.DrawText("Statki :"+numberOfShipAlive,0,20,20,BLACK);
         }
 
     }
