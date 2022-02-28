@@ -39,12 +39,15 @@ public class MainGameCore {
     int sizeBetweenEqAndMap=50;
     int sizeText=20;
     Raylib.Color textColor= BLACK;
-    int cell=40;
+    int cell=20;
     Raylib.Color mapLineColor= BLACK;
     Raylib.Color mapAttackMiss= DARKBLUE;
-    Raylib.Color mapAttackHit= RED;
+    Jaylib.Color mapAttackHit= new Jaylib.Color(255,0,0,255);
+    Jaylib.Color mapAttackHit2= new Jaylib.Color(255,0,0,100);
     Jaylib.Color shipColorContour=new Jaylib.Color(55,55,255,100);
     Jaylib.Color shipColor=new Jaylib.Color(55,55,255,25);
+    Jaylib.Color shipColorContour2=new Jaylib.Color(55,255,255,100);
+    Jaylib.Color shipColor2=new Jaylib.Color(55,255,255,25);
     int sizeBetweenMaps=200;
     int startEnemyMapLocation;
     int enemyX=-1;
@@ -71,11 +74,10 @@ public class MainGameCore {
             }
         }
     }
-
-
+    
     public void main(String[] args) throws IOException {
         int port= Integer.parseInt(args[1]);
-        reset((byte) 12,10);
+        reset((byte) 24,50);
 
         if(Objects.equals(args[0], "server"))
         {
@@ -115,18 +117,42 @@ public class MainGameCore {
             }
 
         }
-        while (!WindowShouldClose())
+        if(isOpponentLeft==false&&isSomeoneWin==false)
         {
-            BeginDrawing();
-            ClearBackground(RAYWHITE);
-            draw(width);
-            gameEnd(args,height);
-            EndDrawing();
+            isProgramEnd=true;
+            if (args[0] == "server") {
+                {
+
+                    toSend.println(true);
+                    toSend.flush();
+                }
+            }
+            else if (args[0] == "client") {
+                {
+                    isOpponentLeft=Boolean.parseBoolean(Input.readLine());
+                    toSend.println(true);
+                    toSend.flush();
+                }
+            }
         }
+        if(isProgramEnd==false)
+        {
+            while (!WindowShouldClose())
+            {
+                BeginDrawing();
+                ClearBackground(RAYWHITE);
+                draw(width);
+                gameEnd(args,height);
+                EndDrawing();
+            }
+        }
+
 
         CloseWindow();
     }
+
     void gameLoop(String[] args) throws IOException {
+
         if(isSomeoneWin==false) {
             if (args[0] == "server") {
                 isClientClose();
@@ -153,7 +179,6 @@ public class MainGameCore {
                 }
                 int x=enemyX;
                 toSend.println(x);
-                toSend.flush();
                 int y=enemyY;
                 toSend.println(y);
                 toSend.flush();
@@ -217,14 +242,14 @@ public class MainGameCore {
     void gameEnd(String[] args,int height) throws IOException{
         if(isOpponentLeft)
         {
-            Jaylib.DrawText("WYGRALES",sizeBetweenEqAndMap,1/3*height,200,RED);
+            Jaylib.DrawText("WYGRALES",sizeBetweenEqAndMap,(int)((1.0/3.0)*height),200,RED);
         }
 
         if(isSomeoneWin) {
             if (lost) {
-                Jaylib.DrawText("PRZEGRALES", sizeBetweenEqAndMap, 1 / 3 * height, 200, RED);
+                Jaylib.DrawText("PRZEGRALES", sizeBetweenEqAndMap, (int)((1.0/3.0)*height), 200, RED);
             } else if (win) {
-                Jaylib.DrawText("WYGRALES", sizeBetweenEqAndMap, 1 / 3 * height, 200, RED);
+                Jaylib.DrawText("WYGRALES",sizeBetweenEqAndMap,(int)((1.0/3.0)*height),200,RED);
             }
         }
 
@@ -240,6 +265,7 @@ public class MainGameCore {
         }
 
     }
+
     void isClientClose() throws IOException {
 
         toSend.println(isProgramEnd);
@@ -250,9 +276,7 @@ public class MainGameCore {
         }
     }
 
-
-    public boolean collision()
-    {
+    public boolean collision() {
 
         if(placeShipTime>0)
         {
@@ -301,27 +325,21 @@ public class MainGameCore {
             {
                 if(x>=0&&x<=n*cell&&y>=0&&y<=n*cell)
                 {
-
                     x=x/cell;
                     y=y/cell;
                     if(enemyMap[y][x]==0)
                     {
                         enemyX=x;
                         enemyY=y;
+                        return true;
                     }
-
-                    return true;
                 }
             }
-
-
         }
         return false;
     }
 
-
-    boolean enemyShot(int x,int y)
-    {
+    boolean enemyShot(int x,int y) {
         if(myMap[y][x]==3)
         {
             myMap[y][x]=2;
@@ -332,8 +350,7 @@ public class MainGameCore {
         return false;
     }
 
-    void setShoot(boolean a)
-    {
+    void setShoot(boolean a) {
         if(enemyMap[enemyY][enemyX]==0)
         {
             if(a)
@@ -344,14 +361,7 @@ public class MainGameCore {
 
     }
 
-    void cleanXY()
-    {
-        enemyY=-1;
-        enemyX=-1;
-    }
-
-    public void draw(int width)
-    {
+    public void draw(int width) {
         Raylib.DrawLine(0,eqSize,width,eqSize,BLACK);
 
         drawMap(sizeBetweenEqAndMap,myMap,"Twoja Mapa");
@@ -373,11 +383,58 @@ public class MainGameCore {
             }
             Jaylib.DrawText("Statki :"+numberOfShipAlive,0,20,20,BLACK);
         }
+        for(int i=0;i<6;i++)
+        {
+            DrawRectangle(startEnemyMapLocation+i*80,8,64,64,RED);
+            DrawText(""+i,startEnemyMapLocation+32+i*80,40,20,BLACK);
+        }
+        if(isPlacingShipTime)
+        {
+            int x=GetMouseX();
+            int y=GetMouseY();
+            x-=sizeBetweenEqAndMap;
+            y-=(sizeBetweenEqAndMap+eqSize);
+            x/=cell;
+            y/=cell;
+            if(x>0 && x<n && y>0 && y<n)
+            {
+                x=x*cell+sizeBetweenEqAndMap;
+                y=y*cell+sizeBetweenEqAndMap+eqSize;
+                Jaylib.Rectangle rec=new Jaylib.Rectangle(x,y,cell,cell);
+                Jaylib.DrawRectangleRec(rec,shipColor2);
+                Jaylib.DrawRectangleLinesEx(rec,3,shipColorContour2);
+            }
+        }
+        else if(isMyMove)
+        {
+            int x=GetMouseX();
+            int y=GetMouseY();
+            x-=startEnemyMapLocation;
+            y-=(sizeBetweenEqAndMap+eqSize);
+            x/=cell;
+            y/=cell;
+            if(x>0 && x<n && y>0 && y<n)
+            {
+                if(enemyMap[y][x]==0)
+                {
+                    x=x*cell+startEnemyMapLocation;
+                    y=y*cell+sizeBetweenEqAndMap+eqSize;
+
+                    Jaylib.Vector2 start=new Jaylib.Vector2(x,y);
+                    Jaylib.Vector2 end =new Jaylib.Vector2(x+cell,y+cell);
+                    Jaylib.DrawLineEx(start,end,3,mapAttackHit2);
+                    start.x(x+cell);
+                    end.x(x);
+                    Jaylib.DrawLineEx(start,end,3,mapAttackHit2);
+
+                }
+
+            }
+        }
 
     }
 
-    private void drawMap(int x,byte[][] usedMap,String name)
-    {
+    private void drawMap(int x,byte[][] usedMap,String name) {
 
         for(byte i=0;i<=n;i++)
         {
@@ -405,7 +462,7 @@ public class MainGameCore {
                         break;
                     case 1:
                         Jaylib.DrawCircle(x+j*cell+cell/2,sizeBetweenEqAndMap+eqSize+i*cell+cell/2,cell/2,mapAttackMiss);
-                        Jaylib.DrawCircle(x+j*cell+cell/2,sizeBetweenEqAndMap+eqSize+i*cell+cell/2,cell*5/11,WHITE);
+                        Jaylib.DrawCircle(x+j*cell+cell/2,sizeBetweenEqAndMap+eqSize+i*cell+cell/2,cell/2-3,WHITE);
                         break;
                     case 2:
                         Jaylib.Vector2 start=new Jaylib.Vector2(x+cell*j,sizeBetweenEqAndMap+eqSize+i*cell);
