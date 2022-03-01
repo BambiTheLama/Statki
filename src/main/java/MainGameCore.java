@@ -28,7 +28,6 @@ public class MainGameCore {
     boolean isProgramEnd=false;
     boolean isSomeoneWin=false;
     boolean isMyMove;
-    boolean enemyLost=false;
     boolean lost=false;
     boolean win=false;
 
@@ -50,11 +49,11 @@ public class MainGameCore {
     Jaylib.Color shipColor2=new Jaylib.Color(55,255,255,25);
     int sizeBetweenMaps=200;
     int startEnemyMapLocation;
+    byte attackMode=1;
     int enemyX=-1;
     int enemyY=-1;
 
-    public void reset(byte mapSize,int numberOfShip)
-    {
+    void reset(byte mapSize,int numberOfShip) {
         n=mapSize;
         myMap=new byte[n][n];
         enemyMap=new byte[n][n];
@@ -63,8 +62,8 @@ public class MainGameCore {
         numberOfShipAlive=numberOfShip;
         clear();
     }
-    public void clear()
-    {
+
+    void clear() {
         for(byte i=0;i<n;i++)
         {
             for(byte j=0;j<n;j++)
@@ -74,7 +73,7 @@ public class MainGameCore {
             }
         }
     }
-    
+
     public void main(String[] args) throws IOException {
         int port= Integer.parseInt(args[1]);
         reset((byte) 24,50);
@@ -177,13 +176,8 @@ public class MainGameCore {
                     toSend.println(true);
                     toSend.flush();
                 }
-                int x=enemyX;
-                toSend.println(x);
-                int y=enemyY;
-                toSend.println(y);
-                toSend.flush();
-                boolean tmp=Boolean.parseBoolean(Input.readLine());
-                setShoot(tmp);
+
+                setShoot();
                 isMyMove=false;
                 String tmp2=Input.readLine();
                 if(Objects.equals(tmp2, "WIN"))
@@ -192,7 +186,7 @@ public class MainGameCore {
                     win=true;
                 }
             }
-            else if(isPlacingShipTime==false)
+            else if(!isPlacingShipTime)
             {
 
                 if(args[0]=="server")
@@ -205,7 +199,7 @@ public class MainGameCore {
                 else if(args[0]=="client")
                 {
                     isOpponentAttack=Boolean.parseBoolean(Input.readLine());
-                    if(isOpponentAttack==false)
+                    if(!isOpponentAttack)
                     {
                         toSend.println(false);
                         toSend.flush();
@@ -214,11 +208,8 @@ public class MainGameCore {
                 }
                 if(isOpponentAttack)
                 {
-                    int x=Integer.parseInt(Input.readLine());
-                    int y=Integer.parseInt(Input.readLine());
-                    boolean tmp=enemyShot(x,y);
-                    toSend.println(tmp);
-                    toSend.flush();
+                    enemyShot();
+
                     isOpponentAttack=false;
                     isMyMove=true;
                     if(numberOfShipAlive==0)
@@ -258,7 +249,7 @@ public class MainGameCore {
     void isServerClose() throws IOException {
 
         isOpponentLeft=Boolean.parseBoolean(Input.readLine());
-        if(isOpponentLeft==false)
+        if(!isOpponentLeft)
         {
             toSend.println(isProgramEnd);
             toSend.flush();
@@ -270,13 +261,13 @@ public class MainGameCore {
 
         toSend.println(isProgramEnd);
         toSend.flush();
-        if(isProgramEnd==false)
+        if(!isProgramEnd)
         {
             isOpponentLeft=Boolean.parseBoolean(Input.readLine());
         }
     }
 
-    public boolean collision() {
+    boolean collision() {
 
         if(placeShipTime>0)
         {
@@ -334,34 +325,111 @@ public class MainGameCore {
                         return true;
                     }
                 }
+                x=GetMouseX();
+                y=GetMouseY();
+                for(int i=0;i<=6;i++)
+                {
+                    if(x>= startEnemyMapLocation-20+i*80 && x<= startEnemyMapLocation+44+i*80  && y >= 8 && y <= 72)
+                        attackMode=(byte)i;
+                }
             }
         }
         return false;
     }
 
-    boolean enemyShot(int x,int y) {
+    void enemyShot() throws IOException {
+
+        byte enemyAttackMode=Byte.parseByte(Input.readLine());
+        switch (enemyAttackMode){
+            case 0:
+                sendAndSetEnemyShot();
+                break;
+            case 1:
+                int numberOfShot=Integer.parseInt(Input.readLine());
+                for(int i=0;i<numberOfShot;i++)
+                    sendAndSetEnemyShot();
+                break;
+            case 2:
+            case 3:
+            case 4:
+            case 5:
+            case 6:
+
+        }
+
+    }
+
+    void sendAndSetEnemyShot() throws IOException{
+
+        int x=Integer.parseInt(Input.readLine());
+        int y=Integer.parseInt(Input.readLine());
         if(myMap[y][x]==3)
         {
             myMap[y][x]=2;
             numberOfShipAlive--;
-            return true;
+            toSend.println(true);
+            toSend.flush();
+            return;
         }
         myMap[y][x]=1;
-        return false;
+        toSend.println(false);
+        toSend.flush();
+        return;
     }
 
-    void setShoot(boolean a) {
-        if(enemyMap[enemyY][enemyX]==0)
+    void setShoot() throws IOException {
+        toSend.println(attackMode);
+        switch(attackMode)
         {
-            if(a)
-                enemyMap[enemyY][enemyX]=2;
-            else
-                enemyMap[enemyY][enemyX]=1;
+            case 0:
+                setShootPosition(enemyX,enemyY);
+                break;
+            case 1:
+                if((enemyY==0 && enemyX==0) || (enemyY==n-1 && enemyX==0) || (enemyY==n-1 && enemyX==n-1 ) || (enemyY==0 && enemyX==n-1))
+                {
+                    toSend.println(4);
+                }
+                else if(enemyX==0 || enemyX==n-1 || enemyY==0 || enemyY==n-1)
+                {
+                    toSend.println(6);
+                }
+                else
+                {
+                    toSend.println(9);
+                }
+                for(int i=0;i<3;i++)
+                    for(int j=0;j<3;j++)
+                        if(enemyX-1+i>=0 && enemyX-1+i<n && enemyY-1+j>=0 && enemyY-1+j<n)
+                            setShootPosition(enemyX-1+i,enemyY-1+j);
+                break;
+
+            case 2:
+            case 3:
+            case 4:
+            case 5:
+            case 6:
+
         }
 
+
     }
 
-    public void draw(int width) {
+    void setShootPosition(int x,int y) throws IOException {
+        toSend.println(x);
+        toSend.println(y);
+        toSend.flush();
+        boolean tmp=Boolean.parseBoolean(Input.readLine());
+
+        if(enemyMap[y][x]==0)
+        {
+            if(tmp)
+                enemyMap[y][x]=2;
+            else
+                enemyMap[y][x]=1;
+        }
+    }
+
+    void draw(int width) {
         Raylib.DrawLine(0,eqSize,width,eqSize,BLACK);
 
         drawMap(sizeBetweenEqAndMap,myMap,"Twoja Mapa");
@@ -383,11 +451,17 @@ public class MainGameCore {
             }
             Jaylib.DrawText("Statki :"+numberOfShipAlive,0,20,20,BLACK);
         }
-        for(int i=0;i<6;i++)
+
+        for(int i=0;i<=6;i++)
         {
-            DrawRectangle(startEnemyMapLocation+i*80,8,64,64,RED);
-            DrawText(""+i,startEnemyMapLocation+32+i*80,40,20,BLACK);
+            if(i==attackMode)
+                DrawRectangle(startEnemyMapLocation-20+i*80,8,64,64,GREEN);
+            else
+                DrawRectangle(startEnemyMapLocation-20+i*80,8,64,64,RED);
+
+            DrawText(""+i,startEnemyMapLocation+12+i*80,40,20,BLACK);
         }
+
         if(isPlacingShipTime)
         {
             int x=GetMouseX();
@@ -396,7 +470,7 @@ public class MainGameCore {
             y-=(sizeBetweenEqAndMap+eqSize);
             x/=cell;
             y/=cell;
-            if(x>0 && x<n && y>0 && y<n)
+            if(x>=0 && x<n && y>=0 && y<n)
             {
                 x=x*cell+sizeBetweenEqAndMap;
                 y=y*cell+sizeBetweenEqAndMap+eqSize;
@@ -413,19 +487,14 @@ public class MainGameCore {
             y-=(sizeBetweenEqAndMap+eqSize);
             x/=cell;
             y/=cell;
-            if(x>0 && x<n && y>0 && y<n)
+            if(x>=0 && x<n && y>=0 && y<n)
             {
                 if(enemyMap[y][x]==0)
                 {
                     x=x*cell+startEnemyMapLocation;
                     y=y*cell+sizeBetweenEqAndMap+eqSize;
+                    drawX(x,y);
 
-                    Jaylib.Vector2 start=new Jaylib.Vector2(x,y);
-                    Jaylib.Vector2 end =new Jaylib.Vector2(x+cell,y+cell);
-                    Jaylib.DrawLineEx(start,end,3,mapAttackHit2);
-                    start.x(x+cell);
-                    end.x(x);
-                    Jaylib.DrawLineEx(start,end,3,mapAttackHit2);
 
                 }
 
@@ -434,7 +503,16 @@ public class MainGameCore {
 
     }
 
-    private void drawMap(int x,byte[][] usedMap,String name) {
+    void drawX(int x,int y) {
+        Jaylib.Vector2 start=new Jaylib.Vector2(x,y);
+        Jaylib.Vector2 end =new Jaylib.Vector2(x+cell,y+cell);
+        Jaylib.DrawLineEx(start,end,3,mapAttackHit2);
+        start.x(x+cell);
+        end.x(x);
+        Jaylib.DrawLineEx(start,end,3,mapAttackHit2);
+    }
+
+    void drawMap(int x,byte[][] usedMap,String name) {
 
         for(byte i=0;i<=n;i++)
         {
@@ -481,4 +559,5 @@ public class MainGameCore {
             }
         Jaylib.DrawText(name,x,n*cell+eqSize+sizeBetweenEqAndMap,20,textColor);
     }
+
 }
