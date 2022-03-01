@@ -43,6 +43,7 @@ public class MainGameCore {
     Raylib.Color mapAttackMiss= DARKBLUE;
     Jaylib.Color mapAttackHit= new Jaylib.Color(255,0,0,255);
     Jaylib.Color mapAttackHit2= new Jaylib.Color(255,0,0,100);
+    Jaylib.Color mapAttackHit3= new Jaylib.Color(255,0,255,100);
     Jaylib.Color shipColorContour=new Jaylib.Color(55,55,255,100);
     Jaylib.Color shipColor=new Jaylib.Color(55,55,255,25);
     Jaylib.Color shipColorContour2=new Jaylib.Color(55,255,255,100);
@@ -50,6 +51,7 @@ public class MainGameCore {
     int sizeBetweenMaps=200;
     int startEnemyMapLocation;
     byte attackMode=1;
+    byte numberOfAttack=0;
     int enemyX=-1;
     int enemyY=-1;
 
@@ -340,24 +342,12 @@ public class MainGameCore {
     void enemyShot() throws IOException {
 
         byte enemyAttackMode=Byte.parseByte(Input.readLine());
-        switch (enemyAttackMode){
-            case 0:
-                sendAndSetEnemyShot();
-                break;
-            case 1:
-                int numberOfShot=Integer.parseInt(Input.readLine());
-                for(int i=0;i<numberOfShot;i++)
-                    sendAndSetEnemyShot();
-                break;
-            case 2:
-            case 3:
-            case 4:
-            case 5:
-            case 6:
 
-        }
-
+        int numberOfShot=Integer.parseInt(Input.readLine());
+        for(int i=0;i<numberOfShot;i++)
+            sendAndSetEnemyShot();
     }
+
 
     void sendAndSetEnemyShot() throws IOException{
 
@@ -379,35 +369,79 @@ public class MainGameCore {
 
     void setShoot() throws IOException {
         toSend.println(attackMode);
+        int numberOfShot=0;
         switch(attackMode)
         {
             case 0:
+                numberOfShot++;
+                toSend.println(numberOfShot);
+                toSend.flush();
                 setShootPosition(enemyX,enemyY);
                 break;
             case 1:
-                if((enemyY==0 && enemyX==0) || (enemyY==n-1 && enemyX==0) || (enemyY==n-1 && enemyX==n-1 ) || (enemyY==0 && enemyX==n-1))
-                {
-                    toSend.println(4);
-                }
-                else if(enemyX==0 || enemyX==n-1 || enemyY==0 || enemyY==n-1)
-                {
-                    toSend.println(6);
-                }
-                else
-                {
-                    toSend.println(9);
-                }
+
                 for(int i=0;i<3;i++)
                     for(int j=0;j<3;j++)
-                        if(enemyX-1+i>=0 && enemyX-1+i<n && enemyY-1+j>=0 && enemyY-1+j<n)
+                        if(isOnEnemyMap(enemyX-1+i,enemyY-1+i))
+                            numberOfShot++;
+                toSend.println(numberOfShot);
+                toSend.flush();
+                for(int i=0;i<3;i++)
+                    for(int j=0;j<3;j++)
+                        if(isOnEnemyMap(enemyX-1+i,enemyY-1+i))
                             setShootPosition(enemyX-1+i,enemyY-1+j);
                 break;
-
             case 2:
+
+
+                for(int i=0;i<5;i++)
+                {
+                    if(isOnEnemyMap(enemyX-2+i,enemyY-2+i))
+                        numberOfShot++;
+                    if(isOnEnemyMap(enemyX+2-i,enemyY-2+i))
+                        numberOfShot++;
+                }
+                toSend.println(numberOfShot);
+                toSend.flush();
+
+                for(int i=0;i<5;i++)
+                {
+                    if(isOnEnemyMap(enemyX-2+i,enemyY-2+i))
+                        setShootPosition(enemyX-2+i,enemyY-2+i);
+                    if(isOnEnemyMap(enemyX+2-i,enemyY-2+i))
+                        setShootPosition(enemyX+2-i,enemyY-2+i);
+                }
+
+
+                break;
             case 3:
+
+                for(int i=0;i<5;i++)
+                {
+                    if(isOnEnemyMap(enemyX-2+i,enemyY))
+                        numberOfShot++;
+                    if(isOnEnemyMap(enemyX,enemyY-2+i))
+                        numberOfShot++;
+                }
+                toSend.println(numberOfShot);
+                toSend.flush();
+
+                for(int i=0;i<5;i++)
+                {
+
+                    if(isOnEnemyMap(enemyX-2+i,enemyY))
+                        setShootPosition(enemyX-2+i,enemyY);
+                    if(isOnEnemyMap(enemyX,enemyY-2+i))
+                        setShootPosition(enemyX,enemyY-2+i);
+
+                }
+                break;
             case 4:
+                break;
             case 5:
+                break;
             case 6:
+                break;
 
         }
 
@@ -487,29 +521,81 @@ public class MainGameCore {
             y-=(sizeBetweenEqAndMap+eqSize);
             x/=cell;
             y/=cell;
-            if(x>=0 && x<n && y>=0 && y<n)
+            if(isOnEnemyMap(x,y))
             {
-                if(enemyMap[y][x]==0)
+                int startX=x*cell+startEnemyMapLocation;
+                int startY=y*cell+sizeBetweenEqAndMap+eqSize;
+                drawX(startX,startY,mapAttackHit2);
+                switch(attackMode)
                 {
-                    x=x*cell+startEnemyMapLocation;
-                    y=y*cell+sizeBetweenEqAndMap+eqSize;
-                    drawX(x,y);
+                    case 1:
+                        for(int i=0;i<3;i++)
+                            for(int j=0;j<3;j++)
+                            {
 
+
+                                if(isOnEnemyMap(x-1+i,y-1+j))
+                                    drawX(startX+cell*(i-1),startY+cell*(j-1),mapAttackHit3);
+
+                            }
+                        break;
+                    case 2:
+                        for(int i=0;i<5;i++)
+                        {
+
+                            if(isOnEnemyMap(x-2+i,y-2+i))
+                                drawX(startX+cell*(i-2),startY+cell*(i-2),mapAttackHit3);
+                            if(isOnEnemyMap(x-2+i,y+2-i))
+                                drawX(startX+cell*(i-2),startY+cell*(2-i),mapAttackHit3);
+
+                        }
+                        break;
+                    case 3:
+                        for(int i=0;i<5;i++)
+                        {
+
+                            if(isOnEnemyMap(x-2+i,y))
+                                drawX(startX+cell*(-2+i),startY,mapAttackHit3);
+                            if(isOnEnemyMap(x,y-2+i))
+                                drawX(startX,startY+cell*(-2+i),mapAttackHit3);
+
+                        }
+                        break;
+                    case 4:
+
+                        break;
+                    case 5:
+                        break;
+                    case 6:
+                        break;
 
                 }
+
+
+
+
+
+
 
             }
         }
 
     }
 
-    void drawX(int x,int y) {
+    boolean isOnEnemyMap(int x,int y)
+    {
+        if(x>=0 && x<n && y>=0 && y<n)
+            return true;
+        return false;
+    }
+
+    void drawX(int x, int y, Jaylib.Color color) {
         Jaylib.Vector2 start=new Jaylib.Vector2(x,y);
         Jaylib.Vector2 end =new Jaylib.Vector2(x+cell,y+cell);
-        Jaylib.DrawLineEx(start,end,3,mapAttackHit2);
+        Jaylib.DrawLineEx(start,end,3,color);
         start.x(x+cell);
         end.x(x);
-        Jaylib.DrawLineEx(start,end,3,mapAttackHit2);
+        Jaylib.DrawLineEx(start,end,3,color);
     }
 
     void drawMap(int x,byte[][] usedMap,String name) {
