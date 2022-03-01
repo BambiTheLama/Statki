@@ -1,6 +1,6 @@
 import com.raylib.Jaylib;
 import com.raylib.Raylib;
-
+import java.util.Random;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -30,6 +30,7 @@ public class MainGameCore {
     boolean isMyMove;
     boolean lost=false;
     boolean win=false;
+    Random rand=new Random();
 
     byte[][] myMap;
     byte[][] enemyMap;
@@ -54,6 +55,9 @@ public class MainGameCore {
     byte numberOfAttack=0;
     int enemyX=-1;
     int enemyY=-1;
+    byte enemyAttackMode;
+
+
 
     void reset(byte mapSize,int numberOfShip) {
         n=mapSize;
@@ -74,6 +78,7 @@ public class MainGameCore {
                 enemyMap[i][j]=0;
             }
         }
+
     }
 
     public void main(String[] args) throws IOException {
@@ -179,8 +184,21 @@ public class MainGameCore {
                     toSend.flush();
                 }
 
+                if(attackMode==4)
+                {
+                    numberOfAttack--;
+                    if(numberOfAttack==0)
+                    {
+                        isMyMove=false;
+                        numberOfAttack=3;
+                    }
+
+                }
                 setShoot();
-                isMyMove=false;
+
+                if(attackMode!=4)
+                    isMyMove=false;
+
                 String tmp2=Input.readLine();
                 if(Objects.equals(tmp2, "WIN"))
                 {
@@ -211,9 +229,24 @@ public class MainGameCore {
                 if(isOpponentAttack)
                 {
                     enemyShot();
+                    if(enemyAttackMode!=4)
+                    {
+                        isOpponentAttack=false;
+                        isMyMove=true;
+                    }
+                    else
+                    {
+                        if(numberOfAttack==0)
+                            numberOfAttack=3;
+                        numberOfAttack--;
+                        if(numberOfAttack==0)
+                        {
+                            numberOfAttack=3;
+                            isOpponentAttack=false;
+                            isMyMove=true;
+                        }
+                    }
 
-                    isOpponentAttack=false;
-                    isMyMove=true;
                     if(numberOfShipAlive==0)
                     {
                         toSend.println("WIN");
@@ -332,7 +365,15 @@ public class MainGameCore {
                 for(int i=0;i<=6;i++)
                 {
                     if(x>= startEnemyMapLocation-20+i*80 && x<= startEnemyMapLocation+44+i*80  && y >= 8 && y <= 72)
-                        attackMode=(byte)i;
+                    {
+                        if((attackMode == 4 && numberOfAttack == 3) || attackMode != 4)
+                        {
+                            if(attackMode!=4&&i==4)
+                                numberOfAttack=3;
+                            attackMode=(byte)i;
+                        }
+
+                    }
                 }
             }
         }
@@ -341,13 +382,43 @@ public class MainGameCore {
 
     void enemyShot() throws IOException {
 
-        byte enemyAttackMode=Byte.parseByte(Input.readLine());
+        enemyAttackMode=Byte.parseByte(Input.readLine());
+
+        if(enemyAttackMode==5)
+        {
+            byte[][] tmp=new byte[numberOfShipAlive][2];
+            int s=0;
+            for(int i=0; i<n;i++)
+            {
+                for(int j=0;j<n;j++)
+                {
+                    if(myMap[i][j]==3)
+                    {
+                        tmp[s][0]=(byte)j;
+                        tmp[s][1]=(byte)i;
+                        s++;
+                        if(s==numberOfShipAlive-1)
+                            break;
+                    }
+                }
+                if(s==numberOfShipAlive-1)
+                    break;
+            }
+
+
+            s=rand.nextInt(numberOfShipAlive);
+            toSend.println(""+tmp[s][0]);
+            toSend.println(""+tmp[s][1]);
+            toSend.flush();
+            myMap[tmp[s][1]][tmp[s][0]]=2;
+            numberOfShipAlive--;
+            return;
+        }
 
         int numberOfShot=Integer.parseInt(Input.readLine());
         for(int i=0;i<numberOfShot;i++)
             sendAndSetEnemyShot();
     }
-
 
     void sendAndSetEnemyShot() throws IOException{
 
@@ -369,6 +440,7 @@ public class MainGameCore {
 
     void setShoot() throws IOException {
         toSend.println(attackMode);
+        toSend.flush();
         int numberOfShot=0;
         switch(attackMode)
         {
@@ -437,13 +509,72 @@ public class MainGameCore {
                 }
                 break;
             case 4:
+                for(int i=0;i<3;i++)
+                {
+                    if(isOnEnemyMap(enemyX-1+i,enemyY))
+                        numberOfShot++;
+                    if(isOnEnemyMap(enemyX,enemyY-1+i))
+                        numberOfShot++;
+                }
+
+                toSend.println(numberOfShot);
+                toSend.flush();
+
+                for(int i=0;i<3;i++)
+                {
+                    if(isOnEnemyMap(enemyX-1+i,enemyY))
+                        setShootPosition(enemyX-1+i,enemyY);
+                    if(isOnEnemyMap(enemyX,enemyY-1+i))
+                        setShootPosition(enemyX,enemyY-1+i);
+                }
                 break;
             case 5:
+                enemyX=Integer.parseInt(Input.readLine());
+                enemyY=Integer.parseInt(Input.readLine());
+                enemyMap[enemyY][enemyX]=2;
                 break;
             case 6:
+                byte[][] tmp=new byte[n*n][2];
+                int s=0;
+                for(int i=0;i<n;i++)
+                    for (int j=0;j<n;j++)
+                    {
+                        if(enemyMap[i][j]==0)
+                        {
+                            tmp[s][0]=(byte)j;
+                            tmp[s][1]=(byte)i;
+                            s++;
+                        }
+                    }
+                if(s<10)
+                {
+                    numberOfShot=s;
+                }
+                else
+                {
+                    numberOfShot=10;
+                }
+                toSend.println(numberOfShot);
+                toSend.flush();
+                for(int i=0;i<numberOfShot;i++){
+                    int temp=rand.nextInt(s);
+                    setShootPosition(tmp[temp][0],tmp[temp][1]);
+                    if(temp==s-1)
+                    {
+                        s--;
+                    }
+                    else
+                    {
+                        s--;
+                        tmp[temp][0]=tmp[s][0];
+                        tmp[temp][1]=tmp[s][1];
+                    }
+                }
+
                 break;
 
-        }
+                }
+
 
 
     }
@@ -562,9 +693,17 @@ public class MainGameCore {
                         }
                         break;
                     case 4:
-
+                        DrawText(""+numberOfAttack,startX+cell*2,startY-cell*2,20,BLACK);
+                        for(int i=0;i<3;i++)
+                        {
+                            if(isOnEnemyMap(x-1+i,y))
+                                drawX(startX+cell*(-1+i),startY,mapAttackHit3);
+                            if(isOnEnemyMap(x,y-1+i))
+                                drawX(startX,startY+cell*(-1+i),mapAttackHit3);
+                        }
                         break;
                     case 5:
+
                         break;
                     case 6:
                         break;
@@ -582,8 +721,7 @@ public class MainGameCore {
 
     }
 
-    boolean isOnEnemyMap(int x,int y)
-    {
+    boolean isOnEnemyMap(int x,int y) {
         if(x>=0 && x<n && y>=0 && y<n)
             return true;
         return false;
