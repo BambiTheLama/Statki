@@ -83,7 +83,7 @@ public class MainGameCore {
 
     public void main(String[] args) throws IOException {
         int port= Integer.parseInt(args[1]);
-        reset((byte) 24,50);
+        reset((byte) 24,10);
 
         if(Objects.equals(args[0], "server"))
         {
@@ -404,7 +404,6 @@ public class MainGameCore {
                 if(s==numberOfShipAlive-1)
                     break;
             }
-
 
             s=rand.nextInt(numberOfShipAlive);
             toSend.println(""+tmp[s][0]);
