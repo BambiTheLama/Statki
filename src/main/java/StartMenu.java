@@ -1,13 +1,6 @@
 import com.raylib.Jaylib;
 import com.raylib.Raylib;
-import org.bytedeco.javacpp.BytePointer;
-
-import java.io.IOException;
-import java.net.ServerSocket;
-import java.net.Socket;
-
 import static com.raylib.Jaylib.*;
-import static com.raylib.Raylib.*;
 import static com.raylib.Raylib.WindowShouldClose;
 
 public class StartMenu {
@@ -19,6 +12,7 @@ public class StartMenu {
     static  boolean isMouseOnHost=false;
     static  boolean isMouseOnJoin=false;
     public static boolean main(String[] arg) {
+        Draw draw=new Draw();
         int width=800,height=400;
         port="";
         ip="";
@@ -34,13 +28,14 @@ public class StartMenu {
             }
             BeginDrawing();
             ClearBackground(RAYWHITE);
-            draw();
+            draw.drawMenu(port,ip,isMouseOnHost,isMouseOnJoin,isPortTyping,isIpTyping);
             end=collision();
 
             EndDrawing();
         }
         CloseWindow();
-        MainGameCore game=new MainGameCore();
+
+        MainGameCore game=new MainGameCore((byte)24,10);
         if(end==1)
         {
             String[] a=new String[2];
@@ -71,24 +66,7 @@ public class StartMenu {
         }
         return false;
     }
-    public static void drawButton(int x,int sizeX,int y,int sizeY,String text,int textSize,Boolean isMouseOn)
-    {
-        Jaylib.DrawRectangle(x,y,sizeX,sizeY,BLUE);
-        if(isMouseOn)
-        {
-            Jaylib.Rectangle tmp=new Jaylib.Rectangle(x,y,sizeX,sizeY);
-            Jaylib.DrawRectangleLinesEx(tmp,10,SKYBLUE);
-        }
-        Jaylib.DrawText(text,x+25,y+25,textSize,BLACK);
-    }
-    public static void draw()
-    {
-        drawButton(50,225,50,100,"Hostuj",50,isMouseOnHost);
-        drawButton(50,225,250,100,"Dolacz",50,isMouseOnJoin);
-        drawButton(325,325,50,100,"Port:"+port,50,isPortTyping);
-        drawButton(325,325,250,100,"IP:"+ip,30,isIpTyping);
 
-    }
     public static boolean mouseCollision(int x,int startX,int endX,int y,int startY,int endY,boolean state)
     {
         if(state==false)
