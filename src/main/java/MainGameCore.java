@@ -40,6 +40,7 @@ public class MainGameCore {
     boolean continiuFlag=true;
     int raid=3;
     int[][] raidmap;
+    boolean waitingFlag=false;
 
     MainGameCore() {
         n=24;
@@ -165,7 +166,7 @@ public class MainGameCore {
             }
 
         }
-        else if(continiuFlag&&!isPlacingShipTime&&!isMyMove)
+        else if(continiuFlag&&!isPlacingShipTime&&!isMyMove&&!waitingFlag)
         {
             if(isOpponentAttack)
             {
@@ -203,22 +204,26 @@ public class MainGameCore {
             if(isOpponentAttack)
             {
 
-                do
-                {
-                    enemyAttackMode=multithreading.getAttackType();
-                }while(enemyAttackMode>=0);
-
-                do
+                enemyAttackMode=multithreading.getAttackType();
+                if(enemyAttackMode<0)
+                    waitingFlag=true;
+                else
                 {
                     numberOfAttack=multithreading.getNumberOfAttack();
-                }while(numberOfAttack>=0);
-
-                do
-                {
-                    attack=multithreading.getAttack();
-                }while(attack==null);
-                
-                multithreading.setAttack(null);
+                    if(numberOfAttack<0)
+                        waitingFlag=true;
+                    else
+                    {
+                        attack=multithreading.getAttack();
+                        if(attack==null)
+                            waitingFlag=true;
+                        else
+                        {
+                            multithreading.setAttack(null);
+                            waitingFlag=false;
+                        }
+                    }
+                }
             }
         }
         else
