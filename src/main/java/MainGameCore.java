@@ -158,7 +158,7 @@ public class MainGameCore {
             continiuFlag=false;
 
         }
-        else if(!continiuFlag&&isMyMove&&!isPlacingShipTime)
+        if(!continiuFlag&&isMyMove&&!isPlacingShipTime)
         {
             if(setShootRes())
             {
@@ -536,12 +536,20 @@ public class MainGameCore {
 
             if(multithreading.getAttack()!=null)
             {
-                attack= multithreading.getAttack();
-                enemyMap[attack[0][0]][attack[0][1]]=2;
-                multithreading.setAttack(null);
+                try{
+                    attack= multithreading.getAttack();
+                    enemyMap[attack[0][0]][attack[0][1]]=2;
+                    multithreading.setAttack(null);
+                }
+                catch (Exception e)
+                {
+                    return false;
+                }
+
             }
             else
             {
+                System.out.println("KURWA 3");
                 return false;
             }
 
