@@ -205,14 +205,15 @@ public class MainGameCore {
             {
 
                 enemyAttackMode=multithreading.getAttackType();
+                System.out.println("enem attack mode "+enemyAttackMode);
                 if(enemyAttackMode<0)
                     waitingFlag=true;
-                else
+                else if(enemyAttackMode!=5)
                 {
                     numberOfAttack=multithreading.getNumberOfAttack();
                     if(numberOfAttack<0)
                         waitingFlag=true;
-                    else if(attackMode!=5 && numberOfAttack>=0)
+                    else
                     {
                         attack=multithreading.getAttack();
                         if(attack==null)
@@ -223,10 +224,12 @@ public class MainGameCore {
                             waitingFlag=false;
                         }
                     }
-                    else if(numberOfAttack>=0)
-                    {
-                        waitingFlag=true;
-                    }
+
+                }
+                else
+                {
+                    System.out.println("KURWA");
+                    waitingFlag=false;
                 }
             }
         }
@@ -451,7 +454,7 @@ public class MainGameCore {
                 raidmap=null;
                 break;
             case 5:
-
+                numberOfShot++;
                 break;
             case 6:
                 byte[][] tmp=new byte[n*n][2];
