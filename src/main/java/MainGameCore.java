@@ -212,7 +212,7 @@ public class MainGameCore {
                     numberOfAttack=multithreading.getNumberOfAttack();
                     if(numberOfAttack<0)
                         waitingFlag=true;
-                    else
+                    else if(attackMode!=5)
                     {
                         attack=multithreading.getAttack();
                         if(attack==null)
@@ -222,6 +222,10 @@ public class MainGameCore {
                             multithreading.setAttack(null);
                             waitingFlag=false;
                         }
+                    }
+                    else
+                    {
+                        waitingFlag=true;
                     }
                 }
             }
