@@ -163,6 +163,11 @@ public class MainGameCore {
             if(setShootRes())
             {
                 continiuFlag=true;
+                enemyAttackMode=-1;
+                if(attack!=null)
+                    attack=null;
+
+                numberOfShot=0;
             }
 
         }
@@ -228,7 +233,6 @@ public class MainGameCore {
                 }
                 else
                 {
-                    System.out.println("KURWA");
                     waitingFlag=false;
                 }
             }
