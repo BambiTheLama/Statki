@@ -11,7 +11,6 @@
   <component name="ChangeListManager">
     <list default="true" id="f75b6a9d-a4dc-4ea2-bf35-47711c55ce36" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/build/classes/java/main/MainGameCore.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/MainGameCore.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/MainGameCore.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/MainGameCore.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
