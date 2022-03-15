@@ -72,7 +72,7 @@ public class Draw {
         this.startEnemyMapLocation=startEnemyMapLocation;
     }
 
-    void draw(byte[][] myMap,byte[][] enemyMap,boolean isPlacingShipTime,boolean isMyMove,int placeShipTime,int numberOfShipToPlace,int numberOfShipAlive,int numberOfAttack,int attackMode) {
+    void draw(byte[][] myMap,byte[][] enemyMap,boolean isPlacingShipTime,boolean isMyMove,int placeShipTime,int numberOfShipToPlace,int numberOfShipAlive,int numberOfAttack,int attackMode,int numberOfShoot,int [][]raidMap) {
         Raylib.DrawLine(0,eqSize,width,eqSize,BLACK);
 
         drawMap(sizeBetweenEqAndMap,myMap,"Twoja Mapa");
@@ -179,6 +179,17 @@ public class Draw {
                             if(isOnEnemyMap(x,y-1+i))
                                 drawX(startX,startY+cell*(-1+i),mapAttackHit3);
                         }
+                        if(raidMap!=null)
+                        {
+                            Jaylib.Color tmp= new Jaylib.Color(255,255,0,200);
+                            startX=startEnemyMapLocation;
+                            startY=sizeBetweenEqAndMap+eqSize;
+                            for(int i=0;i<numberOfShoot;i++)
+                            {
+                                if(isOnEnemyMap(raidMap[i][1],raidMap[i][0]))
+                                    drawX(startX+cell*raidMap[i][1],startY+cell*raidMap[i][0],tmp );
+                            }
+                        }
                         break;
                     case 5:
 
@@ -251,16 +262,16 @@ public class Draw {
     void gameEnd(boolean isOpponentLeft,boolean isSomeoneWin,boolean lost) {
         if(isOpponentLeft)
         {
-            Jaylib.DrawText("WYGRALES",sizeBetweenEqAndMap,(int)((1.0/3.0)*height),200,RED);
+            Jaylib.DrawText("WYGRALES",sizeBetweenEqAndMap,(int)((1.0/3.0)*height),150,RED);
         }
 
         if(isSomeoneWin) {
             if (lost) {
-                Jaylib.DrawText("PRZEGRALES", sizeBetweenEqAndMap, (int)((1.0/3.0)*height), 200, RED);
+                Jaylib.DrawText("PRZEGRALES", sizeBetweenEqAndMap, (int)((1.0/3.0)*height), 150, RED);
             }
             else
             {
-                Jaylib.DrawText("WYGRALES",sizeBetweenEqAndMap,(int)((1.0/3.0)*height),200,RED);
+                Jaylib.DrawText("WYGRALES",sizeBetweenEqAndMap,(int)((1.0/3.0)*height),150,RED);
             }
         }
     }

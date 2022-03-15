@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ArtifactsWorkspaceSettings">
     <artifacts-to-build>
-      <artifact name="Statki:jar" />
+      <artifact name="Statki.main:jar" />
     </artifacts-to-build>
   </component>
   <component name="AutoImportSettings">
@@ -10,8 +10,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f75b6a9d-a4dc-4ea2-bf35-47711c55ce36" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/Communication.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/Multithreading.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/7.2/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.2/executionHistory/executionHistory.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/7.2/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.2/executionHistory/executionHistory.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/7.2/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.2/fileHashes/fileHashes.bin" afterDir="false" />
@@ -20,17 +18,18 @@
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/checksums/checksums.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/checksums/checksums.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/checksums/sha1-checksums.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/checksums/sha1-checksums.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/artifacts/Statki_jar.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/Communication.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/Communication.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/classes/java/main/MainGameCore.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/MainGameCore.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/P1.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/P2.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/StartMenu.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/StartMenu.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/Multithreading.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/Multithreading.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/tmp/compileJava/previous-compilation-data.bin" beforeDir="false" afterPath="$PROJECT_DIR$/build/tmp/compileJava/previous-compilation-data.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/artifacts/Statki_jar/Statki.jar" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/Statki_jar/Statki.jar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Communication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Communication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Draw.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Draw.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/META-INF/MANIFEST.MF" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/META-INF/MANIFEST.MF" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/MainGameCore.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/MainGameCore.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/P1.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/P2.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/StartMenu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/StartMenu.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Multithreading.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Multithreading.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -102,10 +101,10 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="project.structure.last.edited" value="Artifacts" />
-    <property name="project.structure.proportion" value="0.0" />
-    <property name="project.structure.side.proportion" value="0.0" />
+    <property name="project.structure.proportion" value="0.15" />
+    <property name="project.structure.side.proportion" value="0.2" />
   </component>
-  <component name="RunManager" selected="Application.Start2">
+  <component name="RunManager" selected="Application.Start">
     <configuration name="Start" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="Main" />
       <module name="Statki.main" />
@@ -174,14 +173,26 @@
       </map>
     </option>
   </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/MainGameCore.java</url>
+          <line>151</line>
+          <option name="timeStamp" value="12" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/P1_java$Start2.ic" NAME="Start2 Coverage Results" MODIFIED="1646873865599" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
     <SUITE FILE_PATH="coverage/Draw_java$Start.ic" NAME="Start Coverage Results" MODIFIED="1647043973097" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+    <SUITE FILE_PATH="coverage/Communication_java$Start2.ic" NAME="Start2 Coverage Results" MODIFIED="1647304872251" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
     <SUITE FILE_PATH="coverage/Draw_java$test.ic" NAME="test Coverage Results" MODIFIED="1647122669770" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
     <SUITE FILE_PATH="coverage/Draw_java$Start2.ic" NAME="Start2 Coverage Results" MODIFIED="1647125032658" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
     <SUITE FILE_PATH="coverage/Statki$Start2.ic" NAME="Start2 Coverage Results" MODIFIED="1646171147451" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
     <SUITE FILE_PATH="coverage/Statki$Start.ic" NAME="Start Coverage Results" MODIFIED="1646317843658" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
-    <SUITE FILE_PATH="coverage/Communication_java$Start.ic" NAME="Start Coverage Results" MODIFIED="1647291578858" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+    <SUITE FILE_PATH="coverage/Communication_java$Start.ic" NAME="Start Coverage Results" MODIFIED="1647306891620" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
     <SUITE FILE_PATH="coverage/P1_java$Start.ic" NAME="Start Coverage Results" MODIFIED="1646874527533" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
   </component>
 </project>

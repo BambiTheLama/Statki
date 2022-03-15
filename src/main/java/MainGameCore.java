@@ -38,7 +38,8 @@ public class MainGameCore {
     int [][]attack;
     int numberOfShot=0;
     boolean continiuFlag=true;
-
+    int raid=3;
+    int[][] raidmap;
 
     MainGameCore() {
         n=24;
@@ -74,7 +75,7 @@ public class MainGameCore {
 
     public void main(String[] args) throws IOException {
         int port= Integer.parseInt(args[1]);
-        String ip=new String("");
+        String ip="";
 
         if(Objects.equals(args[0], "server"))
         {
@@ -95,7 +96,7 @@ public class MainGameCore {
         InitWindow(width, height, "Statki "+args[0]);
         SetTargetFPS(60);
 
-        multithreading=new Multithreading(communication,isOpponentLeft,isMyMove,isProgramEnd,!isPlacingShipTime,10);
+        multithreading=new Multithreading(communication,isOpponentLeft,isMyMove,isProgramEnd,10);
 
         multithreading.start();
 
@@ -106,7 +107,7 @@ public class MainGameCore {
             gameLoop();
             BeginDrawing();
             ClearBackground(RAYWHITE);
-            draw.draw(myMap,enemyMap,isPlacingShipTime,isMyMove,placeShipTime,numberOfShipToPlace,numberOfShipAlive,numberOfAttack,attackMode);
+            draw.draw(myMap,enemyMap,isPlacingShipTime,isMyMove,placeShipTime,numberOfShipToPlace,numberOfShipAlive,raid,attackMode,numberOfShot,raidmap);
             EndDrawing();
 
         }
@@ -114,16 +115,27 @@ public class MainGameCore {
         if(isOpponentLeft==false&&isSomeoneWin==false)
         {
             isProgramEnd=true;
-            multithreading.setIsProgramEnd(isProgramEnd);
+            multithreading.setIsProgramEnd(true);
         }
-        multithreading.stop();
+        else
+        {
+            if(isOpponentLeft)
+            {
+                lost=false;
+            }
+            else
+            {
+                lost=!multithreading.getWin();
+            }
+
+        }
 
         if(isProgramEnd==false) {
             while (!WindowShouldClose())
             {
                 BeginDrawing();
                 ClearBackground(RAYWHITE);
-                draw.draw(myMap,enemyMap,isPlacingShipTime,isMyMove,placeShipTime,numberOfShipToPlace,numberOfShipAlive,numberOfAttack,attackMode);
+                draw.draw(myMap,enemyMap,isPlacingShipTime,isMyMove,placeShipTime,numberOfShipToPlace,numberOfShipAlive,raid,attackMode,numberOfShot,raidmap);
                 draw.gameEnd(isOpponentLeft,isSomeoneWin,lost);
                 EndDrawing();
             }
@@ -135,9 +147,8 @@ public class MainGameCore {
 
     void gameLoop() throws IOException {
         upData();
-        if(continiuFlag&&collision()&&!isPlacingShipTime&&isMyMove)
+        if(continiuFlag&&collision()&&isMyMove&&!isPlacingShipTime)
         {
-
             shoot();
             multithreading.setNumberOfAttack(numberOfShot);
             multithreading.setAttack(attack);
@@ -145,11 +156,9 @@ public class MainGameCore {
             multithreading.setIsAttack(true);
             continiuFlag=false;
 
-
         }
         else if(!continiuFlag&&isMyMove&&!isPlacingShipTime)
         {
-            System.out.println("KURWA MAC");
             if(setShootRes())
             {
                 continiuFlag=true;
@@ -169,10 +178,22 @@ public class MainGameCore {
     }
 
     void upData() {
-        if(placeShipTime>0)
-            placeShipTime=multithreading.placeShipTime;
+        if(isPlacingShipTime)
+        {
+            if(placeShipTime>0)
+                placeShipTime=multithreading.getPlaceShipTime();
+            else
+            {
+                isPlacingShipTime=false;
+                numberOfShipAlive=numberOfShipAlive-numberOfShipToPlace;
+            }
+
+        }
         else
-            isPlacingShipTime=false;
+        {
+
+        }
+        multithreading.setNumberOfShip(numberOfShipAlive);
         boolean tmp=isMyMove;
         isMyMove=multithreading.getIsMyMove();
         isOpponentLeft=multithreading.getIsOpponentLeft();
@@ -193,10 +214,7 @@ public class MainGameCore {
             if(tmp != isMyMove && isMyMove == true)
                 continiuFlag=true;
         }
-
-
-
-
+        isSomeoneWin=multithreading.getEndGame();
     }
 
     boolean collision() {
@@ -228,18 +246,47 @@ public class MainGameCore {
                     }
                 }
             }
-            else
+            else if(isMyMove)
             {
-                if(x>=0&&x<=n*cell&&y>=0&&y<=n*cell)
+                if(x >= 0 && x <= n*cell && y >= 0 && y <= n*cell)
                 {
                     x=x/cell;
                     y=y/cell;
-                    if(enemyMap[y][x]==0)
+
+
+
+                    if((enemyMap[y][x]==0 || attackMode==5 ||attackMode==6) && attackMode!=4)
                     {
                         enemyX=x;
                         enemyY=y;
                         return true;
                     }
+                    else if(attackMode==4 && raid==1)
+                    {
+                        enemyX=x;
+                        enemyY=y;
+                        setRaidMap();
+                        raid=3;
+                        return true;
+                    }
+                    else if(attackMode==4 && raid == 3)
+                    {
+
+                        numberOfShot=0;
+                        enemyX=x;
+                        enemyY=y;
+                        setRaidMap();
+                        raid--;
+
+                    }
+                    else if(attackMode==4)
+                    {
+                        enemyX=x;
+                        enemyY=y;
+                        setRaidMap();
+                        raid--;
+                    }
+
                 }
                 x=GetMouseX();
                 y=GetMouseY();
@@ -247,7 +294,15 @@ public class MainGameCore {
                 {
                     if(x>= startEnemyMapLocation-20+i*80 && x<= startEnemyMapLocation+44+i*80  && y >= 8 && y <= 72)
                     {
-                        attackMode=(byte)i;
+                        if(attackMode==4&&raid!=3)
+                        {
+
+                        }
+                        else
+                        {
+                            attackMode=(byte)i;
+                        }
+
                     }
                 }
             }
@@ -255,8 +310,44 @@ public class MainGameCore {
         return false;
     }
 
+    void setRaidMap() {
+        int s=numberOfShot;
+        for(int i=0;i<3;i++)
+        {
+            if(isOnEnemyMap(enemyX-1+i,enemyY))
+                numberOfShot++;
+            if(isOnEnemyMap(enemyX,enemyY-1+i))
+                numberOfShot++;
+        }
+        int [][]tmpraidmap=new int[numberOfShot][2];
+        for(int i=0;i<s;i++)
+        {
+            tmpraidmap[i][0]=raidmap[i][0];
+            tmpraidmap[i][1]=raidmap[i][1];
+        }
+        for(int i=0;i<3;i++)
+        {
+
+            if(isOnEnemyMap(enemyX-1+i,enemyY))
+            {
+                tmpraidmap[s][0]=enemyY;
+                tmpraidmap[s][1]=enemyX-1+i;
+                s++;
+            }
+            if(isOnEnemyMap(enemyX,enemyY-1+i))
+            {
+                tmpraidmap[s][0]=enemyY-1+i;
+                tmpraidmap[s][1]=enemyX;
+                s++;
+            }
+
+        }
+        raidmap=tmpraidmap;
+    }
+
     void shoot(){
-        numberOfShot=0;
+        if(attackMode!=4)
+            numberOfShot=0;
         attack = new int[0][];
         int s=0;
         switch(attackMode)
@@ -335,7 +426,8 @@ public class MainGameCore {
                 }
                 break;
             case 4:
-
+                attack=raidmap;
+                raidmap=null;
                 break;
             case 5:
 
@@ -387,15 +479,31 @@ public class MainGameCore {
     boolean setShootRes(){
         if(attackMode!=5)
         {
-            byte []res=res= multithreading.getAttackRes();
+            byte []res= multithreading.getAttackRes();
             System.out.println("B1");
             if(res==null)
+            {
+                try {
+                    sleep(10);
+                }
+                catch (Exception ignored) {
+                }
                 return false;
+            }
+
             System.out.println("B2");
             multithreading.setAttackRes(null);
             for(int i=0;i<numberOfShot;i++)
             {
-                enemyMap[attack[i][0]][attack[i][1]]=res[i];
+                if(res[i]==-1)
+                {
+
+                }
+                else
+                {
+                    enemyMap[attack[i][0]][attack[i][1]]=res[i];
+                }
+
             }
             System.out.println("B3");
             multithreading.setAttack(attack);
@@ -403,12 +511,21 @@ public class MainGameCore {
         else
         {
             System.out.println("B1");
-            attack= multithreading.getAttack();
-            enemyMap[attack[0][0]][attack[0][1]]=2;
+
+            if(multithreading.getAttack()!=null)
+            {
+                attack= multithreading.getAttack();
+                enemyMap[attack[0][0]][attack[0][1]]=2;
+                multithreading.setAttack(null);
+            }
+            else
+            {
+                return false;
+            }
 
 
             System.out.println("B2");
-            multithreading.setAttack(null);
+
         }
         if(attack!=null)
         {
@@ -463,7 +580,16 @@ public class MainGameCore {
                 if(s==numberOfShipAlive-1)
                     break;
             }
-            int tmp= rand.nextInt(s);
+            int tmp=0;
+            if(s>1)
+            {
+                tmp= rand.nextInt(s);
+            }
+            else
+            {
+                tmp=0;
+            }
+
             attack=new int [1][2];
             attack[0][0]=ship[tmp][0];
             attack[0][1]=ship[tmp][1];
