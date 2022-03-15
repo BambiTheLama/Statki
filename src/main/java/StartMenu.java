@@ -16,7 +16,6 @@ public class StartMenu {
         int width=800,height=400;
         port="";
         ip="";
-        boolean f=false;
         InitWindow(width, height, "Statki Menu Glowne");
         SetTargetFPS(60);
         byte end=0;

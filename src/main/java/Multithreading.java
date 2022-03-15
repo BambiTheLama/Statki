@@ -143,6 +143,7 @@ public class Multithreading extends Thread {
 
 
     }
+
     void myMove()
     {
         if (isAttack) {

@@ -210,7 +210,6 @@ public class MainGameCore {
             {
 
                 enemyAttackMode=multithreading.getAttackType();
-                System.out.println("enem attack mode "+enemyAttackMode);
                 if(enemyAttackMode<0)
                     waitingFlag=true;
                 else if(enemyAttackMode!=5)
@@ -508,18 +507,13 @@ public class MainGameCore {
         if(attackMode!=5)
         {
             byte []res= multithreading.getAttackRes();
-            System.out.println("B1");
+            System.out.println("set Shoot Res 1 attackmode :"+attackMode);
             if(res==null)
             {
-                try {
-                    sleep(10);
-                }
-                catch (Exception ignored) {
-                }
                 return false;
             }
 
-            System.out.println("B2");
+            System.out.println("set Shoot Res 2");
             multithreading.setAttackRes(null);
             for(int i=0;i<numberOfShot;i++)
             {
@@ -533,12 +527,12 @@ public class MainGameCore {
                 }
 
             }
-            System.out.println("B3");
+            System.out.println("set Shoot Res 3");
             multithreading.setAttack(attack);
         }
         else
         {
-            System.out.println("B1");
+            System.out.println("set Shoot Res 1 attackmode :"+attackMode);
 
             if(multithreading.getAttack()!=null)
             {
@@ -552,7 +546,7 @@ public class MainGameCore {
             }
 
 
-            System.out.println("B2");
+            System.out.println("set Shoot Res 2");
 
         }
         if(attack!=null)
@@ -566,8 +560,8 @@ public class MainGameCore {
     void setShoot(){
         if(enemyAttackMode!=5)
         {
-            System.out.println("A1");
-            System.out.println("numberOfAttack "+numberOfAttack);
+            System.out.println("set Shoot 1 numberOfAttack "+numberOfAttack+" enemyAttackMode "+enemyAttackMode);
+
             byte[] attackRes=new byte[numberOfAttack];
             for(int i=0;i<numberOfAttack;i++)
             {
@@ -584,12 +578,13 @@ public class MainGameCore {
                 attackRes[i]=myMap[attack[i][0]][attack[i][1]];
 
             }
-            System.out.println("A2");
+            System.out.println("set Shoot 2 ");
             multithreading.setAttackRes(attackRes);
             isOpponentAttack=false;
         }
         else
         {
+            System.out.println("set Shoot 1 enemy attack mode"+enemyAttackMode);
             int s=0;
             int[][]ship=new int[numberOfShipAlive][2];
             for(int i=0;i<n;i++)
@@ -608,6 +603,7 @@ public class MainGameCore {
                 if(s==numberOfShipAlive-1)
                     break;
             }
+            System.out.println("set Shoot 2 ");
             int tmp=0;
             if(s>1)
             {
@@ -617,7 +613,7 @@ public class MainGameCore {
             {
                 tmp=0;
             }
-
+            System.out.println("set Shoot 3 ");
             attack=new int [1][2];
             attack[0][0]=ship[tmp][0];
             attack[0][1]=ship[tmp][1];
@@ -625,14 +621,7 @@ public class MainGameCore {
             numberOfShipAlive--;
             multithreading.setAttack(attack);
             attack=null;
-            while(multithreading.getAttack()!=null)
-            {
-                try {
-                    sleep(10);
-                }
-                catch (Exception e) {
-                }
-            }
+            System.out.println("set Shoot 4 ");
 
         }
     }
