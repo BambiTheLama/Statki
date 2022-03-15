@@ -203,9 +203,21 @@ public class MainGameCore {
             if(isOpponentAttack)
             {
 
-                enemyAttackMode=multithreading.getAttackType();
-                numberOfAttack=multithreading.getNumberOfAttack();
-                attack=multithreading.getAttack();
+                do
+                {
+                    enemyAttackMode=multithreading.getAttackType();
+                }while(enemyAttackMode>=0);
+
+                do
+                {
+                    numberOfAttack=multithreading.getNumberOfAttack();
+                }while(numberOfAttack>=0);
+
+                do
+                {
+                    attack=multithreading.getAttack();
+                }while(attack==null);
+                
                 multithreading.setAttack(null);
             }
         }
