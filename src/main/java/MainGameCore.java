@@ -40,6 +40,12 @@ public class MainGameCore {
     boolean waitingFlag=false;
     int width=1440,height=720;
 
+    int startTime;
+    int moveTime;
+    int[][] ship;
+    byte[][] attackWhiteList;
+    int startGold;
+
 
     MainGameCore(byte mapSize,int numberOfShip,String[] args) {
 
@@ -76,6 +82,8 @@ public class MainGameCore {
 
         draw=new Draw(n,width,height,eqSize,sizeBetweenEqAndMap,cell,sizeBetweenMaps,20,startEnemyMapLocation);
 
+        multithreading=new Multithreading(communication,isOpponentLeft,isMyMove,isProgramEnd,10);
+
         InitWindow(width, height, "Statki "+who);
         SetTargetFPS(60);
 
@@ -95,7 +103,11 @@ public class MainGameCore {
 
     public void main(){
 
-        multithreading=new Multithreading(communication,isOpponentLeft,isMyMove,isProgramEnd,10);
+        Texture[] shipTexture=new Texture[5];
+        for(int i=0;i<5;i++)
+        {
+            shipTexture[i]=LoadTexture("resources/"+(i+1)+".png");
+        }
 
         multithreading.start();
 
@@ -104,7 +116,7 @@ public class MainGameCore {
             gameLoop();
             BeginDrawing();
             ClearBackground(RAYWHITE);
-            draw.draw(myMap,enemyMap,raid,attackMode,numberOfShot,raidmap);
+            draw.draw(myMap,enemyMap,raid,attackMode,numberOfShot,raidmap,null,false,shipTexture);
             EndDrawing();
 
         }
@@ -132,7 +144,7 @@ public class MainGameCore {
             {
                 BeginDrawing();
                 ClearBackground(RAYWHITE);
-                draw.draw(myMap,enemyMap,raid,attackMode,numberOfShot,raidmap);
+                draw.draw(myMap,enemyMap,raid,attackMode,numberOfShot,raidmap,null,false,shipTexture);
                 draw.gameEnd(isOpponentLeft,isSomeoneWin,lost);
                 EndDrawing();
             }
@@ -154,7 +166,7 @@ public class MainGameCore {
             continiuFlag=false;
 
         }
-        if(!continiuFlag&&isMyMove&&!isPlacingShipTime)
+        else if(!continiuFlag&&isMyMove&&!isPlacingShipTime)
         {
             if(setShootRes())
             {
@@ -243,10 +255,8 @@ public class MainGameCore {
 
     void drawUpData(){
         draw.setIsPlacingShipTime(isPlacingShipTime);
-
         draw.setNumberOfShipToPlace(numberOfShipToPlace);
         draw.setPlaceShipTime(placeShipTime);
-
         draw.setMyMove(isMyMove);
         draw.setNumberOfShipAlive(numberOfShipAlive);
 
@@ -544,20 +554,12 @@ public class MainGameCore {
 
             if(multithreading.getAttack()!=null)
             {
-                try{
-                    attack= multithreading.getAttack();
-                    enemyMap[attack[0][0]][attack[0][1]]=2;
-                    multithreading.setAttack(null);
-                }
-                catch (Exception e)
-                {
-                    return false;
-                }
-
+                attack= multithreading.getAttack();
+                enemyMap[attack[0][0]][attack[0][1]]=2;
+                multithreading.setAttack(null);
             }
             else
             {
-                System.out.println("KURWA 3");
                 return false;
             }
 

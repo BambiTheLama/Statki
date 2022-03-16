@@ -146,7 +146,6 @@ public class Multithreading extends Thread {
                 tmpAttack[0][1] = Integer.parseInt(tmp);
                 System.out.println("q4");
                 attack=tmpAttack;
-                System.out.println("q5");
                 while (attack != null) {
                     try {
                         sleep(10);
@@ -154,7 +153,7 @@ public class Multithreading extends Thread {
                     catch (Exception ignored) {
                     }
                 }
-                System.out.println("q6");
+                System.out.println("q5");
             }
             isMyMove = false;
             if(attack!=null)

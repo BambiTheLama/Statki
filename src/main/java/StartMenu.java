@@ -21,10 +21,6 @@ public class StartMenu {
         byte end=0;
         Jaylib.SetExitKey(KEY_ESCAPE);
         while (!WindowShouldClose()&&end==0) {
-            if(IsKeyPressed(KEY_ESCAPE))
-            {
-                end=3;
-            }
             BeginDrawing();
             ClearBackground(RAYWHITE);
             draw.drawMenu(port,ip,isMouseOnHost,isMouseOnJoin,isPortTyping,isIpTyping);
@@ -41,7 +37,7 @@ public class StartMenu {
             a[0]="server";
             a[1]=port;
 
-            game =new MainGameCore((byte)12,10,a);
+            game =new MainGameCore((byte)24,10,a);
             try{
                 game.main();
             }
@@ -61,7 +57,7 @@ public class StartMenu {
             a[1]=port;
             a[2]=ip;
 
-            game = new MainGameCore((byte)12,10,a);
+            game = new MainGameCore((byte)24,10,a);
 
             try{
                 game.main();

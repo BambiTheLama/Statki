@@ -1,14 +1,19 @@
 import com.raylib.Jaylib;
 import com.raylib.Raylib;
 
-import java.io.IOException;
+import static com.raylib.Jaylib.*;
+import static com.raylib.Raylib.*;
 
+
+import com.raylib.Jaylib;
+import com.raylib.Raylib;
 import static com.raylib.Jaylib.*;
 import static com.raylib.Jaylib.BLACK;
 import static com.raylib.Raylib.DrawRectangle;
 import static com.raylib.Raylib.DrawText;
 import static com.raylib.Raylib.GetMouseX;
 import static com.raylib.Raylib.GetMouseY;
+
 
 public class Draw {
 
@@ -51,6 +56,7 @@ public class Draw {
         shipColor=new Jaylib.Color(55,55,255,25);
         shipColorContour2=new Jaylib.Color(55,255,255,100);
         shipColor2=new Jaylib.Color(55,255,255,25);
+
     }
 
     Draw(byte n,int width,int height,int eqSize,int sizeBetweenEqAndMap,int cell,int sizeBetweenMaps,int sizeText,int startEnemyMapLocation) {
@@ -66,11 +72,12 @@ public class Draw {
         this.startEnemyMapLocation=startEnemyMapLocation;
     }
 
-    void draw(byte[][] myMap,byte[][] enemyMap,int numberOfAttack,int attackMode,int numberOfShoot,int [][]raidMap) {
+    void draw(byte[][] myMap,byte[][] enemyMap,int numberOfAttack,int attackMode,int numberOfShoot,int [][]raidMap,int[][]ship,boolean rotate,Texture[] shipTexture) {
         Raylib.DrawLine(0,eqSize,width,eqSize,BLACK);
 
         drawMap(sizeBetweenEqAndMap,myMap,"Twoja Mapa");
         drawMap(startEnemyMapLocation,enemyMap,"Mapa Wroga");
+
         if(isPlacingShipTime)
         {
             Jaylib.DrawText("Pozostaly czas ustawiania :"+placeShipTime+" s",0,0,20,BLACK);
@@ -101,99 +108,167 @@ public class Draw {
 
         if(isPlacingShipTime)
         {
-            int x=GetMouseX();
-            int y=GetMouseY();
-            x-=sizeBetweenEqAndMap;
-            y-=(sizeBetweenEqAndMap+eqSize);
-            x/=cell;
-            y/=cell;
-            if(x>=0 && x<n && y>=0 && y<n)
-            {
-                x=x*cell+sizeBetweenEqAndMap;
-                y=y*cell+sizeBetweenEqAndMap+eqSize;
-                Jaylib.Rectangle rec=new Jaylib.Rectangle(x,y,cell,cell);
-                Jaylib.DrawRectangleRec(rec,shipColor2);
-                Jaylib.DrawRectangleLinesEx(rec,3,shipColorContour2);
-            }
+           drawOnMyMap();
         }
         else if(isMyMove)
         {
-            int x=GetMouseX();
-            int y=GetMouseY();
-            x-=startEnemyMapLocation;
-            y-=(sizeBetweenEqAndMap+eqSize);
-            x/=cell;
-            y/=cell;
-            if(isOnEnemyMap(x,y))
+            drawOnEnemyMap(attackMode,numberOfAttack,raidMap,numberOfShoot);
+        }
+        drawShipTable(ship,rotate,shipTexture);
+
+    }
+
+    void drawShipTable(int [][]ship,boolean rotate,Texture[] shipTexture)
+    {
+        int startX=startEnemyMapLocation-sizeBetweenMaps+sizeBetweenEqAndMap;
+        int startY=eqSize+sizeBetweenEqAndMap+n*cell/2-192;
+        DrawRectangle(startX,startY,128,256,RED);
+        DrawRectangle(startX+64,eqSize+sizeBetweenEqAndMap+n*cell/2+64,64,64,RED);
+
+        Raylib.Vector2 start=new Raylib.Vector2();
+        Raylib.Vector2 end=new Raylib.Vector2();
+        start.x(startX);
+        start.y(startY);
+        end.x(startX);
+        end.y(startY+256);
+        DrawLineEx(start,end,2,BLACK);
+        end.y(startY+320);
+        for(int i=1;i<3;i++)
+        {
+                start.x(startX+64*i);
+                end.x(startX+64*i);
+                DrawLineEx(start,end,2,BLACK);
+        }
+        start.x(startX);
+        end.x(startX+128);
+        for(int i=0;i<5;i++)
+        {
+            start.y(startY+64*i);
+            end.y(startY+64*i);
+            DrawLineEx(start,end,2,BLACK);
+        }
+        start.x(startX+64);
+        start.y(startY+320);
+        end.y(startY+320);
+        DrawLineEx(start,end,2,BLACK);
+
+
+        if(rotate)
+            start.x(startX+128);
+        else
+            start.x(startX+64);
+
+
+
+        for(int i=0;i<5;i++)
+        {
+            start.y(startY+64*i);
+            if(rotate)
+                Raylib.DrawTextureEx(shipTexture[i],start,90,1,WHITE);
+            else
+                Raylib.DrawTextureEx(shipTexture[i],start,0,1,WHITE);
+            if(i!=4)
             {
-                int startX=x*cell+startEnemyMapLocation;
-                int startY=y*cell+sizeBetweenEqAndMap+eqSize;
-                drawX(startX,startY,mapAttackHit2);
-                switch(attackMode)
-                {
-                    case 1:
-                        for(int i=0;i<3;i++)
-                            for(int j=0;j<3;j++)
-                            {
-
-
-                                if(isOnEnemyMap(x-1+i,y-1+j))
-                                    drawX(startX+cell*(i-1),startY+cell*(j-1),mapAttackHit3);
-
-                            }
-                        break;
-                    case 2:
-                        for(int i=0;i<5;i++)
-                        {
-
-                            if(isOnEnemyMap(x-2+i,y-2+i))
-                                drawX(startX+cell*(i-2),startY+cell*(i-2),mapAttackHit3);
-                            if(isOnEnemyMap(x-2+i,y+2-i))
-                                drawX(startX+cell*(i-2),startY+cell*(2-i),mapAttackHit3);
-
-                        }
-                        break;
-                    case 3:
-                        for(int i=0;i<5;i++)
-                        {
-
-                            if(isOnEnemyMap(x-2+i,y))
-                                drawX(startX+cell*(-2+i),startY,mapAttackHit3);
-                            if(isOnEnemyMap(x,y-2+i))
-                                drawX(startX,startY+cell*(-2+i),mapAttackHit3);
-
-                        }
-                        break;
-                    case 4:
-                        DrawText(""+numberOfAttack,startX+cell*2,startY-cell*2,20,BLACK);
-                        for(int i=0;i<3;i++)
-                        {
-                            if(isOnEnemyMap(x-1+i,y))
-                                drawX(startX+cell*(-1+i),startY,mapAttackHit3);
-                            if(isOnEnemyMap(x,y-1+i))
-                                drawX(startX,startY+cell*(-1+i),mapAttackHit3);
-                        }
-                        if(raidMap!=null)
-                        {
-                            Jaylib.Color tmp= new Jaylib.Color(255,255,0,200);
-                            startX=startEnemyMapLocation;
-                            startY=sizeBetweenEqAndMap+eqSize;
-                            for(int i=0;i<numberOfShoot;i++)
-                            {
-                                if(isOnEnemyMap(raidMap[i][1],raidMap[i][0]))
-                                    drawX(startX+cell*raidMap[i][1],startY+cell*raidMap[i][0],tmp );
-                            }
-                        }
-                        break;
-                    case 5:
-
-                        break;
-                    case 6:
-                        break;
-                }
+                if(rotate)
+                    DrawText(""+(i+1), (int) start.x()+3-64, (int) start.y(),16,BLACK);
+                else
+                    DrawText(""+(i+1), (int) start.x()+3, (int) start.y(),16,BLACK);
             }
+
         }
 
+
+    }
+
+    void drawOnMyMap()
+    {
+        int x=GetMouseX();
+        int y=GetMouseY();
+        x-=sizeBetweenEqAndMap;
+        y-=(sizeBetweenEqAndMap+eqSize);
+        x/=cell;
+        y/=cell;
+        if(x>=0 && x<n && y>=0 && y<n)
+        {
+            x=x*cell+sizeBetweenEqAndMap;
+            y=y*cell+sizeBetweenEqAndMap+eqSize;
+            Jaylib.Rectangle rec=new Jaylib.Rectangle(x,y,cell,cell);
+            Jaylib.DrawRectangleRec(rec,shipColor2);
+            Jaylib.DrawRectangleLinesEx(rec,3,shipColorContour2);
+        }
+
+    }
+
+    void drawOnEnemyMap(int attackMode,int numberOfAttack,int[][]raidMap,int numberOfShoot)
+    {
+        int x=GetMouseX();
+        int y=GetMouseY();
+        x-=startEnemyMapLocation;
+        y-=(sizeBetweenEqAndMap+eqSize);
+        x/=cell;
+        y/=cell;
+        if(isOnEnemyMap(x,y))
+        {
+            int startX=x*cell+startEnemyMapLocation;
+            int startY=y*cell+sizeBetweenEqAndMap+eqSize;
+            drawX(startX,startY,mapAttackHit2);
+            switch(attackMode)
+            {
+                case 1:
+                    for(int i=0;i<3;i++)
+                        for(int j=0;j<3;j++)
+                        {
+                            if(isOnEnemyMap(x-1+i,y-1+j))
+                                drawX(startX+cell*(i-1),startY+cell*(j-1),mapAttackHit3);
+
+                        }
+                    break;
+                case 2:
+                    for(int i=0;i<5;i++)
+                    {
+
+                        if(isOnEnemyMap(x-2+i,y-2+i))
+                            drawX(startX+cell*(i-2),startY+cell*(i-2),mapAttackHit3);
+                        if(isOnEnemyMap(x-2+i,y+2-i))
+                            drawX(startX+cell*(i-2),startY+cell*(2-i),mapAttackHit3);
+
+                    }
+                    break;
+                case 3:
+                    for(int i=0;i<5;i++)
+                    {
+
+                        if(isOnEnemyMap(x-2+i,y))
+                            drawX(startX+cell*(-2+i),startY,mapAttackHit3);
+                        if(isOnEnemyMap(x,y-2+i))
+                            drawX(startX,startY+cell*(-2+i),mapAttackHit3);
+
+                    }
+                    break;
+                case 4:
+                    DrawText(""+numberOfAttack,startX+cell*2,startY-cell*2,20,BLACK);
+                    for(int i=0;i<3;i++)
+                    {
+                        if(isOnEnemyMap(x-1+i,y))
+                            drawX(startX+cell*(-1+i),startY,mapAttackHit3);
+                        if(isOnEnemyMap(x,y-1+i))
+                            drawX(startX,startY+cell*(-1+i),mapAttackHit3);
+                    }
+                    if(raidMap!=null)
+                    {
+                        Jaylib.Color tmp= new Jaylib.Color(255,255,0,200);
+                        startX=startEnemyMapLocation;
+                        startY=sizeBetweenEqAndMap+eqSize;
+                        for(int i=0;i<numberOfShoot;i++)
+                        {
+                            if(isOnEnemyMap(raidMap[i][1],raidMap[i][0]))
+                                drawX(startX+cell*raidMap[i][1],startY+cell*raidMap[i][0],tmp );
+                        }
+                    }
+                    break;
+
+            }
+        }
     }
 
     void drawX(int x, int y, Jaylib.Color color) {
