@@ -1,16 +1,13 @@
 import com.raylib.Raylib;
 import java.util.Random;
-import java.io.IOException;
 import java.util.Objects;
-
 import static com.raylib.Jaylib.*;
-import static java.lang.Thread.sleep;
 
 public class MainGameCore {
 
     Draw draw;
     Communication communication;
-    int placeShipTime=60*10;
+    int placeShipTime;
     int numberOfShipToPlace;
     int numberOfShipAlive;
     boolean isPlacingShipTime=true;
@@ -26,8 +23,8 @@ public class MainGameCore {
     byte n;
     int eqSize=100;
     int sizeBetweenEqAndMap=50;
-    int cell=20;
-    int sizeBetweenMaps=200;
+    int cell;
+    int sizeBetweenMaps=350;
     int startEnemyMapLocation;
     byte attackMode=1;
     int numberOfAttack=0;
@@ -41,25 +38,47 @@ public class MainGameCore {
     int raid=3;
     int[][] raidmap;
     boolean waitingFlag=false;
+    int width=1440,height=720;
 
-    MainGameCore() {
-        n=24;
-        myMap=new byte[n][n];
-        enemyMap=new byte[n][n];
-        startEnemyMapLocation=n*cell+sizeBetweenEqAndMap+sizeBetweenMaps;
-        numberOfShipToPlace=10;
-        numberOfShipAlive=10;
-        clear();
-    }
 
-    MainGameCore(byte mapSize,int numberOfShip) {
+    MainGameCore(byte mapSize,int numberOfShip,String[] args) {
+
         n=mapSize;
+        cell=(25*20)/n;
         myMap=new byte[n][n];
         enemyMap=new byte[n][n];
         startEnemyMapLocation=n*cell+sizeBetweenEqAndMap+sizeBetweenMaps;
         numberOfShipToPlace=numberOfShip;
         numberOfShipAlive=numberOfShip;
         clear();
+
+        int port=Integer.parseInt(args[1]);
+
+        String who=args[0];
+        String ip="";
+
+        if(Objects.equals(args[0], "server"))
+        {
+            isMyMove= Boolean.TRUE;
+        }
+        else if(Objects.equals(args[0], "client"))
+        {
+            isMyMove= Boolean.FALSE;
+            ip=args[2];
+        }
+        try{
+            communication=new Communication(who,port,ip);
+        }
+        catch (Exception e)
+        {
+
+        }
+
+        draw=new Draw(n,width,height,eqSize,sizeBetweenEqAndMap,cell,sizeBetweenMaps,20,startEnemyMapLocation);
+
+        InitWindow(width, height, "Statki "+who);
+        SetTargetFPS(60);
+
     }
 
     void clear() {
@@ -74,41 +93,18 @@ public class MainGameCore {
 
     }
 
-    public void main(String[] args) throws IOException {
-        int port= Integer.parseInt(args[1]);
-        String ip="";
-
-        if(Objects.equals(args[0], "server"))
-        {
-            isMyMove= Boolean.TRUE;
-        }
-        else if(Objects.equals(args[0], "client"))
-        {
-            isMyMove= Boolean.FALSE;
-            ip=args[2];
-        }
-
-        int width=1280,height=720;
-
-        communication=new Communication(args[0],port,ip);
-
-        draw=new Draw(n,width,height);
-
-        InitWindow(width, height, "Statki "+args[0]);
-        SetTargetFPS(60);
+    public void main(){
 
         multithreading=new Multithreading(communication,isOpponentLeft,isMyMove,isProgramEnd,10);
 
         multithreading.start();
-
-
 
         while (!WindowShouldClose()&&isOpponentLeft==false&&isProgramEnd==false&&isSomeoneWin==false)
         {
             gameLoop();
             BeginDrawing();
             ClearBackground(RAYWHITE);
-            draw.draw(myMap,enemyMap,isPlacingShipTime,isMyMove,placeShipTime,numberOfShipToPlace,numberOfShipAlive,raid,attackMode,numberOfShot,raidmap);
+            draw.draw(myMap,enemyMap,raid,attackMode,numberOfShot,raidmap);
             EndDrawing();
 
         }
@@ -136,18 +132,18 @@ public class MainGameCore {
             {
                 BeginDrawing();
                 ClearBackground(RAYWHITE);
-                draw.draw(myMap,enemyMap,isPlacingShipTime,isMyMove,placeShipTime,numberOfShipToPlace,numberOfShipAlive,raid,attackMode,numberOfShot,raidmap);
+                draw.draw(myMap,enemyMap,raid,attackMode,numberOfShot,raidmap);
                 draw.gameEnd(isOpponentLeft,isSomeoneWin,lost);
                 EndDrawing();
             }
         }
 
-
         CloseWindow();
     }
 
-    void gameLoop() throws IOException {
+    void gameLoop(){
         upData();
+        drawUpData();
         if(continiuFlag&&collision()&&isMyMove&&!isPlacingShipTime)
         {
             shoot();
@@ -184,13 +180,14 @@ public class MainGameCore {
     }
 
     void upData() {
+
         if(isPlacingShipTime)
         {
-            if(placeShipTime>0)
-                placeShipTime=multithreading.getPlaceShipTime();
-            else
+            placeShipTime=multithreading.getPlaceShipTime();
+            isPlacingShipTime= multithreading.getisPlacingShipTime();
+
+            if(!isPlacingShipTime)
             {
-                isPlacingShipTime=false;
                 numberOfShipAlive=numberOfShipAlive-numberOfShipToPlace;
             }
 
@@ -242,6 +239,17 @@ public class MainGameCore {
                 continiuFlag=true;
         }
         isSomeoneWin=multithreading.getEndGame();
+    }
+
+    void drawUpData(){
+        draw.setIsPlacingShipTime(isPlacingShipTime);
+
+        draw.setNumberOfShipToPlace(numberOfShipToPlace);
+        draw.setPlaceShipTime(placeShipTime);
+
+        draw.setMyMove(isMyMove);
+        draw.setNumberOfShipAlive(numberOfShipAlive);
+
     }
 
     boolean collision() {

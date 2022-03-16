@@ -32,6 +32,13 @@ public class Draw {
     Jaylib.Color shipColor;
     Jaylib.Color shipColorContour2;
     Jaylib.Color shipColor2;
+    private boolean isPlacingShipTime;
+    private boolean isMyMove;
+    private int numberOfShipToPlace;
+    private int numberOfShipAlive;
+    private int placeShipTime;
+
+
 
     Draw() {
         textColor= BLACK;
@@ -44,19 +51,6 @@ public class Draw {
         shipColor=new Jaylib.Color(55,55,255,25);
         shipColorContour2=new Jaylib.Color(55,255,255,100);
         shipColor2=new Jaylib.Color(55,255,255,25);
-    }
-
-    Draw(byte n,int width,int height) {
-        this();
-        this.n=n;
-        this.width=width;
-        this.height=height;
-        this.eqSize=100;
-        this.sizeBetweenEqAndMap=50;
-        this.cell=20;
-        this.sizeBetweenMaps=200;
-        this.sizeText=20;
-        this.startEnemyMapLocation=n*cell+sizeBetweenEqAndMap+sizeBetweenMaps;
     }
 
     Draw(byte n,int width,int height,int eqSize,int sizeBetweenEqAndMap,int cell,int sizeBetweenMaps,int sizeText,int startEnemyMapLocation) {
@@ -72,7 +66,7 @@ public class Draw {
         this.startEnemyMapLocation=startEnemyMapLocation;
     }
 
-    void draw(byte[][] myMap,byte[][] enemyMap,boolean isPlacingShipTime,boolean isMyMove,int placeShipTime,int numberOfShipToPlace,int numberOfShipAlive,int numberOfAttack,int attackMode,int numberOfShoot,int [][]raidMap) {
+    void draw(byte[][] myMap,byte[][] enemyMap,int numberOfAttack,int attackMode,int numberOfShoot,int [][]raidMap) {
         Raylib.DrawLine(0,eqSize,width,eqSize,BLACK);
 
         drawMap(sizeBetweenEqAndMap,myMap,"Twoja Mapa");
@@ -293,6 +287,7 @@ public class Draw {
         }
         Jaylib.DrawText(text,x+25,y+25,textSize,BLACK);
     }
+
     public void drawMenu(String port,String ip,boolean isMouseOnHost,boolean isMouseOnJoin,boolean isPortTyping,boolean isIpTyping)
     {
         drawButton(50,225,50,100,"Hostuj",50,isMouseOnHost);
@@ -303,5 +298,23 @@ public class Draw {
     }
 
 
+    public void setNumberOfShipAlive(int numberOfShipAlive) {
+        this.numberOfShipAlive = numberOfShipAlive;
+    }
 
+    public void setNumberOfShipToPlace(int numberOfShipToPlace) {
+        this.numberOfShipToPlace = numberOfShipToPlace;
+    }
+
+    public void setMyMove(boolean myMove) {
+        isMyMove = myMove;
+    }
+
+    public void setIsPlacingShipTime(boolean isplacingShipTime) {
+        this.isPlacingShipTime = isplacingShipTime;
+    }
+
+    public void setPlaceShipTime(int placeShipTime) {
+        this.placeShipTime = placeShipTime;
+    }
 }

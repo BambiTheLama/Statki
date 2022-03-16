@@ -23,77 +23,7 @@ public class Multithreading extends Thread {
         this.placeShipTime = placeShipTime;
     }
 
-    void setIsProgramEnd(boolean isProgramEnd) {
-        this.isProgramEnd = isProgramEnd;
-    }
-
-    boolean getIsOpponentLeft() {
-        return isOpponentLeft;
-    }
-
-    boolean getIsMyMove() {
-        return isMyMove;
-    }
-
-    void setAttack(int[][] attack) {
-        this.attack = attack;
-    }
-
-    void setIsAttack(boolean isAttack) {
-        this.isAttack = isAttack;
-    }
-
-    int[][] getAttack() {
-        return attack;
-    }
-
-    void setAttackType(int attackType) {
-        this.attackType = attackType;
-    }
-
-    int getAttackType() {
-        return attackType;
-    }
-
-    void setNumberOfAttack(int numberOfAttack) {
-        this.numberOfAttack = numberOfAttack;
-    }
-
-    int getNumberOfAttack() {
-        return numberOfAttack;
-    }
-
-    void setAttackRes(byte[] attackRes) {
-        this.attackRes = attackRes;
-    }
-
-    byte[] getAttackRes() {
-        return attackRes;
-    }
-
-    boolean getIsAttack() {
-        return isAttack;
-
-    }
-
-    int getPlaceShipTime()
-    {
-        return placeShipTime;
-    }
-
-    void setNumberOfShip(int numberOfShip)
-    {
-        this.numberOfShip = numberOfShip;
-    }
-
-    boolean getWin()
-    {
-        return win;
-    }
-
-    boolean getEndGame(){return endGame;}
-
-
+    @Override
     public void run() {
         while (!isOpponentLeft && !isProgramEnd) {
 
@@ -309,4 +239,79 @@ public class Multithreading extends Thread {
         }
 
     }
+
+
+    void setIsProgramEnd(boolean isProgramEnd) {
+        this.isProgramEnd = isProgramEnd;
+    }
+
+    void setAttack(int[][] attack) {
+        this.attack = attack;
+    }
+
+    void setAttackType(int attackType) {
+        this.attackType = attackType;
+    }
+
+    void setIsAttack(boolean isAttack) {
+        this.isAttack = isAttack;
+    }
+
+    void setNumberOfAttack(int numberOfAttack) {
+        this.numberOfAttack = numberOfAttack;
+    }
+
+    void setNumberOfShip(int numberOfShip)
+    {
+        this.numberOfShip = numberOfShip;
+    }
+
+    void setAttackRes(byte[] attackRes) {
+        this.attackRes = attackRes;
+    }
+
+    boolean getIsOpponentLeft() {
+        return isOpponentLeft;
+    }
+
+    boolean getIsMyMove() {
+        return isMyMove;
+    }
+
+    int[][] getAttack() {
+        return attack;
+    }
+
+    int getAttackType() {
+        return attackType;
+    }
+
+    int getNumberOfAttack() {
+        return numberOfAttack;
+    }
+
+    byte[] getAttackRes() {
+        return attackRes;
+    }
+
+    boolean getIsAttack() {
+        return isAttack;
+
+    }
+
+    int getPlaceShipTime()
+    {
+        return placeShipTime;
+    }
+
+    boolean getWin()
+    {
+        return win;
+    }
+
+    boolean getEndGame(){return endGame;}
+
+    boolean getisPlacingShipTime(){return (!isAttackTime);}
+
+
 }

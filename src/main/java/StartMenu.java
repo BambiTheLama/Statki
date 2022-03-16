@@ -34,18 +34,23 @@ public class StartMenu {
         }
         CloseWindow();
 
-        MainGameCore game=new MainGameCore((byte)24,10);
+        MainGameCore game = null;
         if(end==1)
         {
             String[] a=new String[2];
             a[0]="server";
             a[1]=port;
+
+            game =new MainGameCore((byte)12,10,a);
             try{
-                game.main(a);
+                game.main();
             }
-            catch (Exception b){
+            catch (Exception e)
+            {
 
             }
+
+
             return true;
         }
         else if(end==2)
@@ -55,12 +60,17 @@ public class StartMenu {
             a[0]="client";
             a[1]=port;
             a[2]=ip;
+
+            game = new MainGameCore((byte)12,10,a);
+
             try{
-                game.main(a);
+                game.main();
             }
-            catch (Exception b){
+            catch (Exception e)
+            {
 
             }
+
             return true;
         }
         return false;
