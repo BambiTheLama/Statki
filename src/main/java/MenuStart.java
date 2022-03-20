@@ -36,33 +36,32 @@ public class MenuStart {
         while (!WindowShouldClose()&&menuStage>0&&menuStage!=69) {
 
             menuStage+=collision();
-
             BeginDrawing();
             ClearBackground(WHITE);
             menu.Draw(menuStage,y);
             DrawText(menuStage+"",0,0,20,BLACK);
             EndDrawing();
-            System.gc();
+
         }
+
         menu.clear();
-        menu=null;
+
+        if(!connect.stop)
+        {
+            connect.stop();
+        }
         CloseWindow();
         if(menuStage==69)
         {
-            try{
-                communication=connect.getCommunication();
-                if(who.equals("server"))
-                    sendGameInformation();
-                else if(who.equals("client"))
-                    getGameInformation();
-                MainGameCore start=new MainGameCore(communication,who, (byte) mapSize,ship,attackWhiteList,moveTime,startTime,startGold);
-                start.main();
-                System.out.println("koniec");
-                return;
-            }
-            catch (Exception e)
-            {
-            }
+            communication=connect.getCommunication();
+            if(who.equals("server"))
+                sendGameInformation();
+            else if(who.equals("client"))
+                getGameInformation();
+            MainGameCore start=new MainGameCore(communication,who, (byte) mapSize,ship,attackWhiteList,moveTime,startTime,startGold);
+            start.main();
+            return;
+
         }
         System.gc();
     }
@@ -153,6 +152,7 @@ public class MenuStart {
                     connect.stop();
                     connect=null;
                 }
+
 
                 break;
             case 4:
@@ -325,6 +325,7 @@ public class MenuStart {
     static int collisionHostIP()
     {
         if(IsMouseButtonPressed(0))
+        {
             if(collision(1202,22,56,56))
             {
                 ip="";
@@ -332,23 +333,11 @@ public class MenuStart {
                 connect.stop();
                 return -1;
             }
-
+        }
         if(connect.getConnected())
         {
-            System.out.println("dziala");
-            communication=connect.getCommunication();
-            System.out.println("dziala2");
             return 66;
         }
-
-
-        else
-        {
-            connect=new Connect(who,port,ip);
-            connect.start();
-        }
-
-
 
 
         return 0;

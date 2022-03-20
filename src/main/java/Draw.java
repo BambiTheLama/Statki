@@ -201,15 +201,15 @@ public class Draw {
 
             switch (shipType){
                 case 4:
-                    if(rotate && x+2>0)
+                    if(rotate && x-2>=0)
                     {
-                        rec=new Jaylib.Rectangle(tmpx+cell,tmpy,cell,cell);
+                        rec=new Jaylib.Rectangle(tmpx-cell*2,tmpy,cell,cell);
                         Jaylib.DrawRectangleRec(rec,shipColor2);
                         Jaylib.DrawRectangleLinesEx(rec,3,shipColorContour2);
                     }
-                    else if(!rotate && y+2>0)
+                    else if(!rotate && y-2>=0)
                     {
-                        rec=new Jaylib.Rectangle(tmpx,tmpy+cell,cell,cell);
+                        rec=new Jaylib.Rectangle(tmpx,tmpy-cell*2,cell,cell);
                         Jaylib.DrawRectangleRec(rec,shipColor2);
                         Jaylib.DrawRectangleLinesEx(rec,3,shipColorContour2);
                     }
@@ -217,15 +217,15 @@ public class Draw {
                         break;
 
                 case 3:
-                    if(rotate && x-2<n)
+                    if(rotate && x+2<n)
                     {
-                        rec=new Jaylib.Rectangle(tmpx-cell,tmpy,cell,cell);
+                        rec=new Jaylib.Rectangle(tmpx+cell*2,tmpy,cell,cell);
                         Jaylib.DrawRectangleRec(rec,shipColor2);
                         Jaylib.DrawRectangleLinesEx(rec,3,shipColorContour2);
                     }
-                    else if(!rotate && y-2<n)
+                    else if(!rotate && y+2<n)
                     {
-                        rec=new Jaylib.Rectangle(tmpx,tmpy-cell,cell,cell);
+                        rec=new Jaylib.Rectangle(tmpx,tmpy+cell*2,cell,cell);
                         Jaylib.DrawRectangleRec(rec,shipColor2);
                         Jaylib.DrawRectangleLinesEx(rec,3,shipColorContour2);
                     }
@@ -418,7 +418,8 @@ public class Draw {
                         Jaylib.DrawRectangleLinesEx(rec,3,shipColorContour);
                         break;
                     case 8:
-                        Jaylib.DrawCircle(x+j*cell+cell/2,sizeBetweenEqAndMap+eqSize+i*cell+cell/2,cell-10,mapAttackMiss);
+                        if(IsKeyDown(KEY_TAB))
+                            Jaylib.DrawCircle(x+j*cell+cell/2,sizeBetweenEqAndMap+eqSize+i*cell+cell/2,cell-10,mapAttackMiss);
 
                         break;
                 }
