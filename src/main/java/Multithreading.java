@@ -86,12 +86,14 @@ public class Multithreading extends Thread {
                 }
 
             }
+            System.gc();
         }
         if(isProgramEnd)
         {
             isOpponentLeft = communication.isClose(true);
         }
         endGame=true;
+        System.gc();
     }
 
     void myMove()

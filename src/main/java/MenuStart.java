@@ -27,6 +27,7 @@ public class MenuStart {
 
     public static void main(String[] arg) {
 
+
         for(int i=0;i<5;i++)
             ship[0][i]=i+1;
         InitWindow(1280,720,"MENU");
@@ -40,8 +41,8 @@ public class MenuStart {
             ClearBackground(WHITE);
             menu.Draw(menuStage,y);
             DrawText(menuStage+"",0,0,20,BLACK);
-
             EndDrawing();
+            System.gc();
         }
         menu.clear();
         menu=null;
@@ -55,7 +56,6 @@ public class MenuStart {
                 else if(who.equals("client"))
                     getGameInformation();
                 MainGameCore start=new MainGameCore(communication,who, (byte) mapSize,ship,attackWhiteList,moveTime,startTime,startGold);
-                System.gc();
                 start.main();
                 System.out.println("koniec");
                 return;
@@ -64,6 +64,7 @@ public class MenuStart {
             {
             }
         }
+        System.gc();
     }
 
     static void sendGameInformation() {
@@ -73,6 +74,7 @@ public class MenuStart {
         communication.sendInformation(startGold+"");
         for(int i=0;i<5;i++)
         {
+
             communication.sendInformation(ship[0][i]+"");
             communication.sendInformation(ship[1][i]+"");
             communication.sendInformation(ship[2][i]+"");
@@ -85,15 +87,19 @@ public class MenuStart {
     }
 
     static void getGameInformation() {
+
         String tmp=communication.getInformation();
         mapSize=Integer.parseInt(tmp);
 
         tmp=communication.getInformation();
         moveTime=Integer.parseInt(tmp);
+
         tmp=communication.getInformation();
         startTime=Integer.parseInt(tmp);
+
         tmp=communication.getInformation();
         startGold=Integer.parseInt(tmp);
+
         ship=new int[3][5];
         for(int i=0;i<5;i++)
         {
@@ -327,12 +333,15 @@ public class MenuStart {
                 return -1;
             }
 
-        if(connect!=null)
+        if(connect.getConnected())
         {
-
-            if(connect.getConnected())
-                return 66;
+            System.out.println("dziala");
+            communication=connect.getCommunication();
+            System.out.println("dziala2");
+            return 66;
         }
+
+
         else
         {
             connect=new Connect(who,port,ip);

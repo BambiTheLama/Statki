@@ -79,7 +79,7 @@ public class Draw {
             UnloadTexture(shipTexture[i]);
     }
 
-    void draw(byte[][] myMap,byte[][] enemyMap,int numberOfAttack,int attackMode,int numberOfShoot,int [][]raidMap,int[][]ship,boolean rotate,int type) {
+    void draw(byte[][] myMap,byte[][] enemyMap,int numberOfAttack,int attackMode,int numberOfShoot,int [][]raidMap,int[][]ship,boolean rotate,int shiptype) {
         Raylib.DrawLine(0,eqSize,width,eqSize,BLACK);
 
         drawMap(sizeBetweenEqAndMap,myMap,"Twoja Mapa");
@@ -115,13 +115,13 @@ public class Draw {
 
         if(isPlacingShipTime)
         {
-           drawOnMyMap();
+           drawOnMyMap(shiptype,rotate);
         }
         else if(isMyMove)
         {
             drawOnEnemyMap(attackMode,numberOfAttack,raidMap,numberOfShoot);
         }
-        drawShipTable(ship,rotate,shipTexture,type);
+        drawShipTable(ship,rotate,shipTexture,shiptype);
 
     }
 
@@ -176,7 +176,7 @@ public class Draw {
             }
 
         }
-        catch (Exception e)
+        catch (Exception ignored)
         {
 
         }
@@ -185,7 +185,7 @@ public class Draw {
 
     }
 
-    void drawOnMyMap()
+    void drawOnMyMap(int shipType,boolean rotate)
     {
         int x=GetMouseX();
         int y=GetMouseY();
@@ -195,11 +195,79 @@ public class Draw {
         y/=cell;
         if(x>=0 && x<n && y>=0 && y<n)
         {
-            x=x*cell+sizeBetweenEqAndMap;
-            y=y*cell+sizeBetweenEqAndMap+eqSize;
-            Jaylib.Rectangle rec=new Jaylib.Rectangle(x,y,cell,cell);
-            Jaylib.DrawRectangleRec(rec,shipColor2);
-            Jaylib.DrawRectangleLinesEx(rec,3,shipColorContour2);
+            int tmpx=x*cell+sizeBetweenEqAndMap;
+            int tmpy=y*cell+sizeBetweenEqAndMap+eqSize;
+            Jaylib.Rectangle rec;
+
+            switch (shipType){
+                case 4:
+                    if(rotate && x+2>0)
+                    {
+                        rec=new Jaylib.Rectangle(tmpx+cell,tmpy,cell,cell);
+                        Jaylib.DrawRectangleRec(rec,shipColor2);
+                        Jaylib.DrawRectangleLinesEx(rec,3,shipColorContour2);
+                    }
+                    else if(!rotate && y+2>0)
+                    {
+                        rec=new Jaylib.Rectangle(tmpx,tmpy+cell,cell,cell);
+                        Jaylib.DrawRectangleRec(rec,shipColor2);
+                        Jaylib.DrawRectangleLinesEx(rec,3,shipColorContour2);
+                    }
+                    else
+                        break;
+
+                case 3:
+                    if(rotate && x-2<n)
+                    {
+                        rec=new Jaylib.Rectangle(tmpx-cell,tmpy,cell,cell);
+                        Jaylib.DrawRectangleRec(rec,shipColor2);
+                        Jaylib.DrawRectangleLinesEx(rec,3,shipColorContour2);
+                    }
+                    else if(!rotate && y-2<n)
+                    {
+                        rec=new Jaylib.Rectangle(tmpx,tmpy-cell,cell,cell);
+                        Jaylib.DrawRectangleRec(rec,shipColor2);
+                        Jaylib.DrawRectangleLinesEx(rec,3,shipColorContour2);
+                    }
+                    else
+                        break;
+                case 2:
+                    if(rotate && x-1>=0)
+                    {
+                        rec=new Jaylib.Rectangle(tmpx-cell,tmpy,cell,cell);
+                        Jaylib.DrawRectangleRec(rec,shipColor2);
+                        Jaylib.DrawRectangleLinesEx(rec,3,shipColorContour2);
+
+                    }
+                    else if(!rotate && y-1>=0)
+                    {
+                        rec=new Jaylib.Rectangle(tmpx,tmpy-cell,cell,cell);
+                        Jaylib.DrawRectangleRec(rec,shipColor2);
+                        Jaylib.DrawRectangleLinesEx(rec,3,shipColorContour2);
+                    }
+                    else
+                        break;
+                case 1:
+                    if(rotate && x+1<n)
+                    {
+                        rec=new Jaylib.Rectangle(tmpx+cell,tmpy,cell,cell);
+                        Jaylib.DrawRectangleRec(rec,shipColor2);
+                        Jaylib.DrawRectangleLinesEx(rec,3,shipColorContour2);
+                    }
+                    else if(!rotate && y+1<n)
+                    {
+                        rec=new Jaylib.Rectangle(tmpx,tmpy+cell,cell,cell);
+                        Jaylib.DrawRectangleRec(rec,shipColor2);
+                        Jaylib.DrawRectangleLinesEx(rec,3,shipColorContour2);
+                    }
+                    else
+                        break;
+                case 0:
+                    rec=new Jaylib.Rectangle(tmpx,tmpy,cell,cell);
+                    Jaylib.DrawRectangleRec(rec,shipColor2);
+                    Jaylib.DrawRectangleLinesEx(rec,3,shipColorContour2);
+                    break;
+            }
         }
 
     }
