@@ -1,10 +1,7 @@
 import com.raylib.Jaylib;
 import com.raylib.Raylib;
-
 import static com.raylib.Jaylib.*;
 import static com.raylib.Raylib.*;
-
-
 import com.raylib.Jaylib;
 import com.raylib.Raylib;
 import static com.raylib.Jaylib.*;
@@ -41,7 +38,8 @@ public class Draw {
     private boolean isMyMove;
     private int numberOfShipToPlace;
     private int numberOfShipAlive;
-    private int placeShipTime;
+    private int time;
+    Texture[] shipTexture=new Texture[6];
 
 
 
@@ -70,9 +68,18 @@ public class Draw {
         this.sizeBetweenMaps=sizeBetweenMaps;
         this.sizeText=sizeText;
         this.startEnemyMapLocation=startEnemyMapLocation;
+        for(int i=0;i<6;i++)
+        {
+            shipTexture[i]=LoadTexture("resources/"+(i+1)+".png");
+        }
+    }
+    void clear()
+    {
+        for(int i=0;i<6;i++)
+            UnloadTexture(shipTexture[i]);
     }
 
-    void draw(byte[][] myMap,byte[][] enemyMap,int numberOfAttack,int attackMode,int numberOfShoot,int [][]raidMap,int[][]ship,boolean rotate,Texture[] shipTexture) {
+    void draw(byte[][] myMap,byte[][] enemyMap,int numberOfAttack,int attackMode,int numberOfShoot,int [][]raidMap,int[][]ship,boolean rotate,int type) {
         Raylib.DrawLine(0,eqSize,width,eqSize,BLACK);
 
         drawMap(sizeBetweenEqAndMap,myMap,"Twoja Mapa");
@@ -80,18 +87,18 @@ public class Draw {
 
         if(isPlacingShipTime)
         {
-            Jaylib.DrawText("Pozostaly czas ustawiania :"+placeShipTime+" s",0,0,20,BLACK);
+            Jaylib.DrawText("Pozostaly czas ustawiania :"+time+" s",0,0,20,BLACK);
             Jaylib.DrawText("Statki :"+numberOfShipToPlace,0,20,20,BLACK);
         }
         else
         {
             if(isMyMove)
             {
-                Jaylib.DrawText("Moja Tura",0,0,20,BLACK);
+                Jaylib.DrawText("Moja Tura :"+time/100+" s",0,0,20,BLACK);
             }
             else
             {
-                Jaylib.DrawText("Przeciwnika Tura",0,0,20,BLACK);
+                Jaylib.DrawText("Przeciwnika Tura :"+time/100+" s",0,0,20,BLACK);
             }
             Jaylib.DrawText("Statki :"+numberOfShipAlive,0,20,20,BLACK);
         }
@@ -114,68 +121,66 @@ public class Draw {
         {
             drawOnEnemyMap(attackMode,numberOfAttack,raidMap,numberOfShoot);
         }
-        drawShipTable(ship,rotate,shipTexture);
+        drawShipTable(ship,rotate,shipTexture,type);
 
     }
 
-    void drawShipTable(int [][]ship,boolean rotate,Texture[] shipTexture)
+    void drawShipTable(int [][]ship,boolean rotate,Texture[] shipTexture,int type)
     {
         int startX=startEnemyMapLocation-sizeBetweenMaps+sizeBetweenEqAndMap;
         int startY=eqSize+sizeBetweenEqAndMap+n*cell/2-192;
-        DrawRectangle(startX,startY,128,256,RED);
-        DrawRectangle(startX+64,eqSize+sizeBetweenEqAndMap+n*cell/2+64,64,64,RED);
-
-        Raylib.Vector2 start=new Raylib.Vector2();
-        Raylib.Vector2 end=new Raylib.Vector2();
-        start.x(startX);
-        start.y(startY);
-        end.x(startX);
-        end.y(startY+256);
-        DrawLineEx(start,end,2,BLACK);
-        end.y(startY+320);
-        for(int i=1;i<3;i++)
+        DrawRectangle(startX,startY,128,320,RED);
+        DrawRectangle(startX+64,eqSize+sizeBetweenEqAndMap+n*cell/2+128,64,64,RED);
+        if(type>-1 && type<5)
         {
-                start.x(startX+64*i);
-                end.x(startX+64*i);
-                DrawLineEx(start,end,2,BLACK);
+            DrawRectangle(startX,startY+type*64,128,64,GREEN);
         }
-        start.x(startX);
-        end.x(startX+128);
         for(int i=0;i<5;i++)
         {
-            start.y(startY+64*i);
-            end.y(startY+64*i);
-            DrawLineEx(start,end,2,BLACK);
+            Jaylib.Rectangle rec=new Jaylib.Rectangle(startX,startY+i*64,64,64);
+            DrawRectangleLinesEx(rec,2,BLACK);
+            rec=new Jaylib.Rectangle(startX+64,startY+i*64,64,64);
+            DrawRectangleLinesEx(rec,2,BLACK);
         }
-        start.x(startX+64);
-        start.y(startY+320);
-        end.y(startY+320);
-        DrawLineEx(start,end,2,BLACK);
+        Jaylib.Rectangle rec=new Jaylib.Rectangle(startX+64,startY+320,64,64);
+        DrawRectangleLinesEx(rec,2,BLACK);
 
+        Raylib.Vector2 start=new Raylib.Vector2();
 
         if(rotate)
             start.x(startX+128);
         else
             start.x(startX+64);
 
-
-
-        for(int i=0;i<5;i++)
+        for(int i=0;i<6;i++)
         {
             start.y(startY+64*i);
             if(rotate)
                 Raylib.DrawTextureEx(shipTexture[i],start,90,1,WHITE);
             else
                 Raylib.DrawTextureEx(shipTexture[i],start,0,1,WHITE);
-            if(i!=4)
+            if(i!=5)
             {
                 if(rotate)
                     DrawText(""+(i+1), (int) start.x()+3-64, (int) start.y(),16,BLACK);
                 else
                     DrawText(""+(i+1), (int) start.x()+3, (int) start.y(),16,BLACK);
             }
+        }
+        start.x(startX+6);
+        try{
+            for(int i=0;i<5;i++)
+            {
+                start.y(startY+64*i);
+                DrawText(""+ship[1][i], (int) start.x()+20, (int) start.y()+16,32,BLACK);
+            }
 
         }
+        catch (Exception e)
+        {
+
+        }
+
 
 
     }
@@ -303,6 +308,7 @@ public class Draw {
         for(int i=0;i<n;i++)
             for(int j=0;j<n;j++)
             {
+                Jaylib.Rectangle rec=new Jaylib.Rectangle(x+cell*j,sizeBetweenEqAndMap+eqSize+i*cell,cell,cell);
                 switch(usedMap[i][j]) {
                     case 0:
                         break;
@@ -319,9 +325,33 @@ public class Draw {
                         Jaylib.DrawLineEx(start,end,3,mapAttackHit);
                         break;
                     case 3:
-                        Jaylib.Rectangle rec=new Jaylib.Rectangle(x+cell*j,sizeBetweenEqAndMap+eqSize+i*cell,cell,cell);
+                        rec=new Jaylib.Rectangle(x+cell*j,sizeBetweenEqAndMap+eqSize+i*cell,cell,cell);
                         Jaylib.DrawRectangleRec(rec,shipColor);
                         Jaylib.DrawRectangleLinesEx(rec,3,shipColorContour);
+                        break;
+                    case 4:
+
+                        Jaylib.DrawRectangleRec(rec,PINK);
+                        Jaylib.DrawRectangleLinesEx(rec,3,shipColorContour);
+                        break;
+                    case 5:
+                        rec=new Jaylib.Rectangle(x+cell*j,sizeBetweenEqAndMap+eqSize+i*cell,cell,cell);
+                        Jaylib.DrawRectangleRec(rec,GREEN);
+                        Jaylib.DrawRectangleLinesEx(rec,3,shipColorContour);
+                        break;
+                    case 6:
+                        rec=new Jaylib.Rectangle(x+cell*j,sizeBetweenEqAndMap+eqSize+i*cell,cell,cell);
+                        Jaylib.DrawRectangleRec(rec,BROWN);
+                        Jaylib.DrawRectangleLinesEx(rec,3,shipColorContour);
+                        break;
+                    case 7:
+                        rec=new Jaylib.Rectangle(x+cell*j,sizeBetweenEqAndMap+eqSize+i*cell,cell,cell);
+                        Jaylib.DrawRectangleRec(rec,BLACK);
+                        Jaylib.DrawRectangleLinesEx(rec,3,shipColorContour);
+                        break;
+                    case 8:
+                        Jaylib.DrawCircle(x+j*cell+cell/2,sizeBetweenEqAndMap+eqSize+i*cell+cell/2,cell-10,mapAttackMiss);
+
                         break;
                 }
             }
@@ -351,28 +381,6 @@ public class Draw {
         return false;
     }
 
-
-    public void drawButton(int x,int sizeX,int y,int sizeY,String text,int textSize,Boolean isMouseOn)
-    {
-        Jaylib.DrawRectangle(x,y,sizeX,sizeY,BLUE);
-        if(isMouseOn)
-        {
-            Jaylib.Rectangle tmp=new Jaylib.Rectangle(x,y,sizeX,sizeY);
-            Jaylib.DrawRectangleLinesEx(tmp,10,SKYBLUE);
-        }
-        Jaylib.DrawText(text,x+25,y+25,textSize,BLACK);
-    }
-
-    public void drawMenu(String port,String ip,boolean isMouseOnHost,boolean isMouseOnJoin,boolean isPortTyping,boolean isIpTyping)
-    {
-        drawButton(50,225,50,100,"Hostuj",50,isMouseOnHost);
-        drawButton(50,225,250,100,"Dolacz",50,isMouseOnJoin);
-        drawButton(325,325,50,100,"Port:"+port,50,isPortTyping);
-        drawButton(325,325,250,100,"IP:"+ip,30,isIpTyping);
-
-    }
-
-
     public void setNumberOfShipAlive(int numberOfShipAlive) {
         this.numberOfShipAlive = numberOfShipAlive;
     }
@@ -389,7 +397,7 @@ public class Draw {
         this.isPlacingShipTime = isplacingShipTime;
     }
 
-    public void setPlaceShipTime(int placeShipTime) {
-        this.placeShipTime = placeShipTime;
+    public void setTime(int time) {
+        this.time = time;
     }
 }

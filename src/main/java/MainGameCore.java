@@ -1,13 +1,14 @@
+import com.raylib.Jaylib;
 import com.raylib.Raylib;
 import java.util.Random;
 import java.util.Objects;
 import static com.raylib.Jaylib.*;
 
+@SuppressWarnings("deprecation")
 public class MainGameCore {
 
     Draw draw;
     Communication communication;
-    int placeShipTime;
     int numberOfShipToPlace;
     int numberOfShipAlive;
     boolean isPlacingShipTime=true;
@@ -24,7 +25,7 @@ public class MainGameCore {
     int eqSize=100;
     int sizeBetweenEqAndMap=50;
     int cell;
-    int sizeBetweenMaps=350;
+    int sizeBetweenMaps=256;
     int startEnemyMapLocation;
     byte attackMode=1;
     int numberOfAttack=0;
@@ -38,19 +39,22 @@ public class MainGameCore {
     int raid=3;
     int[][] raidmap;
     boolean waitingFlag=false;
-    int width=1440,height=720;
+    int width=1280,height=720;
+    int time;
+    int shipType=-1;
 
-    int startTime;
-    int moveTime;
+    int moveTime=10;
+    int startTime=10;
     int[][] ship;
-    byte[][] attackWhiteList;
+    int[][] attackWhiteList;
     int startGold;
+    boolean rotate=false;
 
 
     MainGameCore(byte mapSize,int numberOfShip,String[] args) {
 
         n=mapSize;
-        cell=(25*20)/n;
+        cell=(22*20)/n;
         myMap=new byte[n][n];
         enemyMap=new byte[n][n];
         startEnemyMapLocation=n*cell+sizeBetweenEqAndMap+sizeBetweenMaps;
@@ -75,18 +79,49 @@ public class MainGameCore {
         try{
             communication=new Communication(who,port,ip);
         }
-        catch (Exception e)
+        catch (Exception ignored)
         {
 
         }
 
         draw=new Draw(n,width,height,eqSize,sizeBetweenEqAndMap,cell,sizeBetweenMaps,20,startEnemyMapLocation);
 
-        multithreading=new Multithreading(communication,isOpponentLeft,isMyMove,isProgramEnd,10);
+        multithreading=new Multithreading(communication,isOpponentLeft,isMyMove,isProgramEnd,moveTime,startTime);
 
         InitWindow(width, height, "Statki "+who);
         SetTargetFPS(60);
 
+    }
+
+    MainGameCore(Communication communication,String who,byte mapSize,int[][] ship,int[][] attackWhiteList,int moveTime,int startTime,int startGold)
+    {
+        n=mapSize;
+        this.ship = ship;
+        this.attackWhiteList = attackWhiteList;
+        this.moveTime = moveTime;
+        this.startTime = startTime;
+        this.startGold = startGold;
+        this.communication=communication;
+        cell=(22*20)/n;
+        myMap=new byte[n][n];
+        enemyMap=new byte[n][n];
+        startEnemyMapLocation=n*cell+sizeBetweenEqAndMap+sizeBetweenMaps;
+        clear();
+        try{
+            for(int i=0;i<5;i++)
+                numberOfShipToPlace+=ship[1][i]*(i+1);
+        }catch(Exception ignored)
+        {
+
+        }
+        numberOfShipAlive=numberOfShipToPlace;
+
+        multithreading=new Multithreading(communication,isOpponentLeft,isMyMove,isProgramEnd,moveTime,startTime);
+
+        InitWindow(width, height, "Statki "+who);
+        SetTargetFPS(60);
+
+        draw=new Draw(n,width,height,eqSize,sizeBetweenEqAndMap,cell,sizeBetweenMaps,20,startEnemyMapLocation);
     }
 
     void clear() {
@@ -103,28 +138,23 @@ public class MainGameCore {
 
     public void main(){
 
-        Texture[] shipTexture=new Texture[5];
-        for(int i=0;i<5;i++)
-        {
-            shipTexture[i]=LoadTexture("resources/"+(i+1)+".png");
-        }
-
         multithreading.start();
 
-        while (!WindowShouldClose()&&isOpponentLeft==false&&isProgramEnd==false&&isSomeoneWin==false)
+        while (!WindowShouldClose()&& !isOpponentLeft && !isProgramEnd && !isSomeoneWin)
         {
             gameLoop();
             BeginDrawing();
             ClearBackground(RAYWHITE);
-            draw.draw(myMap,enemyMap,raid,attackMode,numberOfShot,raidmap,null,false,shipTexture);
+            draw.draw(myMap,enemyMap,raid,attackMode,numberOfShot,raidmap,ship,rotate,shipType);
             EndDrawing();
 
         }
-
-        if(isOpponentLeft==false&&isSomeoneWin==false)
+        if(!isOpponentLeft && !isSomeoneWin)
         {
             isProgramEnd=true;
             multithreading.setIsProgramEnd(true);
+            CloseWindow();
+            return;
         }
         else
         {
@@ -139,24 +169,26 @@ public class MainGameCore {
 
         }
 
-        if(isProgramEnd==false) {
-            while (!WindowShouldClose())
-            {
-                BeginDrawing();
-                ClearBackground(RAYWHITE);
-                draw.draw(myMap,enemyMap,raid,attackMode,numberOfShot,raidmap,null,false,shipTexture);
-                draw.gameEnd(isOpponentLeft,isSomeoneWin,lost);
-                EndDrawing();
-            }
-        }
 
+        while (!isProgramEnd &&!WindowShouldClose())
+        {
+            BeginDrawing();
+            ClearBackground(RAYWHITE);
+            draw.draw(myMap,enemyMap,raid,attackMode,numberOfShot,raidmap,ship,rotate,shipType);
+            draw.gameEnd(isOpponentLeft,isSomeoneWin,lost);
+            EndDrawing();
+        }
+        draw.clear();
+        draw=null;
+        System.gc();
         CloseWindow();
+
     }
 
     void gameLoop(){
         upData();
         drawUpData();
-        if(continiuFlag&&collision()&&isMyMove&&!isPlacingShipTime)
+        if(collision()&&continiuFlag&&isMyMove&&!isPlacingShipTime)
         {
             shoot();
             multithreading.setNumberOfAttack(numberOfShot);
@@ -195,7 +227,7 @@ public class MainGameCore {
 
         if(isPlacingShipTime)
         {
-            placeShipTime=multithreading.getPlaceShipTime();
+            time = multithreading.getPlaceShipTime();
             isPlacingShipTime= multithreading.getisPlacingShipTime();
 
             if(!isPlacingShipTime)
@@ -206,7 +238,7 @@ public class MainGameCore {
         }
         else
         {
-
+            time = multithreading.getMoveTime();
         }
         multithreading.setNumberOfShip(numberOfShipAlive);
         boolean tmp=isMyMove;
@@ -247,7 +279,7 @@ public class MainGameCore {
         }
         else
         {
-            if(tmp != isMyMove && isMyMove == true)
+            if(tmp != isMyMove && isMyMove)
                 continiuFlag=true;
         }
         isSomeoneWin=multithreading.getEndGame();
@@ -256,7 +288,11 @@ public class MainGameCore {
     void drawUpData(){
         draw.setIsPlacingShipTime(isPlacingShipTime);
         draw.setNumberOfShipToPlace(numberOfShipToPlace);
-        draw.setPlaceShipTime(placeShipTime);
+
+        if(isPlacingShipTime)
+            draw.setTime(time);
+        else
+            draw.setTime(time);
         draw.setMyMove(isMyMove);
         draw.setNumberOfShipAlive(numberOfShipAlive);
 
@@ -272,24 +308,45 @@ public class MainGameCore {
             y=y-(eqSize+sizeBetweenEqAndMap);
             if(isPlacingShipTime)
             {
-                x=Raylib.GetMouseX();
-                x=x-sizeBetweenEqAndMap;
 
-                if(x>=0&&x<=n*cell&&y>=0&&y<=n*cell)
+                int startX=startEnemyMapLocation-sizeBetweenMaps+sizeBetweenEqAndMap;
+                int startY=eqSize+sizeBetweenEqAndMap+n*cell/2-192;
+                int mouseX=GetMouseX();
+                int mouseY=GetMouseY();
+                mouseY=mouseY-startY;
+                mouseX=mouseX-startX;
+                if(mouseX >= 0 && mouseX <= 128 && mouseY >= 0 &&mouseY <=320)
                 {
-                    x=x/cell;
-                    y=y/cell;
-                    if(myMap[y][x]==0 && numberOfShipToPlace>0)
+                    mouseY=mouseY/64;
+                    shipType=mouseY;
+                    if(ship[1][shipType]>0)
                     {
-                        myMap[y][x]=3;
-                        numberOfShipToPlace--;
+
                     }
-                    else if(myMap[y][x]==3)
+                    else
                     {
-                        myMap[y][x]=0;
-                        numberOfShipToPlace++;
+                        shipType=-1;
                     }
                 }
+                else if(mouseX >= 64 && mouseX <= 128 && mouseY >= 320 &&mouseY <=384)
+                {
+                    rotate=!rotate;
+                }
+                else if(shipType!=-1)
+                {
+                    mouseX=GetMouseX();
+                    mouseY=GetMouseY();
+                    mouseY=mouseY-(eqSize+sizeBetweenEqAndMap);
+                    mouseX=mouseX-(sizeBetweenEqAndMap);
+                    mouseX/=cell;
+                    mouseY/=cell;
+                    if(mouseX >= 0 && mouseX < n && mouseY >= 0 && mouseY < n && myMap[mouseY][mouseX] == 0)
+                    {
+                        placeShip(mouseX,mouseY);
+                    }
+
+                }
+
             }
             else if(isMyMove)
             {
@@ -355,6 +412,171 @@ public class MainGameCore {
         return false;
     }
 
+    void placeShip(int mouseX,int mouseY) {
+        switch (shipType) {
+            case 0 -> {
+                myMap[mouseY][mouseX] = 3;
+                placeShipColision(mouseX,mouseY);
+                ship[1][shipType]--;
+                numberOfShipToPlace--;
+                if (ship[1][shipType] <= 0)
+                    shipType = -1;
+            }
+            case 1 -> {
+                if (rotate) {
+                    if (mouseX >= 0 && mouseX + 1 < n) {
+                        if (myMap[mouseY][mouseX + 1] == 0)
+                        {
+                            myMap[mouseY][mouseX + 1] = 4;
+                            placeShipColision(mouseX+1,mouseY);
+                        }
+                        else
+                            break;
+                    } else
+                        break;
+                } else {
+                    if (mouseY >= 0 && mouseY + 1 < n) {
+                        if (myMap[mouseY + 1][mouseX] == 0)
+                        {
+                            myMap[mouseY + 1][mouseX] = 4;
+                            placeShipColision(mouseX,mouseY+1);
+                        }
+                        else
+                            break;
+                    } else
+                        break;
+
+                }
+                myMap[mouseY][mouseX] = 4;
+                placeShipColision(mouseX,mouseY);
+                ship[1][shipType]--;
+                numberOfShipToPlace-=2;
+                if (ship[1][shipType] <= 0)
+                    shipType = -1;
+            }
+            case 2 -> {
+                if (rotate) {
+                    if (mouseX > 0 && mouseX + 1 < n) {
+                        if (myMap[mouseY][mouseX - 1] == 0 && myMap[mouseY][mouseX + 1] == 0) {
+                            myMap[mouseY][mouseX - 1] = 5;
+                            myMap[mouseY][mouseX + 1] = 5;
+                            placeShipColision(mouseX+1,mouseY);
+                            placeShipColision(mouseX-1,mouseY);
+                        } else
+                            break;
+                    } else
+                        break;
+                } else {
+                    if (mouseY > 0 && mouseY + 1 < n) {
+                        if (myMap[mouseY - 1][mouseX] == 0 && myMap[mouseY + 1][mouseX] == 0) {
+                            myMap[mouseY - 1][mouseX] = 5;
+                            myMap[mouseY + 1][mouseX] = 5;
+                            placeShipColision(mouseX,mouseY+1);
+                            placeShipColision(mouseX,mouseY-1);
+                        } else
+                            break;
+                    } else
+                        break;
+
+                }
+                placeShipColision(mouseX,mouseY);
+                myMap[mouseY][mouseX] = 5;
+                ship[1][shipType]--;
+                numberOfShipToPlace-=3;
+                if (ship[1][shipType] <= 0)
+                    shipType = -1;
+            }
+            case 3 -> {
+                if (rotate) {
+                    if (mouseX > 0 && mouseX + 2 < n) {
+                        if (myMap[mouseY][mouseX - 1] == 0 && myMap[mouseY][mouseX + 2] == 0 && myMap[mouseY][mouseX + 1] == 0) {
+                            myMap[mouseY][mouseX - 1] = 6;
+                            myMap[mouseY][mouseX + 2] = 6;
+                            myMap[mouseY][mouseX + 1] = 6;
+                            placeShipColision(mouseX-1,mouseY);
+                            placeShipColision(mouseX+1,mouseY);
+                            placeShipColision(mouseX+2,mouseY);
+
+                        } else
+                            break;
+                    } else
+                        break;
+                } else {
+                    if (mouseY > 0 && mouseY + 2 < n) {
+                        if (myMap[mouseY - 1][mouseX] == 0 && myMap[mouseY + 2][mouseX] == 0 && myMap[mouseY + 1][mouseX] == 0) {
+                            myMap[mouseY - 1][mouseX] = 6;
+                            myMap[mouseY + 2][mouseX] = 6;
+                            myMap[mouseY + 1][mouseX] = 6;
+                            placeShipColision(mouseX,mouseY+1);
+                            placeShipColision(mouseX,mouseY-1);
+                            placeShipColision(mouseX,mouseY+2);
+                        } else
+                            break;
+                    } else
+                        break;
+
+                }
+                placeShipColision(mouseX,mouseY);
+                myMap[mouseY][mouseX] = 6;
+                ship[1][shipType]--;
+                numberOfShipToPlace-=4;
+                if (ship[1][shipType] <= 0)
+                    shipType = -1;
+            }
+            case 4 -> {
+                if (rotate) {
+                    if (mouseX - 1 > 0 && mouseX + 2 < n) {
+                        if (myMap[mouseY][mouseX - 1] == 0 && myMap[mouseY][mouseX - 2] == 0 && myMap[mouseY][mouseX + 2] == 0 && myMap[mouseX][mouseX + 1] == 0) {
+                            myMap[mouseY][mouseX - 1] = 7;
+                            myMap[mouseY][mouseX - 2] = 7;
+                            myMap[mouseY][mouseX + 1] = 7;
+                            myMap[mouseY][mouseX + 2] = 7;
+                            placeShipColision(mouseX-2,mouseY);
+                            placeShipColision(mouseX-1,mouseY);
+                            placeShipColision(mouseX+1,mouseY);
+                            placeShipColision(mouseX+2,mouseY);
+                        } else
+                            break;
+                    } else
+                        break;
+                } else {
+                    if (mouseY - 1 > 0 && mouseY + 2 < n) {
+                        if (myMap[mouseY - 1][mouseX] == 0 && myMap[mouseY - 2][mouseX] == 0 && myMap[mouseY + 2][mouseX] == 0 && myMap[mouseY + 1][mouseX] == 0) {
+                            myMap[mouseY - 1][mouseX] = 7;
+                            myMap[mouseY - 2][mouseX] = 7;
+                            myMap[mouseY + 1][mouseX] = 7;
+                            myMap[mouseY + 2][mouseX] = 7;
+                            placeShipColision(mouseX,mouseY+1);
+                            placeShipColision(mouseX,mouseY-1);
+                            placeShipColision(mouseX,mouseY-2);
+                            placeShipColision(mouseX,mouseY+2);
+                        } else
+                            break;
+                    } else
+                        break;
+
+                }
+                placeShipColision(mouseX,mouseY);
+                myMap[mouseY][mouseX] = 7;
+                ship[1][shipType]--;
+                numberOfShipToPlace-=5;
+                if (ship[1][shipType] <= 0)
+                    shipType = -1;
+            }
+        }
+    }
+
+    void placeShipColision(int x,int y) {
+        if(x-1>=0 && myMap[y][x-1]==0)
+            myMap[y][x-1]=8;
+        if(x+1<n && myMap[y][x+1]==0)
+            myMap[y][x+1]=8;
+        if(y-1>=0 && myMap[y-1][x]==0)
+            myMap[y-1][x]=8;
+        if(y+1<n && myMap[y+1][x]==0)
+            myMap[y+1][x]=8;
+    }
+
     void setRaidMap() {
         int s=numberOfShot;
         for(int i=0;i<3;i++)
@@ -395,129 +617,101 @@ public class MainGameCore {
             numberOfShot=0;
         attack = new int[0][];
         int s=0;
-        switch(attackMode)
-        {
-            case 0:
+        switch (attackMode) {
+            case 0 -> {
                 numberOfShot++;
-                attack=new int[numberOfShot][2];
-                attack[0][0]=enemyY;
-                attack[0][1]=enemyX;
-                break;
-            case 1:
-
-                for(int i=0;i<3;i++)
-                    for(int j=0;j<3;j++)
-                        if(isOnEnemyMap(enemyX-1+i,enemyY-1+j))
+                attack = new int[numberOfShot][2];
+                attack[0][0] = enemyY;
+                attack[0][1] = enemyX;
+            }
+            case 1 -> {
+                for (int i = 0; i < 3; i++)
+                    for (int j = 0; j < 3; j++)
+                        if (isOnEnemyMap(enemyX - 1 + i, enemyY - 1 + j))
                             numberOfShot++;
-
-                attack=new int[numberOfShot][2];
-                for(int i=0;i<3;i++)
-                    for(int j=0;j<3;j++)
-                        if(isOnEnemyMap(enemyX-1+i,enemyY-1+j))
-                        {
-                            attack[s][0]=enemyY-1+j;
-                            attack[s][1]=enemyX-1+i;
+                attack = new int[numberOfShot][2];
+                for (int i = 0; i < 3; i++)
+                    for (int j = 0; j < 3; j++)
+                        if (isOnEnemyMap(enemyX - 1 + i, enemyY - 1 + j)) {
+                            attack[s][0] = enemyY - 1 + j;
+                            attack[s][1] = enemyX - 1 + i;
                             s++;
                         }
-                break;
-            case 2:
-                for(int i=0;i<5;i++)
-                {
-                    if(isOnEnemyMap(enemyX-2+i,enemyY-2+i))
+            }
+            case 2 -> {
+                for (int i = 0; i < 5; i++) {
+                    if (isOnEnemyMap(enemyX - 2 + i, enemyY - 2 + i))
                         numberOfShot++;
-                    if(isOnEnemyMap(enemyX+2-i,enemyY-2+i))
+                    if (isOnEnemyMap(enemyX + 2 - i, enemyY - 2 + i))
                         numberOfShot++;
                 }
-                attack=new int[numberOfShot][2];
-                for(int i=0;i<5;i++)
-                {
-                    if(isOnEnemyMap(enemyX-2+i,enemyY-2+i))
-                    {
-                        attack[s][0]=enemyY-2+i;
-                        attack[s][1]=enemyX-2+i;
+                attack = new int[numberOfShot][2];
+                for (int i = 0; i < 5; i++) {
+                    if (isOnEnemyMap(enemyX - 2 + i, enemyY - 2 + i)) {
+                        attack[s][0] = enemyY - 2 + i;
+                        attack[s][1] = enemyX - 2 + i;
                         s++;
                     }
-                    if(isOnEnemyMap(enemyX+2-i,enemyY-2+i))
-                    {
-                        attack[s][0]=enemyY-2+i;
-                        attack[s][1]=enemyX+2-i;
+                    if (isOnEnemyMap(enemyX + 2 - i, enemyY - 2 + i)) {
+                        attack[s][0] = enemyY - 2 + i;
+                        attack[s][1] = enemyX + 2 - i;
                         s++;
                     }
                 }
-                break;
-            case 3:
-                for(int i=0;i<5;i++)
-                {
-                    if(isOnEnemyMap(enemyX-2+i,enemyY))
+            }
+            case 3 -> {
+                for (int i = 0; i < 5; i++) {
+                    if (isOnEnemyMap(enemyX - 2 + i, enemyY))
                         numberOfShot++;
-                    if(isOnEnemyMap(enemyX,enemyY-2+i))
+                    if (isOnEnemyMap(enemyX, enemyY - 2 + i))
                         numberOfShot++;
                 }
-                attack=new int[numberOfShot][2];
-                for(int i=0;i<5;i++)
-                {
-                    if(isOnEnemyMap(enemyX-2+i,enemyY))
-                    {
-                        attack[s][0]=enemyY;
-                        attack[s][1]=enemyX-2+i;
+                attack = new int[numberOfShot][2];
+                for (int i = 0; i < 5; i++) {
+                    if (isOnEnemyMap(enemyX - 2 + i, enemyY)) {
+                        attack[s][0] = enemyY;
+                        attack[s][1] = enemyX - 2 + i;
                         s++;
                     }
-                    if(isOnEnemyMap(enemyX,enemyY-2+i))
-                    {
-                        attack[s][0]=enemyY-2+i;
-                        attack[s][1]=enemyX;
+                    if (isOnEnemyMap(enemyX, enemyY - 2 + i)) {
+                        attack[s][0] = enemyY - 2 + i;
+                        attack[s][1] = enemyX;
                         s++;
                     }
                 }
-                break;
-            case 4:
-                attack=raidmap;
-                raidmap=null;
-                break;
-            case 5:
-                numberOfShot++;
-                break;
-            case 6:
-                byte[][] tmp=new byte[n*n][2];
-                int k=0;
-                for(int i=0;i<n;i++)
-                    for (int j=0;j<n;j++)
-                    {
-                        if(enemyMap[i][j]==0)
-                        {
-                            tmp[k][0]=(byte)i;
-                            tmp[k][1]=(byte)j;
+            }
+            case 4 -> {
+                attack = raidmap;
+                raidmap = null;
+            }
+            case 5 -> numberOfShot++;
+            case 6 -> {
+                byte[][] tmp = new byte[n * n][2];
+                int k = 0;
+                for (int i = 0; i < n; i++)
+                    for (int j = 0; j < n; j++) {
+                        if (enemyMap[i][j] == 0) {
+                            tmp[k][0] = (byte) i;
+                            tmp[k][1] = (byte) j;
                             k++;
                         }
                     }
-                if(k<10)
-                {
-                    numberOfShot=k;
-                }
-                else
-                {
-                    numberOfShot=10;
-                }
-                attack=new int[numberOfShot][2];
-
-                for(int i=0;i<numberOfShot;i++){
-                    int temp=rand.nextInt(k);
-                    attack[s][0]=tmp[temp][0];
-                    attack[s][1]=tmp[temp][1];
+                numberOfShot = Math.min(k, 10);
+                attack = new int[numberOfShot][2];
+                for (int i = 0; i < numberOfShot; i++) {
+                    int temp = rand.nextInt(k);
+                    attack[s][0] = tmp[temp][0];
+                    attack[s][1] = tmp[temp][1];
                     s++;
-                    if(temp==k-1)
-                    {
+                    if (temp == k - 1) {
                         k--;
-                    }
-                    else
-                    {
+                    } else {
                         k--;
-                        tmp[temp][0]=tmp[k][0];
-                        tmp[temp][1]=tmp[k][1];
+                        tmp[temp][0] = tmp[k][0];
+                        tmp[temp][1] = tmp[k][1];
                     }
                 }
-                break;
-
+            }
         }
     }
 
@@ -584,9 +778,10 @@ public class MainGameCore {
             for(int i=0;i<numberOfAttack;i++)
             {
 
-                if(myMap[attack[i][0]][attack[i][1]] == 0 )
+                if(myMap[attack[i][0]][attack[i][1]] == 0 || myMap[attack[i][0]][attack[i][1]] == 8 )
                     myMap[attack[i][0]][attack[i][1]]=1;
-                else if(myMap[attack[i][0]][attack[i][1]] == 3)
+                else if(myMap[attack[i][0]][attack[i][1]] == 3|| myMap[attack[i][0]][attack[i][1]] == 4|| myMap[attack[i][0]][attack[i][1]] == 5
+                        || myMap[attack[i][0]][attack[i][1]] == 6|| myMap[attack[i][0]][attack[i][1]] == 7)
                 {
                     myMap[attack[i][0]][attack[i][1]]=2;
                     numberOfShipAlive--;
@@ -609,7 +804,7 @@ public class MainGameCore {
             {
                 for (int j=0;j<n;j++)
                 {
-                    if(myMap[i][j]==3)
+                    if(myMap[i][j]==3||myMap[i][j]==4||myMap[i][j]==5||myMap[i][j]==6||myMap[i][j]==7)
                     {
                         ship[s][0]=i;
                         ship[s][1]=j;
@@ -645,9 +840,7 @@ public class MainGameCore {
     }
 
     boolean isOnEnemyMap(int x,int y) {
-        if(x>=0 && x<n && y>=0 && y<n && enemyMap[y][x]==0)
-            return true;
-        return false;
+        return x >= 0 && x < n && y >= 0 && y < n && enemyMap[y][x] == 0;
     }
 
 }

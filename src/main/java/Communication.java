@@ -16,6 +16,7 @@ public class Communication {
     InputStreamReader InputStream;
 
     Communication(String who,int port,String ip) throws IOException {
+        this.who=who;
         if(Objects.equals(who, "server"))
         {
             serverSocket=new ServerSocket(port);
@@ -36,7 +37,7 @@ public class Communication {
             Input=new BufferedReader(InputStream);
 
         }
-        this.who=who;
+
     }
 
     boolean isClose(boolean isProgramEnd) {

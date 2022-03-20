@@ -13,14 +13,21 @@ public class Multithreading extends Thread {
     Communication communication;
     private boolean endGame=false;
     private boolean win=false;
+    private int moveTime;
+    private int moveTimeTmp;
+    private int startTime;
 
-    Multithreading(Communication communication, boolean isOpponentLeft, boolean isMyMove, boolean isProgramEnd, int placeShipTime) {
+
+
+    Multithreading(Communication communication, boolean isOpponentLeft, boolean isMyMove, boolean isProgramEnd,int moveTime,int startTime) {
         this.communication = communication;
         this.isOpponentLeft = isOpponentLeft;
         this.isMyMove = isMyMove;
         this.isProgramEnd = isProgramEnd;
+        this.moveTime = moveTime*100;
+        this.startTime = startTime;
+        this.placeShipTime=startTime;
 
-        this.placeShipTime = placeShipTime;
     }
 
     @Override
@@ -38,6 +45,17 @@ public class Multithreading extends Thread {
             if (isProgramEnd || isOpponentLeft || endGame || win)
                 break;
             if (isAttackTime) {
+                try {
+                    sleep(10);
+                    moveTimeTmp--;
+                    if(moveTimeTmp<0)
+                    {
+                        isMyMove=!isMyMove;
+                        moveTimeTmp=moveTime;
+                    }
+                }
+                catch (Exception ignored) {
+                }
                 isMyMove = communication.isMyMove(isMyMove);
                 if (isMyMove) {
                     myMove();
@@ -46,6 +64,7 @@ public class Multithreading extends Thread {
                 {
                     waiting();
                 }
+
             }
             else
             {
@@ -61,17 +80,18 @@ public class Multithreading extends Thread {
 
                 }
                 else
+                {
                     isAttackTime= true;
+                    moveTimeTmp=moveTime;
+                }
+
             }
         }
-        System.out.println("WYSZLEM");
         if(isProgramEnd)
         {
             isOpponentLeft = communication.isClose(true);
         }
         endGame=true;
-
-
     }
 
     void myMove()
@@ -163,6 +183,7 @@ public class Multithreading extends Thread {
             isAttack=false;
             attackType = -1;
             numberOfAttack = -1;
+            moveTimeTmp=moveTime;
             System.out.println("7");
 
         }
@@ -235,9 +256,12 @@ public class Multithreading extends Thread {
             isAttack=false;
             attackType = -1;
             numberOfAttack = -1;
+            moveTimeTmp=moveTime;
         }
 
     }
+
+
 
 
     void setIsProgramEnd(boolean isProgramEnd) {
@@ -298,6 +322,10 @@ public class Multithreading extends Thread {
 
     }
 
+    int getMoveTime()
+    {
+        return moveTimeTmp;
+    }
     int getPlaceShipTime()
     {
         return placeShipTime;

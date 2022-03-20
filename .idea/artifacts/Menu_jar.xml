@@ -1,0 +1,15 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="Menu:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/Menu_jar</output-path>
+    <root id="archive" name="Statki.main.jar">
+      <element id="directory" name="META-INF">
+        <element id="file-copy" path="$PROJECT_DIR$/src/main/java/META-INF/MANIFEST.MF" />
+      </element>
+      <element id="module-output" name="Statki.main" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/uk.co.electronstudio.jaylib/jaylib-natives-windows-x86_64/4.0.0-0/ca676f584bfa32dc24573ef963aac78ab93f73f/jaylib-natives-windows-x86_64-4.0.0-0.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/uk.co.electronstudio.jaylib/jaylib-natives-macosx-x86_64/4.0.0-0/81b990165d77fc12036fd8a92d24d346ccdd32c3/jaylib-natives-macosx-x86_64-4.0.0-0.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/uk.co.electronstudio.jaylib/jaylib-natives-linux-x86_64/4.0.0-0/e91c55853d215de1264ec1ac921c87dd20609248/jaylib-natives-linux-x86_64-4.0.0-0.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/uk.co.electronstudio.jaylib/jaylib/4.0.0-0/e0edfba4b1f485f1aefaa332f405f634d0c852da/jaylib-4.0.0-0.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>
