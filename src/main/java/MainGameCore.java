@@ -4,7 +4,6 @@ import java.util.Random;
 import java.util.Objects;
 import static com.raylib.Jaylib.*;
 
-@SuppressWarnings("deprecation")
 public class MainGameCore {
 
     Draw draw;
@@ -76,13 +75,7 @@ public class MainGameCore {
             isMyMove= Boolean.FALSE;
             ip=args[2];
         }
-        try{
-            communication=new Communication(who,port,ip);
-        }
-        catch (Exception ignored)
-        {
 
-        }
 
         draw=new Draw(n,width,height,eqSize,sizeBetweenEqAndMap,cell,sizeBetweenMaps,20,startEnemyMapLocation);
 
@@ -148,7 +141,6 @@ public class MainGameCore {
             draw.draw(myMap,enemyMap,raid,attackMode,numberOfShot,raidmap,ship,rotate,shipType);
             EndDrawing();
             System.gc();
-
         }
         if(!isOpponentLeft && !isSomeoneWin)
         {
@@ -182,7 +174,7 @@ public class MainGameCore {
         }
         draw.clear();
         draw=null;
-        System.gc();
+
         CloseWindow();
 
     }
@@ -235,6 +227,7 @@ public class MainGameCore {
             if(!isPlacingShipTime)
             {
                 numberOfShipAlive=numberOfShipAlive-numberOfShipToPlace;
+                shipType=-1;
             }
 
         }

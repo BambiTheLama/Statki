@@ -6,7 +6,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Objects;
 
-public class Communication {
+public class Communication extends Thread{
     String who;
     ServerSocket serverSocket;
     BufferedReader Input = null;
@@ -14,32 +14,98 @@ public class Communication {
     Socket server;
     Socket player;
     InputStreamReader InputStream;
+    boolean connect=false;
+    int port;
+    boolean end=false;
+    boolean work=false;
 
-    Communication(String who,int port,String ip) throws IOException {
+    boolean tryConnect(String who,int port,String ip) {
         this.who=who;
         if(Objects.equals(who, "server"))
         {
-            serverSocket=new ServerSocket(port);
-            player =serverSocket.accept();
-            InputStream=new InputStreamReader(player.getInputStream());
-            Input=new BufferedReader(InputStream);
-            toSend=new PrintWriter(player.getOutputStream());
+            if(work && !connect && !end)
+                return false;
+            try{
+                System.out.println("server1");
+                this.port=port;
+                if(connect)
+                {
+                    System.out.println("server2a");
+                    InputStream=new InputStreamReader(player.getInputStream());
+                    Input=new BufferedReader(InputStream);
+                    toSend=new PrintWriter(player.getOutputStream());
+                    work=false;
+                    return true;
+                }
+
+
+                System.out.println("server2");
+
+                System.out.println("server3");
+                if(!work)
+                {
+                    System.out.println("server4");
+                    start();
+                    work=true;
+                    return false;
+                }
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
+
 
         }
+
         else if(Objects.equals(who, "client"))
         {
-            if(Objects.equals(ip, ""))
-                server=new Socket("localhost",port);
-            else
-                server=new Socket(ip,port);
-            toSend=new PrintWriter(server.getOutputStream());
-            InputStream=new InputStreamReader(server.getInputStream());
-            Input=new BufferedReader(InputStream);
+            try{
+                if(Objects.equals(ip, ""))
+                    server=new Socket("localhost",port);
+                else
+                    server=new Socket(ip,port);
+                toSend=new PrintWriter(server.getOutputStream());
+                InputStream=new InputStreamReader(server.getInputStream());
+                Input=new BufferedReader(InputStream);
+                return true;
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
+
 
         }
 
+        return false;
     }
 
+    void End()
+    {
+        end=true;
+    }
+
+    @Override
+    public void run()
+    {
+        try {
+            serverSocket=new ServerSocket(port);
+            System.out.println("Server stawiam");
+            player =serverSocket.accept();
+            System.out.println("Server dolaczam");
+            connect=true;
+
+        } catch (IOException e) {
+            work=false;
+            end=true;
+
+            }
+
+
+
+
+    }
     boolean isClose(boolean isProgramEnd) {
         boolean tmp=true;
         try{

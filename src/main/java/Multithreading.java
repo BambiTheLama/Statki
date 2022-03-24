@@ -93,7 +93,6 @@ public class Multithreading extends Thread {
             isOpponentLeft = communication.isClose(true);
         }
         endGame=true;
-        System.gc();
     }
 
     void myMove()
