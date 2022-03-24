@@ -7,19 +7,17 @@ import static com.raylib.Raylib.GetMouseX;
 import static com.raylib.Raylib.GetMouseY;
 
 public class DrawMenu {
-    Jaylib.Color buttonColor=new Jaylib.Color(128,128,255,255);
-    Jaylib.Color buttonPressColor=new Jaylib.Color(64,64,128,255);
-    Jaylib.Color textColor=new Jaylib.Color(0,0,0,255);
+    static Jaylib.Color buttonColor=new Jaylib.Color(128,128,255,255);
+    static Jaylib.Color buttonPressColor=new Jaylib.Color(64,64,128,255);
+    static Jaylib.Color textColor=new Jaylib.Color(0,0,0,255);
     private static int port;
     private static String ip;
-    private static int mapSize;
-    private static int startTime;
-    private static int moveTime;
+
     private static int[][] ship;
     private static int[][] attackWhiteList;
-    private static int startGold;
+
     private static int time=0;
-    private static int timeMax=60*20;
+    private static int timeMax=120;
     private static float rotate=0;
     private static boolean Btime=false;
     private static Texture loading;
@@ -27,15 +25,11 @@ public class DrawMenu {
     private static boolean isLoading=false;
     private static float textSpace=1;
 
-    DrawMenu(int port,int mapSize,int startTime,int moveTime,int[][] ship,int[][] attackWhiteList,int startGold)
+    DrawMenu(int port,int[][] ship,int[][] attackWhiteList)
     {
         this.port=port;
-        this.mapSize=mapSize;
-        this.startTime = startTime;
-        this.moveTime = moveTime;
         this.ship = ship;
         this.attackWhiteList = attackWhiteList;
-        this.startGold = startGold;
         loading=LoadTexture("resources/load.png");
         font=LoadFont("resources/czciaki/comici.ttf");
 
@@ -50,28 +44,12 @@ public class DrawMenu {
         DrawMenu.port = port;
     }
 
-    public static void setMapSize(int mapSize) {
-        DrawMenu.mapSize = mapSize;
-    }
-
-    public static void setStartTime(int startTime) {
-        DrawMenu.startTime = startTime;
-    }
-
-    public static void setMoveTime(int moveTime) {
-        DrawMenu.moveTime = moveTime;
-    }
-
     public static void setShip(int[][] ship) {
         DrawMenu.ship = ship;
     }
 
     public static void setAttackWhiteList(int[][] attackWhiteList) {
         DrawMenu.attackWhiteList = attackWhiteList;
-    }
-
-    public static void setStartGold(int startGold) {
-        DrawMenu.startGold = startGold;
     }
 
     public static void setIp(String ip) {
@@ -101,9 +79,7 @@ public class DrawMenu {
 
         switch (menuStage)
         {
-            case 1:
-                DrawStart();
-                break;
+
             case 2:
                 DrawHostSettings(StartDrawingY);
                 break;
@@ -119,13 +95,7 @@ public class DrawMenu {
 
         }
     }
-    void DrawStart()
-    {
-        DrawButton(415,165,450,100,75,"Hostuj");
-        DrawButton(415,295,450,100,75,"Dolacz");
-        DrawButton(415,425,450,100,75,"Ustawienia");
 
-    }
     void DrawHostSettings(int StartDrawingY)
     {
         Jaylib.Vector2 tmp1 = new Jaylib.Vector2(1205,150);
@@ -140,24 +110,24 @@ public class DrawMenu {
         DrawTextButton(25,25+StartDrawingY,315,60,40,"Wielkosc Mapy");
 
 
-        DrawCtrButton(365,25+StartDrawingY,60,60,40,""+mapSize,2);
+
 
         DrawTextButton(25,110+StartDrawingY,500,60,40,"Czas stawiania statkow");
-        DrawCtrButton(550,110+StartDrawingY,60,60,40,""+startTime,2);
+
 
         DrawTextButton(25,195+StartDrawingY,225,60,40,"Czas tury");
-        DrawCtrButton(275,195+StartDrawingY,60,60,40,""+moveTime,2);
+
 
         DrawTextButton(25,280+StartDrawingY,140,60,40,"Statki");
         DrawShipConfig(StartDrawingY);
         DrawBulletCongig(StartDrawingY);
         DrawTextButton(25,715+StartDrawingY,325,60,40,"Startowe Zloto");
-        DrawCtrButton(375,715+StartDrawingY,160,60,40,""+startGold,5);
+
 
         DrawTextButton(25,800+StartDrawingY,110,60,40,"Port");
-        DrawCtrButton(160,800+StartDrawingY,160,60,40,""+port,5);
 
-        DrawButton(25,885+StartDrawingY,350,80,80,"START");
+
+
     }
     void DrawShipConfig(int StartDrawingY)
     {
@@ -166,11 +136,6 @@ public class DrawMenu {
         try{
             for(int i=0;i<5;i++)
                 DrawTextButton(145+i*110,StartDrawingY+365,110,60,40,""+ship[0][i]);
-            for(int i=0;i<5;i++)
-                DrawCtrButton(145+i*110,StartDrawingY+425,110,60,40,""+ship[1][i],1);
-            for(int i=0;i<5;i++)
-                DrawCtrButton(145+i*110,StartDrawingY+485,110,60,40,""+ship[2][i],4);
-
         }
         catch (Exception e)
         {
@@ -213,7 +178,7 @@ public class DrawMenu {
                     DrawLine(145+i*110,570+StartDrawingY,255+i*110,634+StartDrawingY,RED);
                     DrawLine(255+i*110,570+StartDrawingY,145+i*110,634+StartDrawingY,RED);
                 }
-                DrawCtrButton(145+i*110,634+StartDrawingY,110,64,40,""+attackWhiteList[1][i],4);
+
             }
         }
         catch (Exception e){
@@ -252,9 +217,6 @@ public class DrawMenu {
     }
     void DrawClientMenu()
     {
-        DrawCtrButton(440,240,400,60,40,"IP:"+ip,18);
-        DrawCtrButton(440,330,400,60,40,"PORT:"+port,10);
-        DrawButton(440,420,400,60,60,"Dolacz");
         if(isLoading)
         {
             Jaylib.Rectangle rec=new Jaylib.Rectangle(0,0,loading.width(),loading.height());
@@ -269,7 +231,7 @@ public class DrawMenu {
     {
 
     }
-    boolean collision(int startX,int startY,int sizeX,int sizeY)
+    static boolean collision(int startX, int startY, int sizeX, int sizeY)
     {
         int x=GetMouseX();
         int y=GetMouseY();
@@ -277,31 +239,32 @@ public class DrawMenu {
             return true;
         return false;
     }
-    void DrawButton(int startX, int startY, int sizeX, int sizeY, int textSize, String Text)
+    static void DrawButton(int startX, int startY, int sizeX, int sizeY, int textSize, String Text,boolean pressed)
     {
+
         Jaylib.Rectangle rec=new Jaylib.Rectangle(startX,startY,sizeX,sizeY);
         DrawRectangleRec(rec,buttonColor);
-        if(collision(startX,startY,sizeX,sizeY))
+        if(pressed)
             DrawRectangleLinesEx(rec,8,buttonPressColor);
         Raylib.Vector2 temp=MeasureTextEx(GetFontDefault(),Text,textSize,7);
 
         Jaylib.Vector2 tmp=new Jaylib.Vector2((int)(startX+(sizeX-temp.x())/2),(startY+(sizeY-temp.y())/2)+3);
         DrawTextEx(font,Text,tmp,textSize,(1f/10f)*textSize*textSpace,textColor);
+
     }
-    void DrawTextButton(int startX, int startY, int sizeX, int sizeY, int textSize, String Text)
+    static void DrawTextButton(int startX, int startY, int sizeX, int sizeY, int textSize, String Text)
     {
         Jaylib.Rectangle rec=new Jaylib.Rectangle(startX,startY,sizeX,sizeY);
         DrawRectangleRec(rec,buttonColor);
         Raylib.Vector2 temp=MeasureTextEx(GetFontDefault(),Text,textSize,7);
         Jaylib.Vector2 tmp=new Jaylib.Vector2(startX+10,(startY+(sizeY-temp.y())/2)+3);
         DrawTextEx(font,Text,tmp,textSize,(1f/10f)*textSize*textSpace,textColor);
-
     }
-    void DrawCtrButton(int startX, int startY, int sizeX, int sizeY, int textSize, String Text,int stringSize)
+    static void DrawCtrButton(int startX, int startY, int sizeX, int sizeY, int textSize, String Text,int stringSize,boolean pressed)
     {
         Jaylib.Rectangle rec=new Jaylib.Rectangle(startX,startY,sizeX,sizeY);
         DrawRectangleRec(rec,buttonColor);
-        if(collision(startX,startY,sizeX,sizeY))
+        if(pressed)
         {
             DrawRectangleLinesEx(rec,8,buttonPressColor);
             if(Btime)
@@ -331,7 +294,6 @@ public class DrawMenu {
         {
             Jaylib.Vector2 tmp=new Jaylib.Vector2(startX+10,(startY+(sizeY-temp.y())/2)+3);
             DrawTextEx(font,Text,tmp,textSize,(1f/10f)*textSize*textSpace,textColor);
-
         }
 
     }

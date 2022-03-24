@@ -268,6 +268,7 @@ public class Draw {
                     Jaylib.DrawRectangleLinesEx(rec,3,shipColorContour2);
                     break;
             }
+
         }
 
     }
