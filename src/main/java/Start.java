@@ -18,23 +18,18 @@ public class Start {
         boolean End=false;
         while(!start.getEnd())
         {
-            System.out.println("pentla "+start.getMenuStage());
+            //System.out.println("pentla "+start.getMenuStage());
             if(start.getMenuStage()==3)
             {
                 who=new String("server");
                 System.out.println("JESTES W TWORZENIu SERVERA "+start.getWho() +" ip "+start.getIp()+" port "+start.getPort());
                 communication=new Communication();
-                while(!communication.tryConnect(start.getWho(),start.getPort(),start.getIp()))
+                while(!communication.tryConnect(start.getWho(),start.getPort(),start.getIp()) && start.getMenuStage()==3)
                 {
-                    if(start.getMenuStage()!=3)
-                    {
-                        communication.End();
-                    }
                     if(!start.getEnd())
                     {
                         communication.End();
                     }
-
                 }
                 System.out.println("ELO");
                 if(start.getMenuStage()==3)
