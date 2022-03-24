@@ -24,14 +24,14 @@ public class Start {
                 who=new String("server");
                 System.out.println("JESTES W TWORZENIu SERVERA "+start.getWho() +" ip "+start.getIp()+" port "+start.getPort());
                 communication=new Communication();
-                while(!communication.tryConnect(start.getWho(),start.getPort(),start.getIp()) && start.getMenuStage()==3)
+                while(!communication.tryConnect(start.getWho(),start.getPort(),start.getIp()) && start.getMenuStage()==3 &&!start.getEnd())
                 {
-                    if(!start.getEnd())
-                    {
-                        communication.End();
-                    }
+
                 }
-                System.out.println("ELO");
+                if(start.getMenuStage()!=3 ||start.getEnd()) {
+                    communication.tryConnect("client",start.getPort(),start.getIp());
+                    start.port++;
+                }
                 if(start.getMenuStage()==3)
                 {
                     System.out.println("ELO2");
@@ -80,7 +80,7 @@ public class Start {
         System.out.println("Koniec");
         if(who.equals("server"))
             sendGameInformation();
-        else
+        else if(who.equals("client"))
             getGameInformation();
         System.out.println("Koniec2");
         MainGameCore mainGameCore=new MainGameCore(communication,who, (byte) mapSize,ship,attackWhiteList,moveTime,startTime,startGold);
