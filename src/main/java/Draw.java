@@ -40,7 +40,7 @@ public class Draw {
     private int numberOfShipAlive;
     private int time;
     Texture[] shipTexture=new Texture[6];
-
+    private static Font font=GetFontDefault();
 
 
     Draw() {
@@ -54,6 +54,7 @@ public class Draw {
         shipColor=new Jaylib.Color(55,55,255,25);
         shipColorContour2=new Jaylib.Color(55,255,255,100);
         shipColor2=new Jaylib.Color(55,255,255,25);
+        font=LoadFont("resources/czciaki/comici.ttf");
 
     }
 
@@ -81,26 +82,31 @@ public class Draw {
 
     void draw(byte[][] myMap,byte[][] enemyMap,int numberOfAttack,int attackMode,int numberOfShoot,int [][]raidMap,int[][]ship,boolean rotate,int shiptype) {
         Raylib.DrawLine(0,eqSize,width,eqSize,BLACK);
-
+        Jaylib.Vector2 tmp;
         drawMap(sizeBetweenEqAndMap,myMap,"Twoja Mapa");
         drawMap(startEnemyMapLocation,enemyMap,"Mapa Wroga");
 
         if(isPlacingShipTime)
         {
-            Jaylib.DrawText("Pozostaly czas ustawiania :"+time+" s",0,0,20,BLACK);
-            Jaylib.DrawText("Statki :"+numberOfShipToPlace,0,20,20,BLACK);
+            tmp=new Jaylib.Vector2(0,0);
+            DrawTextEx(font,"Pozostaly czas ustawiania : "+(time>=60?time/60+" min " +time%60 +" s":time +" s"),tmp,20,(1f/10f)*sizeText*1,textColor);
+            tmp=new Jaylib.Vector2(0,20);
+            DrawTextEx(font,"Statki :"+numberOfShipToPlace,tmp,sizeText,(1f/10f)*sizeText*1,textColor);
         }
         else
         {
             if(isMyMove)
             {
-                Jaylib.DrawText("Moja Tura :"+time/100+" s",0,0,20,BLACK);
+                tmp=new Jaylib.Vector2(0,0);
+                DrawTextEx(font,"Moja Tura :"+time/100+" s",tmp,20,(1f/10f)*sizeText*1,textColor);
             }
             else
             {
-                Jaylib.DrawText("Przeciwnika Tura :"+time/100+" s",0,0,20,BLACK);
+                tmp=new Jaylib.Vector2(0,0);
+                DrawTextEx(font,"Przeciwnika Tura :"+time/100+" s",tmp,20,(1f/10f)*sizeText*1,textColor);
             }
-            Jaylib.DrawText("Statki :"+numberOfShipAlive,0,20,20,BLACK);
+            tmp=new Jaylib.Vector2(0,20);
+            DrawTextEx(font,"Statki :"+numberOfShipAlive,tmp,20,(1f/10f)*sizeText*1,textColor);
         }
 
         for(int i=0;i<=6;i++)
@@ -110,7 +116,8 @@ public class Draw {
             else
                 DrawRectangle(startEnemyMapLocation-20+i*80,8,64,64,RED);
 
-            DrawText(""+i,startEnemyMapLocation+12+i*80,40,20,BLACK);
+            tmp=new Jaylib.Vector2(startEnemyMapLocation+12+i*80,40);
+            DrawTextEx(font,""+i,tmp,20,(1f/10f)*sizeText*1,textColor);
         }
 
         if(isPlacingShipTime)
@@ -151,7 +158,7 @@ public class Draw {
             start.x(startX+128);
         else
             start.x(startX+64);
-
+        Raylib.Vector2 tmp;
         for(int i=0;i<6;i++)
         {
             start.y(startY+64*i);
@@ -161,10 +168,8 @@ public class Draw {
                 Raylib.DrawTextureEx(shipTexture[i],start,0,1,WHITE);
             if(i!=5)
             {
-                if(rotate)
-                    DrawText(""+(i+1), (int) start.x()+3-64, (int) start.y(),16,BLACK);
-                else
-                    DrawText(""+(i+1), (int) start.x()+3, (int) start.y(),16,BLACK);
+                tmp=new Jaylib.Vector2( start.x()+3-(rotate ?64:0),(int) start.y());
+                DrawTextEx(font,""+(i+1),tmp,16,(1f/10f)*sizeText*1,textColor);
             }
         }
         start.x(startX+6);
@@ -172,7 +177,8 @@ public class Draw {
             for(int i=0;i<5;i++)
             {
                 start.y(startY+64*i);
-                DrawText(""+ship[1][i], (int) start.x()+20, (int) start.y()+16,32,BLACK);
+                tmp=new Jaylib.Vector2( start.x()+20,start.y()+16);
+                DrawTextEx(font,""+ship[1][i],tmp,32,(1f/10f)*sizeText*1,textColor);
             }
 
         }
@@ -320,7 +326,8 @@ public class Draw {
                     }
                     break;
                 case 4:
-                    DrawText(""+numberOfAttack,startX+cell*2,startY-cell*2,20,BLACK);
+                    Raylib.Vector2 tmp2=new Jaylib.Vector2(startX+cell*2,startY-cell*2);
+                    DrawTextEx(font,""+numberOfAttack,tmp2,20,(1f/10f)*sizeText*1,textColor);
                     for(int i=0;i<3;i++)
                     {
                         if(isOnEnemyMap(x-1+i,y))
@@ -356,13 +363,14 @@ public class Draw {
 
     void drawMap(int x,byte[][] usedMap,String name) {
 
+        Jaylib.Vector2 tmp;
         for(byte i=0;i<=n;i++)
         {
             Jaylib.DrawLine(x,i*cell+sizeBetweenEqAndMap+eqSize,x+n*cell,i*cell+sizeBetweenEqAndMap+eqSize,mapLineColor);
             if(i!=n)
             {
-                String tmp=""+(i+1);
-                Jaylib.DrawText(tmp,x-sizeBetweenEqAndMap/2,i*cell+cell/4+sizeBetweenEqAndMap+eqSize,sizeText,textColor);
+                tmp=new Jaylib.Vector2(x-sizeBetweenEqAndMap/2,i*cell+sizeBetweenEqAndMap+eqSize);
+                DrawTextEx(font,""+(i+1),tmp,sizeText,(1f/10f)*sizeText*1,textColor);
             }
         }
         for(byte i=0;i<=n;i++)
@@ -370,8 +378,8 @@ public class Draw {
             Jaylib.DrawLine(x+i*cell,sizeBetweenEqAndMap+eqSize,x+i*cell,n*cell+sizeBetweenEqAndMap+eqSize,mapLineColor);
             if(i!=n)
             {
-                String tmp=(char)('a'+i)+"";
-                Jaylib.DrawText(tmp,i*cell+cell*4/9+x,sizeBetweenEqAndMap/2+eqSize,sizeText,textColor);
+                tmp=new Jaylib.Vector2(i*cell+cell/4+x,sizeBetweenEqAndMap/2+eqSize);
+                DrawTextEx(font,(char)('a'+i)+"",tmp,sizeText,(1f/10f)*sizeText*1,textColor);
             }
         }
         for(int i=0;i<n;i++)
@@ -425,7 +433,9 @@ public class Draw {
                         break;
                 }
             }
-        Jaylib.DrawText(name,x,n*cell+eqSize+sizeBetweenEqAndMap,20,textColor);
+        Raylib.Vector2 tmp2=new Jaylib.Vector2(x,n*cell+eqSize+sizeBetweenEqAndMap);
+        DrawTextEx(font,name,tmp2,20,(1f/10f)*sizeText*1,textColor);
+
     }
 
     void gameEnd(boolean isOpponentLeft,boolean isSomeoneWin,boolean lost) {

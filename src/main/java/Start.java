@@ -1,3 +1,5 @@
+import com.raylib.Jaylib;
+
 import static java.lang.Thread.sleep;
 
 public class Start {
@@ -11,11 +13,14 @@ public class Start {
     static Communication communication=new Communication();
 
     
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
+
+        Jaylib.Color tmp=new Jaylib.Color(245,12,0,255);
         MenuStart start=new MenuStart();
         start.start();
         String who = null;
         boolean End=false;
+
         while(!start.getEnd())
         {
             //System.out.println("pentla "+start.getMenuStage());
@@ -64,6 +69,10 @@ public class Start {
                     End=true;
                     start.setEnd(true);
                 }
+
+            }
+            else if(start.getMenuStage()==5)
+            {
 
             }
             try{

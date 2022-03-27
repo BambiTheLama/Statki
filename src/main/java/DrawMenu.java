@@ -24,6 +24,8 @@ public class DrawMenu {
     private static Font font=GetFontDefault();
     private static boolean isLoading=false;
     private static float textSpace=1;
+    static Texture[] shipTexture=new Texture[5];
+    static Jaylib.Color[] shipColor=new Jaylib.Color[5];
 
     DrawMenu(int port,int[][] ship,int[][] attackWhiteList)
     {
@@ -32,13 +34,32 @@ public class DrawMenu {
         this.attackWhiteList = attackWhiteList;
         loading=LoadTexture("resources/load.png");
         font=LoadFont("resources/czciaki/comici.ttf");
+        for(int i=0;i<5;i++)
+        {
+            shipTexture[i]=LoadTexture("resources/"+(i+1)+".png");
+        }
+        for(int i=0;i<5;i++)
+        {
+            shipColor[i]=new Jaylib.Color(i*65,i*78,i*9+69,255);
+        }
 
+    }
+    void reLoad()
+    {
+        loading=LoadTexture("resources/load.png");
+        font=LoadFont("resources/czciaki/comici.ttf");
+        for(int i=0;i<5;i++)
+        {
+            shipTexture[i]=LoadTexture("resources/"+(i+1)+".png");
+        }
     }
 
     void clear()
     {
         UnloadTexture(loading);
         UnloadFont(font);
+        for(int i=0;i<5;i++)
+            UnloadTexture(shipTexture[i]);
     }
     public static void setPort(int port) {
         DrawMenu.port = port;
@@ -213,7 +234,6 @@ public class DrawMenu {
         rotate+=0.1;
         rotate=rotate%360;
         DrawTexturePro(loading,rec,rec2,vec,rotate,WHITE);
-
     }
     void DrawClientMenu()
     {
@@ -229,7 +249,20 @@ public class DrawMenu {
     }
     void DrawSettings()
     {
+        DrawTextButton(25,25,300,60,40,"Kolor Statkow");
+        Jaylib.Vector2 start=new Jaylib.Vector2(25,110);
+        for(int i=0;i<5;i++)
+        {
 
+            DrawRectangle(25+i*128,110,64,64,buttonColor);
+            Raylib.DrawTextureEx(shipTexture[i],start,0,1,WHITE);
+            DrawTextEx(font,(i+1)+"",start,20,2,textColor);
+            Jaylib.Rectangle rec=new Jaylib.Rectangle(start.x()+64,110,64,64);
+            DrawRectangleRec(rec,shipColor[i]);
+            DrawRectangleLinesEx(rec,2,BLACK);
+            start.x(start.x()+128);
+
+        }
     }
     static boolean collision(int startX, int startY, int sizeX, int sizeY)
     {
@@ -264,7 +297,7 @@ public class DrawMenu {
     {
         Jaylib.Rectangle rec=new Jaylib.Rectangle(startX,startY,sizeX,sizeY);
         DrawRectangleRec(rec,buttonColor);
-        if(pressed)
+        if(pressed && stringSize>0)
         {
             DrawRectangleLinesEx(rec,8,buttonPressColor);
             if(Btime)
@@ -296,5 +329,17 @@ public class DrawMenu {
             DrawTextEx(font,Text,tmp,textSize,(1f/10f)*textSize*textSpace,textColor);
         }
 
+    }
+    static void setShipColor(Jaylib.Color color, int i)
+    {
+        shipColor[i]=color;
+    }
+    static Jaylib.Color[] getAllShipColor()
+    {
+        return shipColor;
+    }
+    static Jaylib.Color getShipColor(int i)
+    {
+        return shipColor[i];
     }
 }

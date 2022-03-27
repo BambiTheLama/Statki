@@ -1,10 +1,13 @@
+import com.raylib.Jaylib;
+import com.raylib.Raylib;
+
 import java.net.InetAddress;
 import static com.raylib.Jaylib.*;
 import static com.raylib.Raylib.WindowShouldClose;
 
 
 public class MenuStart extends Thread{
-
+    int t=0;
     String who;
     String ip="";
     int port=25565;
@@ -20,6 +23,7 @@ public class MenuStart extends Thread{
     boolean end=false;
     boolean tryConnect=false;
     DrawMenu menu=null;
+    Jaylib.Color[] shipColor=new Jaylib.Color[5];
 
 
     public void run() {
@@ -27,6 +31,7 @@ public class MenuStart extends Thread{
         tryConnect=false;
         for(int i=0;i<5;i++)
             ship[0][i]=i+1;
+
         InitWindow(1280,720,"MENU");
         menu=new DrawMenu(port,ship,attackWhiteList);
         while (!WindowShouldClose() && menuStage>0 && !end) {
@@ -38,10 +43,12 @@ public class MenuStart extends Thread{
             menu.Draw(menuStage,y);
 
             DrawText(menuStage+"",0,0,20,BLACK);
+
             EndDrawing();
             System.gc();
 
         }
+
         menu.clear();
         CloseWindow();
         end=true;
@@ -133,8 +140,8 @@ public class MenuStart extends Thread{
                 }
                 break;
             case 5:
-                if(IsMouseButtonPressed(0))
-                    tmp=collisionSettings();
+
+                tmp=collisionSettings();
                 break;
 
         }
@@ -290,8 +297,6 @@ public class MenuStart extends Thread{
     }
     int collisionClientMenu()
     {
-
-
         if(IsMouseButtonPressed(0))
         {
             if(collision(1202,22,56,56))
@@ -337,8 +342,23 @@ public class MenuStart extends Thread{
     }
     int collisionSettings()
     {
-        if(collision(1202,22,56,56))
+        if(collision(1202,22,56,56) && IsMouseButtonPressed(0))
             return -4;
+
+
+        for(int i=0;i<5;i++)
+        {
+            if(collision(25+i*128,110,128,64) && IsMouseButtonDown(0))
+            {
+                Jaylib.Color c=new Jaylib.Color(0,0,0,0);
+                DrawMenu.setShipColor(colorWheel.setColor(DrawMenu.getShipColor(i)),i);;
+                InitWindow(1280,720,"MENU");
+                menu.reLoad();
+
+            }
+
+        }
+
         return 0;
     }
     int textCtrInt(String what,int size)
@@ -462,4 +482,6 @@ public class MenuStart extends Thread{
         return collision;
 
     }
+
+
 }
