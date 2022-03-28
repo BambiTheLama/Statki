@@ -86,17 +86,13 @@ public class Start {
         if(!End)
             return;
 
-        System.out.println("Koniec");
         if(who.equals("server"))
             sendGameInformation();
         else if(who.equals("client"))
             getGameInformation();
-        System.out.println("Koniec2");
         Jaylib.Color []Colors=start.getColors();
         MainGameCore mainGameCore=new MainGameCore(communication,who, (byte) mapSize,ship,attackWhiteList,moveTime,startTime,startGold,Colors);
-        System.out.println("Koniec3");
         mainGameCore.main();
-
 
     }
     static void sendGameInformation() {

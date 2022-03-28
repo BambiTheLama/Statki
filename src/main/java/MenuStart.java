@@ -311,7 +311,7 @@ public class MenuStart extends Thread{
             tryConnect=true;
         }
 
-        if(textButton(440,240,400,60,60,"IP:"+ip,18))
+        if(textButton(440,240,400,60,50,"IP:"+ip,18))
         {
             String t=ip;
             ip=textCtrString(ip,15);
@@ -323,7 +323,7 @@ public class MenuStart extends Thread{
             }
 
         }
-        if(textButton(440,330,400,60,60,"IP:"+port,10))
+        if(textButton(440,330,400,60,60,"Port:"+port,10))
         {
             int t=port;
             port=textCtrInt(port+"",5);
