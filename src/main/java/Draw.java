@@ -24,14 +24,14 @@ public class Draw {
     int height;
     int width;
     int sizeText;
-    Raylib.Color textColor;
+    static Jaylib.Color[] shipColor;
+    Jaylib.Color textColor;
     Raylib.Color mapLineColor;
-    Raylib.Color mapAttackMiss;
+    Jaylib.Color mapAttackMiss;
     Jaylib.Color mapAttackHit;
     Jaylib.Color mapAttackHit2;
     Jaylib.Color mapAttackHit3;
     Jaylib.Color shipColorContour;
-    Jaylib.Color shipColor;
     Jaylib.Color shipColorContour2;
     Jaylib.Color shipColor2;
     private boolean isPlacingShipTime;
@@ -39,27 +39,39 @@ public class Draw {
     private int numberOfShipToPlace;
     private int numberOfShipAlive;
     private int time;
-    Texture[] shipTexture=new Texture[6];
+    Texture[] shipTexture=new Texture[5];
+    Texture[] menuShipTexture=new Texture[6];
     private static Font font=GetFontDefault();
+    int tmpShipOnMap=0;
+    int shipOnMap=0;
+    int [][] shipOnMapPosition;
 
+    public static void setShipColor(Jaylib.Color[] shipColor)
+    {
+        Draw.shipColor =shipColor;
+    }
 
-    Draw() {
-        textColor= BLACK;
+    Draw(Jaylib.Color textColor, Jaylib.Color mapAttackHit, Jaylib.Color mapAttackMiss) {
+        this.textColor= textColor;
         mapLineColor= BLACK;
-        mapAttackMiss= DARKBLUE;
-        mapAttackHit= new Jaylib.Color(255,0,0,255);
-        mapAttackHit2= new Jaylib.Color(255,0,0,100);
-        mapAttackHit3= new Jaylib.Color(255,0,255,100);
+        this.mapAttackMiss= mapAttackMiss;
+        this.mapAttackHit= mapAttackHit;
+        mapAttackHit2= new Jaylib.Color(mapAttackHit.r(),mapAttackHit.g(),mapAttackHit.b(),100);
+        mapAttackHit3= new Jaylib.Color(mapAttackHit.r(),mapAttackHit.g(),mapAttackHit.b(),100);
         shipColorContour=new Jaylib.Color(55,55,255,100);
-        shipColor=new Jaylib.Color(55,55,255,25);
         shipColorContour2=new Jaylib.Color(55,255,255,100);
         shipColor2=new Jaylib.Color(55,255,255,25);
         font=LoadFont("resources/czciaki/comici.ttf");
-
+        if(shipColor==null)
+        {
+            shipColor=new Jaylib.Color[5];
+            for(int i=0;i<5;i++)
+                shipColor[i]=new Jaylib.Color((i*30+69)%255,(75+i*69)%255,(42+15*i)%255,255);
+        }
     }
 
-    Draw(byte n,int width,int height,int eqSize,int sizeBetweenEqAndMap,int cell,int sizeBetweenMaps,int sizeText,int startEnemyMapLocation) {
-        this();
+    Draw(byte n,int width,int height,int eqSize,int sizeBetweenEqAndMap,int cell,int sizeBetweenMaps,int sizeText,int startEnemyMapLocation,Jaylib.Color []Color) {
+        this(Color[0],Color[1],Color[2]);
         this.n=n;
         this.width=width;
         this.height=height;
@@ -69,22 +81,31 @@ public class Draw {
         this.sizeBetweenMaps=sizeBetweenMaps;
         this.sizeText=sizeText;
         this.startEnemyMapLocation=startEnemyMapLocation;
-        for(int i=0;i<6;i++)
+        for(int i=0;i<5;i++)
         {
             shipTexture[i]=LoadTexture("resources/"+(i+1)+".png");
+        }
+        for(int i=0;i<6;i++)
+        {
+            menuShipTexture[i]=LoadTexture("resources/Menu/"+(i+1)+".png");
         }
     }
     void clear()
     {
-        for(int i=0;i<6;i++)
+        for(int i=0;i<5;i++)
             UnloadTexture(shipTexture[i]);
+        for(int i=0;i<6;i++)
+        {
+            UnloadTexture(menuShipTexture[i]);
+        }
     }
 
     void draw(byte[][] myMap,byte[][] enemyMap,int numberOfAttack,int attackMode,int numberOfShoot,int [][]raidMap,int[][]ship,boolean rotate,int shiptype) {
         Raylib.DrawLine(0,eqSize,width,eqSize,BLACK);
         Jaylib.Vector2 tmp;
         drawMap(sizeBetweenEqAndMap,myMap,"Twoja Mapa");
-        drawMap(startEnemyMapLocation,enemyMap,"Mapa Wroga");
+
+
 
         if(isPlacingShipTime)
         {
@@ -92,13 +113,16 @@ public class Draw {
             DrawTextEx(font,"Pozostaly czas ustawiania : "+(time>=60?time/60+" min " +time%60 +" s":time +" s"),tmp,20,(1f/10f)*sizeText*1,textColor);
             tmp=new Jaylib.Vector2(0,20);
             DrawTextEx(font,"Statki :"+numberOfShipToPlace,tmp,sizeText,(1f/10f)*sizeText*1,textColor);
+            drawShipTable(ship,rotate,shiptype);
         }
         else
         {
+            drawMap(startEnemyMapLocation,enemyMap,"Mapa Wroga");
             if(isMyMove)
             {
                 tmp=new Jaylib.Vector2(0,0);
                 DrawTextEx(font,"Moja Tura :"+time/100+" s",tmp,20,(1f/10f)*sizeText*1,textColor);
+
             }
             else
             {
@@ -128,11 +152,11 @@ public class Draw {
         {
             drawOnEnemyMap(attackMode,numberOfAttack,raidMap,numberOfShoot);
         }
-        drawShipTable(ship,rotate,shipTexture,shiptype);
+
 
     }
 
-    void drawShipTable(int [][]ship,boolean rotate,Texture[] shipTexture,int type)
+    void drawShipTable(int [][]ship,boolean rotate,int type)
     {
         int startX=startEnemyMapLocation-sizeBetweenMaps+sizeBetweenEqAndMap;
         int startY=eqSize+sizeBetweenEqAndMap+n*cell/2-192;
@@ -159,19 +183,22 @@ public class Draw {
         else
             start.x(startX+64);
         Raylib.Vector2 tmp;
-        for(int i=0;i<6;i++)
+        DrawTexture(menuShipTexture[5], (int) start.x()-(rotate?64:0), startY+64*5,WHITE);
+        for(int i=0;i<5;i++)
         {
             start.y(startY+64*i);
-            if(rotate)
-                Raylib.DrawTextureEx(shipTexture[i],start,90,1,WHITE);
-            else
-                Raylib.DrawTextureEx(shipTexture[i],start,0,1,WHITE);
-            if(i!=5)
-            {
-                tmp=new Jaylib.Vector2( start.x()+3-(rotate ?64:0),(int) start.y());
-                DrawTextEx(font,""+(i+1),tmp,16,(1f/10f)*sizeText*1,textColor);
-            }
+
+            Jaylib.Rectangle texture=new Jaylib.Rectangle(0,0,255,255);
+            Jaylib.Rectangle position=new Jaylib.Rectangle(start.x(),start.y()+(rotate?64:0),64,64);
+            Jaylib.Vector2 vec=new Jaylib.Vector2(rotate?64:0,0);
+            Raylib.DrawTexturePro(menuShipTexture[i],texture,position,vec,rotate?90:0,WHITE);
+
+
+            tmp=new Jaylib.Vector2( start.x()+3-(rotate ?64:0),(int) start.y());
+            DrawTextEx(font,""+(i+1),tmp,16,(1f/10f)*sizeText*1,textColor);
+
         }
+
         start.x(startX+6);
         try{
             for(int i=0;i<5;i++)
@@ -362,6 +389,16 @@ public class Draw {
     }
 
     void drawMap(int x,byte[][] usedMap,String name) {
+        if(name.equals("Twoja Mapa"))
+        {
+            for(int i=0;i<tmpShipOnMap;i++)
+            {
+                Jaylib.Rectangle texture=new Jaylib.Rectangle(0,0,shipTexture[shipOnMapPosition[i][0]].width(),shipTexture[shipOnMapPosition[i][0]].height());
+                Jaylib.Rectangle rec=new Jaylib.Rectangle(shipOnMapPosition[i][1],shipOnMapPosition[i][2],shipOnMapPosition[i][3],shipOnMapPosition[i][4]);
+                Jaylib.Vector2 vec=new Jaylib.Vector2(shipOnMapPosition[i][5]==0?0:cell,0);
+                DrawTexturePro(shipTexture[shipOnMapPosition[i][0]],texture,rec,vec,shipOnMapPosition[i][5],WHITE);
+            }
+        }
 
         Jaylib.Vector2 tmp;
         for(byte i=0;i<=n;i++)
@@ -401,31 +438,6 @@ public class Draw {
                         end.x(x+cell*(j));
                         Jaylib.DrawLineEx(start,end,3,mapAttackHit);
                         break;
-                    case 3:
-                        rec=new Jaylib.Rectangle(x+cell*j,sizeBetweenEqAndMap+eqSize+i*cell,cell,cell);
-                        Jaylib.DrawRectangleRec(rec,shipColor);
-                        Jaylib.DrawRectangleLinesEx(rec,3,shipColorContour);
-                        break;
-                    case 4:
-
-                        Jaylib.DrawRectangleRec(rec,PINK);
-                        Jaylib.DrawRectangleLinesEx(rec,3,shipColorContour);
-                        break;
-                    case 5:
-                        rec=new Jaylib.Rectangle(x+cell*j,sizeBetweenEqAndMap+eqSize+i*cell,cell,cell);
-                        Jaylib.DrawRectangleRec(rec,GREEN);
-                        Jaylib.DrawRectangleLinesEx(rec,3,shipColorContour);
-                        break;
-                    case 6:
-                        rec=new Jaylib.Rectangle(x+cell*j,sizeBetweenEqAndMap+eqSize+i*cell,cell,cell);
-                        Jaylib.DrawRectangleRec(rec,BROWN);
-                        Jaylib.DrawRectangleLinesEx(rec,3,shipColorContour);
-                        break;
-                    case 7:
-                        rec=new Jaylib.Rectangle(x+cell*j,sizeBetweenEqAndMap+eqSize+i*cell,cell,cell);
-                        Jaylib.DrawRectangleRec(rec,BLACK);
-                        Jaylib.DrawRectangleLinesEx(rec,3,shipColorContour);
-                        break;
                     case 8:
                         if(IsKeyDown(KEY_TAB))
                             Jaylib.DrawCircle(x+j*cell+cell/2,sizeBetweenEqAndMap+eqSize+i*cell+cell/2,cell-10,mapAttackMiss);
@@ -433,6 +445,7 @@ public class Draw {
                         break;
                 }
             }
+
         Raylib.Vector2 tmp2=new Jaylib.Vector2(x,n*cell+eqSize+sizeBetweenEqAndMap);
         DrawTextEx(font,name,tmp2,20,(1f/10f)*sizeText*1,textColor);
 
@@ -479,5 +492,23 @@ public class Draw {
 
     public void setTime(int time) {
         this.time = time;
+    }
+
+    public void setShipOnMap(int shipOnMap)
+    {
+        this.shipOnMap=shipOnMap;
+        tmpShipOnMap=0;
+        shipOnMapPosition=new int[shipOnMap][6];
+    }
+
+    public void setShipOnMapPosition(int type,int x,int y,int width,int height,int rotation)
+    {
+        shipOnMapPosition[tmpShipOnMap][0]=type;
+        shipOnMapPosition[tmpShipOnMap][1]=x;
+        shipOnMapPosition[tmpShipOnMap][2]=y;
+        shipOnMapPosition[tmpShipOnMap][3]=width;
+        shipOnMapPosition[tmpShipOnMap][4]=height;
+        shipOnMapPosition[tmpShipOnMap][5]=rotation;
+        tmpShipOnMap++;
     }
 }

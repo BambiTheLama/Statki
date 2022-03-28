@@ -7,9 +7,11 @@ import static com.raylib.Raylib.GetMouseX;
 import static com.raylib.Raylib.GetMouseY;
 
 public class DrawMenu {
-    static Jaylib.Color buttonColor=new Jaylib.Color(128,128,255,255);
-    static Jaylib.Color buttonPressColor=new Jaylib.Color(64,64,128,255);
-    static Jaylib.Color textColor=new Jaylib.Color(0,0,0,255);
+    private static Jaylib.Color buttonColor=new Jaylib.Color(128,128,255,255);
+    private static Jaylib.Color buttonPressColor=new Jaylib.Color(64,64,128,255);
+    private static Jaylib.Color textColor=new Jaylib.Color(0,0,0,255);
+    private static Jaylib.Color xColor=new Jaylib.Color(255,0,0,255);
+    private static Jaylib.Color oColor=new Jaylib.Color(0,0,255,255);
     private static int port;
     private static String ip;
 
@@ -25,7 +27,7 @@ public class DrawMenu {
     private static boolean isLoading=false;
     private static float textSpace=1;
     static Texture[] shipTexture=new Texture[5];
-    static Jaylib.Color[] shipColor=new Jaylib.Color[5];
+
 
     DrawMenu(int port,int[][] ship,int[][] attackWhiteList)
     {
@@ -38,10 +40,7 @@ public class DrawMenu {
         {
             shipTexture[i]=LoadTexture("resources/"+(i+1)+".png");
         }
-        for(int i=0;i<5;i++)
-        {
-            shipColor[i]=new Jaylib.Color(i*65,i*78,i*9+69,255);
-        }
+
 
     }
     void reLoad()
@@ -249,20 +248,39 @@ public class DrawMenu {
     }
     void DrawSettings()
     {
-        DrawTextButton(25,25,300,60,40,"Kolor Statkow");
-        Jaylib.Vector2 start=new Jaylib.Vector2(25,110);
-        for(int i=0;i<5;i++)
-        {
+        DrawTextButton(25,25,300,60,40,"Kolor tekstu");
+        Jaylib.Rectangle rec=new Jaylib.Rectangle(350,25,60,60);
+        DrawRectangleRec(rec,textColor);
+        DrawRectangleLinesEx(rec,2,BLACK);
+        DrawTextButton(25,110,300,60,40,"Kolor przyciskow");
+        rec.y(110);
+        DrawRectangleRec(rec,buttonColor);
+        DrawRectangleLinesEx(rec,2,BLACK);
+        rec.x(rec.x()+85);
+        DrawRectangleRec(rec,buttonPressColor);
+        DrawRectangleLinesEx(rec,2,BLACK);
+        rec.y(rec.y()+85);
 
-            DrawRectangle(25+i*128,110,64,64,buttonColor);
-            Raylib.DrawTextureEx(shipTexture[i],start,0,1,WHITE);
-            DrawTextEx(font,(i+1)+"",start,20,2,textColor);
-            Jaylib.Rectangle rec=new Jaylib.Rectangle(start.x()+64,110,64,64);
-            DrawRectangleRec(rec,shipColor[i]);
-            DrawRectangleLinesEx(rec,2,BLACK);
-            start.x(start.x()+128);
+        DrawTextButton(25,195,300,60,40,"Kolor znacznikow");
+        rec.x(rec.x()-85);
+        Jaylib.Vector2 start=new Jaylib.Vector2(rec.x(),rec.y());
+        Jaylib.Vector2 end=new Jaylib.Vector2(rec.x()+rec.width(),rec.y()+rec.height());
+        DrawLineEx(start,end,3,xColor);
+        start.y(start.y()+rec.height());
+        end.y(rec.y());
+        DrawLineEx(start,end,3,xColor);
+        DrawRectangleLinesEx(rec,2,BLACK);
+        rec.x(rec.x()+85);
+        DrawRectangleRec(rec,xColor);
+        DrawRectangleLinesEx(rec,2,BLACK);
+        rec.x(rec.x()+85);
+        DrawCircle((int) (rec.x()+30), (int) (rec.y()+30),30,oColor);
+        DrawCircle((int) (rec.x()+30), (int) (rec.y()+30),26,WHITE);
+        DrawRectangleLinesEx(rec,2,BLACK);
+        rec.x(rec.x()+85);
+        DrawRectangleRec(rec,oColor);
+        DrawRectangleLinesEx(rec,2,BLACK);
 
-        }
     }
     static boolean collision(int startX, int startY, int sizeX, int sizeY)
     {
@@ -330,16 +348,45 @@ public class DrawMenu {
         }
 
     }
-    static void setShipColor(Jaylib.Color color, int i)
+    void setButtonColor(Jaylib.Color color)
     {
-        shipColor[i]=color;
+        buttonColor=color;
     }
-    static Jaylib.Color[] getAllShipColor()
+    void setButtonPressColor(Jaylib.Color color)
     {
-        return shipColor;
+        buttonPressColor=color;
     }
-    static Jaylib.Color getShipColor(int i)
+    void setxColor(Jaylib.Color color)
     {
-        return shipColor[i];
+        xColor=color;
     }
+    void setoColor(Jaylib.Color color)
+    {
+        oColor=color;
+    }
+    void setTextColor(Jaylib.Color color)
+    {
+        textColor=color;
+    }
+    Jaylib.Color getButtonColor()
+    {
+        return buttonColor;
+    }
+    Jaylib.Color getButtonPressColor()
+    {
+        return buttonPressColor;
+    }
+    Jaylib.Color getxColor()
+    {
+        return xColor;
+    }
+    Jaylib.Color getoColor()
+    {
+        return oColor;
+    }
+    Jaylib.Color getTextColor()
+    {
+        return textColor;
+    }
+
 }

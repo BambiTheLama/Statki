@@ -8,7 +8,7 @@ public class MainGameCore {
 
     Draw draw;
     Communication communication;
-    int numberOfShipToPlace;
+    int numberOfShipToPlace=0;
     int numberOfShipAlive;
     boolean isPlacingShipTime=true;
     boolean isOpponentAttack=false;
@@ -46,47 +46,12 @@ public class MainGameCore {
     int startTime=10;
     int[][] ship;
     int[][] attackWhiteList;
+
     int startGold;
     boolean rotate=false;
 
 
-    MainGameCore(byte mapSize,int numberOfShip,String[] args) {
-
-        n=mapSize;
-        cell=(22*20)/n;
-        myMap=new byte[n][n];
-        enemyMap=new byte[n][n];
-        startEnemyMapLocation=n*cell+sizeBetweenEqAndMap+sizeBetweenMaps;
-        numberOfShipToPlace=numberOfShip;
-        numberOfShipAlive=numberOfShip;
-        clear();
-
-        int port=Integer.parseInt(args[1]);
-
-        String who=args[0];
-        String ip="";
-
-        if(Objects.equals(args[0], "server"))
-        {
-            isMyMove= Boolean.TRUE;
-        }
-        else if(Objects.equals(args[0], "client"))
-        {
-            isMyMove= Boolean.FALSE;
-            ip=args[2];
-        }
-
-
-        draw=new Draw(n,width,height,eqSize,sizeBetweenEqAndMap,cell,sizeBetweenMaps,20,startEnemyMapLocation);
-
-        multithreading=new Multithreading(communication,isOpponentLeft,isMyMove,isProgramEnd,moveTime,startTime);
-
-        InitWindow(width, height, "Statki "+who);
-        SetTargetFPS(60);
-
-    }
-
-    MainGameCore(Communication communication,String who,byte mapSize,int[][] ship,int[][] attackWhiteList,int moveTime,int startTime,int startGold)
+    MainGameCore(Communication communication,String who,byte mapSize,int[][] ship,int[][] attackWhiteList,int moveTime,int startTime,int startGold, Jaylib.Color[] colors)
     {
         n=mapSize;
         this.ship = ship;
@@ -100,21 +65,33 @@ public class MainGameCore {
         enemyMap=new byte[n][n];
         startEnemyMapLocation=n*cell+sizeBetweenEqAndMap+sizeBetweenMaps;
         clear();
-        try{
-            for(int i=0;i<5;i++)
-                numberOfShipToPlace+=ship[1][i]*(i+1);
-        }catch(Exception ignored)
-        {
 
-        }
-        numberOfShipAlive=numberOfShipToPlace;
+
 
         multithreading=new Multithreading(communication,isOpponentLeft,isMyMove,isProgramEnd,moveTime,startTime);
 
         InitWindow(width, height, "Statki "+who);
         SetTargetFPS(60);
 
-        draw=new Draw(n,width,height,eqSize,sizeBetweenEqAndMap,cell,sizeBetweenMaps,20,startEnemyMapLocation);
+        draw=new Draw(n,width,height,eqSize,sizeBetweenEqAndMap,cell,sizeBetweenMaps,20,startEnemyMapLocation,colors);
+
+        try{
+            int tmp=0;
+            for(int i=0;i<5;i++)
+            {
+                numberOfShipToPlace+=ship[1][i]*(i+1);
+                tmp+=ship[1][i];
+            }
+            draw.setShipOnMap(tmp);
+
+
+        }catch(Exception ignored)
+        {
+
+        }
+        numberOfShipAlive=numberOfShipToPlace;
+
+
     }
 
     void clear() {
@@ -337,7 +314,49 @@ public class MainGameCore {
                     mouseY/=cell;
                     if(mouseX >= 0 && mouseX < n && mouseY >= 0 && mouseY < n && myMap[mouseY][mouseX] == 0)
                     {
-                        placeShip(mouseX,mouseY);
+                        int tmp=shipType;
+                        if(placeShip(mouseX,mouseY))
+                        {
+                            int tmpx=mouseX*cell+sizeBetweenEqAndMap;
+                            int tmpy=mouseY*cell+eqSize+sizeBetweenEqAndMap;
+                            int tmph;
+                            int tmpw;
+                            int r=0;
+                            if(rotate)
+                            {
+                                tmpx+=cell;
+                                tmpy+=cell;
+                                r=90;
+                                switch (tmp)
+                                {
+                                    case 1:
+                                    case 2:
+                                        tmpx+=cell;
+                                        break;
+                                    case 3:
+
+                                    case 4:
+                                        tmpx+=2*cell;
+                                        break;
+                                }
+                            }
+                            else
+                            {
+                                switch (tmp)
+                                {
+                                    case 2:
+                                    case 3:
+                                        tmpy-=cell;
+                                        break;
+                                    case 4:
+                                        tmpy-=2*cell;
+                                        break;
+                                }
+                            }
+                            tmpw=cell;
+                            tmph=cell*(tmp+1);
+                            draw.setShipOnMapPosition(tmp,tmpx,tmpy,tmpw,tmph,r);
+                        }
                     }
 
                 }
@@ -407,7 +426,7 @@ public class MainGameCore {
         return false;
     }
 
-    void placeShip(int mouseX,int mouseY) {
+    boolean placeShip(int mouseX,int mouseY) {
         switch (shipType) {
             case 0 -> {
                 myMap[mouseY][mouseX] = 3;
@@ -416,6 +435,8 @@ public class MainGameCore {
                 numberOfShipToPlace--;
                 if (ship[1][shipType] <= 0)
                     shipType = -1;
+                return true;
+
             }
             case 1 -> {
                 if (rotate) {
@@ -448,6 +469,7 @@ public class MainGameCore {
                 numberOfShipToPlace-=2;
                 if (ship[1][shipType] <= 0)
                     shipType = -1;
+                return true;
             }
             case 2 -> {
                 if (rotate) {
@@ -480,6 +502,7 @@ public class MainGameCore {
                 numberOfShipToPlace-=3;
                 if (ship[1][shipType] <= 0)
                     shipType = -1;
+                return true;
             }
             case 3 -> {
                 if (rotate) {
@@ -517,6 +540,7 @@ public class MainGameCore {
                 numberOfShipToPlace-=4;
                 if (ship[1][shipType] <= 0)
                     shipType = -1;
+                return true;
             }
             case 4 -> {
                 if (rotate) {
@@ -557,8 +581,10 @@ public class MainGameCore {
                 numberOfShipToPlace-=5;
                 if (ship[1][shipType] <= 0)
                     shipType = -1;
+                return true;
             }
         }
+        return false;
     }
 
     void placeShipColision(int x,int y) {

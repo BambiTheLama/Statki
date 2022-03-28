@@ -1,6 +1,4 @@
 import com.raylib.Jaylib;
-import com.raylib.Raylib;
-
 import java.net.InetAddress;
 import static com.raylib.Jaylib.*;
 import static com.raylib.Raylib.WindowShouldClose;
@@ -48,7 +46,7 @@ public class MenuStart extends Thread{
             System.gc();
 
         }
-
+        Draw.setShipColor(shipColor);
         menu.clear();
         CloseWindow();
         end=true;
@@ -345,19 +343,38 @@ public class MenuStart extends Thread{
         if(collision(1202,22,56,56) && IsMouseButtonPressed(0))
             return -4;
 
-
-        for(int i=0;i<5;i++)
+        if(collision(350,25,60,60) && IsMouseButtonDown(0))
         {
-            if(collision(25+i*128,110,128,64) && IsMouseButtonDown(0))
-            {
-                Jaylib.Color c=new Jaylib.Color(0,0,0,0);
-                DrawMenu.setShipColor(colorWheel.setColor(DrawMenu.getShipColor(i)),i);;
-                InitWindow(1280,720,"MENU");
-                menu.reLoad();
-
-            }
-
+            menu.setTextColor(colorWheel.setColor(menu.getTextColor()));
+            InitWindow(1280,720,"MENU");
+            menu.reLoad();
         }
+
+        if(collision(350,110,60,60) && IsMouseButtonDown(0))
+        {
+            menu.setButtonColor(colorWheel.setColor(menu.getButtonColor()));
+            InitWindow(1280,720,"MENU");
+            menu.reLoad();
+        }
+        if(collision(435,110,60,60) && IsMouseButtonDown(0))
+        {
+            menu.setButtonPressColor(colorWheel.setColor(menu.getButtonPressColor()));
+            InitWindow(1280,720,"MENU");
+            menu.reLoad();
+        }
+        if(collision(435,195,60,60) && IsMouseButtonDown(0))
+        {
+            menu.setxColor(colorWheel.setColor(menu.getxColor()));
+            InitWindow(1280,720,"MENU");
+            menu.reLoad();
+        }
+        if(collision(625,195,60,60) && IsMouseButtonDown(0))
+        {
+            menu.setoColor(colorWheel.setColor(menu.getoColor()));
+            InitWindow(1280,720,"MENU");
+            menu.reLoad();
+        }
+
 
         return 0;
     }
@@ -483,5 +500,13 @@ public class MenuStart extends Thread{
 
     }
 
+    Jaylib.Color[] getColors()
+    {
+        Jaylib.Color[] c=new Jaylib.Color[3];
+        c[0]=menu.getTextColor();
+        c[1]=menu.getxColor();
+        c[2]=menu.getoColor();
+        return c;
+    }
 
 }

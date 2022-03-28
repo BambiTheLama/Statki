@@ -92,7 +92,8 @@ public class Start {
         else if(who.equals("client"))
             getGameInformation();
         System.out.println("Koniec2");
-        MainGameCore mainGameCore=new MainGameCore(communication,who, (byte) mapSize,ship,attackWhiteList,moveTime,startTime,startGold);
+        Jaylib.Color []Colors=start.getColors();
+        MainGameCore mainGameCore=new MainGameCore(communication,who, (byte) mapSize,ship,attackWhiteList,moveTime,startTime,startGold,Colors);
         System.out.println("Koniec3");
         mainGameCore.main();
 
