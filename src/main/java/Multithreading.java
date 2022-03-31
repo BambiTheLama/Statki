@@ -18,32 +18,28 @@ public class Multithreading extends Thread {
     private int startTime;
 
 
-
     Multithreading(Communication communication, boolean isOpponentLeft, boolean isMyMove, boolean isProgramEnd,int moveTime,int startTime) {
         this.communication = communication;
+        setMultithreading(isOpponentLeft,isMyMove,isProgramEnd,moveTime,startTime);
+    }
+
+    void setMultithreading(boolean isOpponentLeft, boolean isMyMove, boolean isProgramEnd,int moveTime,int startTime) {
         this.isOpponentLeft = isOpponentLeft;
         this.isMyMove = isMyMove;
         this.isProgramEnd = isProgramEnd;
         this.moveTime = moveTime*100;
         this.startTime = startTime;
         this.placeShipTime=startTime;
-
     }
 
     @Override
     public void run() {
         while (!isOpponentLeft && !isProgramEnd) {
 
-            isOpponentLeft = communication.isClose(false);
-
             if(numberOfShip <= 0 && isAttackTime)
             {
                 endGame=true;
             }
-
-            win = communication.isClose(endGame);
-            if (isProgramEnd || isOpponentLeft || endGame || win)
-                break;
             if (isAttackTime) {
                 try {
                     sleep(10);
@@ -86,7 +82,15 @@ public class Multithreading extends Thread {
                 }
 
             }
-            System.gc();
+            isOpponentLeft = communication.isClose(false);
+            win = communication.isClose(endGame);
+            if(win || endGame)
+            {
+
+            }
+            if(win || isOpponentLeft || isProgramEnd ||endGame)
+                break;
+
         }
         if(isProgramEnd)
         {
@@ -264,7 +268,6 @@ public class Multithreading extends Thread {
 
 
 
-
     void setIsProgramEnd(boolean isProgramEnd) {
         this.isProgramEnd = isProgramEnd;
     }
@@ -320,13 +323,13 @@ public class Multithreading extends Thread {
 
     boolean getIsAttack() {
         return isAttack;
-
     }
 
     int getMoveTime()
     {
         return moveTimeTmp;
     }
+
     int getPlaceShipTime()
     {
         return placeShipTime;
@@ -340,6 +343,7 @@ public class Multithreading extends Thread {
     boolean getEndGame(){return endGame;}
 
     boolean getisPlacingShipTime(){return (!isAttackTime);}
+
 
 
 }

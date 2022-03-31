@@ -26,11 +26,9 @@ public class Communication extends Thread{
             if(work && !connect && !end)
                 return false;
             try{
-                System.out.println("server1");
                 this.port=port;
                 if(connect)
                 {
-                    System.out.println("server2a");
                     InputStream=new InputStreamReader(player.getInputStream());
                     Input=new BufferedReader(InputStream);
                     toSend=new PrintWriter(player.getOutputStream());
@@ -38,13 +36,8 @@ public class Communication extends Thread{
                     return true;
                 }
 
-
-                System.out.println("server2");
-
-                System.out.println("server3");
                 if(!work)
                 {
-                    System.out.println("server4");
                     start();
                     work=true;
                     return false;
@@ -81,19 +74,12 @@ public class Communication extends Thread{
         return false;
     }
 
-    void End()
-    {
-        end=true;
-    }
-
     @Override
     public void run()
     {
         try {
             serverSocket=new ServerSocket(port);
-            System.out.println("Server stawiam");
             player =serverSocket.accept();
-            System.out.println("Server dolaczam");
             connect=true;
 
         } catch (IOException e) {
@@ -174,35 +160,6 @@ public class Communication extends Thread{
         return false;
     }
 
-    boolean isOpponentAttack(Boolean myAttack) {
-        boolean isOpponentAttack=false;
-        try{
-            if(Objects.equals(who, "server"))
-            {
-                toSend.println(myAttack);
-                toSend.flush();
-                if(!myAttack)
-                {
-                    isOpponentAttack=Boolean.parseBoolean(Input.readLine());
-                }
-            }
-            else if(Objects.equals(who, "client"))
-            {
-                isOpponentAttack=Boolean.parseBoolean(Input.readLine());
-                if(!isOpponentAttack)
-                {
-                    toSend.println(myAttack);
-                    toSend.flush();
-                }
-            }
-        }
-        catch (Exception e)
-        {
-            return false;
-        }
-        return isOpponentAttack;
-    }
-
     String getInformation() {
         try{
             return Input.readLine();
@@ -218,5 +175,11 @@ public class Communication extends Thread{
         toSend.println(massage);
         toSend.flush();
     }
+
+    String getWho()
+    {
+        return who;
+    }
+
 
 }

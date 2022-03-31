@@ -41,6 +41,7 @@ public class Draw {
     private int time;
     Texture[] shipTexture=new Texture[5];
     Texture[] menuShipTexture=new Texture[6];
+    Texture[] attackTexture=new Texture[6];
     private static Font font=GetFontDefault();
     int tmpShipOnMap=0;
     int shipOnMap=0;
@@ -89,6 +90,10 @@ public class Draw {
         {
             menuShipTexture[i]=LoadTexture("resources/Menu/"+(i+1)+".png");
         }
+        for(int i=0;i<6;i++)
+        {
+            attackTexture[i]=LoadTexture("resources/atak"+(i+1)+".png");
+        }
     }
     void clear()
     {
@@ -133,15 +138,23 @@ public class Draw {
             DrawTextEx(font,"Statki :"+numberOfShipAlive,tmp,20,(1f/10f)*sizeText*1,textColor);
         }
 
-        for(int i=0;i<=6;i++)
+        for(int i=0;i<6;i++)
         {
-            if(i==attackMode)
-                DrawRectangle(startEnemyMapLocation-20+i*80,8,64,64,GREEN);
+            if(i==attackMode-1)
+                DrawRectangle(startEnemyMapLocation+60+i*80,8,64,64,GREEN);
             else
-                DrawRectangle(startEnemyMapLocation-20+i*80,8,64,64,RED);
+                DrawRectangle(startEnemyMapLocation+60+i*80,8,64,64,RED);
+            Jaylib.Rectangle rec=new Jaylib.Rectangle(0,0,256,256);
+            Jaylib.Rectangle rec2=new Jaylib.Rectangle(startEnemyMapLocation+60+i*80,8,64,64);
+            Jaylib.Vector2 v=new Jaylib.Vector2(0,0);
+            try{
+                DrawTexturePro(attackTexture[i],rec,rec2,v,0,WHITE);
+            }
+            catch (Exception e)
+            {
 
-            tmp=new Jaylib.Vector2(startEnemyMapLocation+12+i*80,40);
-            DrawTextEx(font,""+i,tmp,20,(1f/10f)*sizeText*1,textColor);
+            }
+
         }
 
         if(isPlacingShipTime)

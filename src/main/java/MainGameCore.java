@@ -139,9 +139,9 @@ public class MainGameCore {
 
         }
 
-
-        while (!isProgramEnd &&!WindowShouldClose())
+        while (!isProgramEnd &&!WindowShouldClose() )
         {
+
             BeginDrawing();
             ClearBackground(RAYWHITE);
             draw.draw(myMap,enemyMap,raid,attackMode,numberOfShot,raidmap,ship,rotate,shipType);
@@ -364,12 +364,11 @@ public class MainGameCore {
             }
             else if(isMyMove)
             {
+
                 if(x >= 0 && x <= n*cell && y >= 0 && y <= n*cell)
                 {
                     x=x/cell;
                     y=y/cell;
-
-
 
                     if((enemyMap[y][x]==0 || attackMode==5 ||attackMode==6) && attackMode!=4)
                     {
@@ -404,6 +403,9 @@ public class MainGameCore {
                     }
 
                 }
+            }
+            if(!isPlacingShipTime)
+            {
                 x=GetMouseX();
                 y=GetMouseY();
                 for(int i=0;i<=6;i++)
@@ -416,172 +418,149 @@ public class MainGameCore {
                         }
                         else
                         {
-                            attackMode=(byte)i;
+                            if(attackMode!=i)
+                                attackMode=(byte)i;
+                            else
+                                attackMode=0;
+
                         }
 
                     }
                 }
             }
+
         }
+
         return false;
     }
 
+
+
     boolean placeShip(int mouseX,int mouseY) {
+        int [][]tmp=new int[5][2];
+        for(int i=0;i<5;i++)
+        {
+            tmp[i][0]=-1;
+            tmp[i][1]=-1;
+        }
+        int i=0;
         switch (shipType) {
-            case 0 -> {
-                myMap[mouseY][mouseX] = 3;
-                placeShipColision(mouseX,mouseY);
-                ship[1][shipType]--;
-                numberOfShipToPlace--;
-                if (ship[1][shipType] <= 0)
-                    shipType = -1;
-                return true;
-
-            }
-            case 1 -> {
-                if (rotate) {
-                    if (mouseX >= 0 && mouseX + 1 < n) {
-                        if (myMap[mouseY][mouseX + 1] == 0)
-                        {
-                            myMap[mouseY][mouseX + 1] = 4;
-                            placeShipColision(mouseX+1,mouseY);
-                        }
-                        else
-                            break;
-                    } else
+            case 4:
+                if (!rotate)
+                {
+                    if(mouseY-2>=0 && myMap[mouseY-2][mouseX]==0)
+                    {
+                        tmp[i][0]=mouseY-2;
+                        tmp[i][1]=mouseX;
+                        i++;
+                    }
+                    else
                         break;
-                } else {
-                    if (mouseY >= 0 && mouseY + 1 < n) {
-                        if (myMap[mouseY + 1][mouseX] == 0)
-                        {
-                            myMap[mouseY + 1][mouseX] = 4;
-                            placeShipColision(mouseX,mouseY+1);
-                        }
-                        else
-                            break;
-                    } else
-                        break;
-
                 }
-                myMap[mouseY][mouseX] = 4;
-                placeShipColision(mouseX,mouseY);
-                ship[1][shipType]--;
-                numberOfShipToPlace-=2;
-                if (ship[1][shipType] <= 0)
-                    shipType = -1;
-                return true;
-            }
-            case 2 -> {
-                if (rotate) {
-                    if (mouseX > 0 && mouseX + 1 < n) {
-                        if (myMap[mouseY][mouseX - 1] == 0 && myMap[mouseY][mouseX + 1] == 0) {
-                            myMap[mouseY][mouseX - 1] = 5;
-                            myMap[mouseY][mouseX + 1] = 5;
-                            placeShipColision(mouseX+1,mouseY);
-                            placeShipColision(mouseX-1,mouseY);
-                        } else
-                            break;
-                    } else
+                else
+                {
+                    if(mouseX-2>=0 && myMap[mouseY][mouseX-2]==0)
+                    {
+                        tmp[i][0]=mouseY;
+                        tmp[i][1]=mouseX-2;
+                        i++;
+                    }
+                    else
                         break;
-                } else {
-                    if (mouseY > 0 && mouseY + 1 < n) {
-                        if (myMap[mouseY - 1][mouseX] == 0 && myMap[mouseY + 1][mouseX] == 0) {
-                            myMap[mouseY - 1][mouseX] = 5;
-                            myMap[mouseY + 1][mouseX] = 5;
-                            placeShipColision(mouseX,mouseY+1);
-                            placeShipColision(mouseX,mouseY-1);
-                        } else
-                            break;
-                    } else
-                        break;
-
                 }
-                placeShipColision(mouseX,mouseY);
-                myMap[mouseY][mouseX] = 5;
-                ship[1][shipType]--;
-                numberOfShipToPlace-=3;
-                if (ship[1][shipType] <= 0)
-                    shipType = -1;
-                return true;
-            }
-            case 3 -> {
-                if (rotate) {
-                    if (mouseX > 0 && mouseX + 2 < n) {
-                        if (myMap[mouseY][mouseX - 1] == 0 && myMap[mouseY][mouseX + 2] == 0 && myMap[mouseY][mouseX + 1] == 0) {
-                            myMap[mouseY][mouseX - 1] = 6;
-                            myMap[mouseY][mouseX + 2] = 6;
-                            myMap[mouseY][mouseX + 1] = 6;
-                            placeShipColision(mouseX-1,mouseY);
-                            placeShipColision(mouseX+1,mouseY);
-                            placeShipColision(mouseX+2,mouseY);
-
-                        } else
-                            break;
-                    } else
+            case 3:
+                if (!rotate)
+                {
+                    if(mouseY+2<n && myMap[mouseY+2][mouseX]==0)
+                    {
+                        tmp[i][0]=mouseY+2;
+                        tmp[i][1]=mouseX;
+                        i++;
+                    }
+                    else
                         break;
-                } else {
-                    if (mouseY > 0 && mouseY + 2 < n) {
-                        if (myMap[mouseY - 1][mouseX] == 0 && myMap[mouseY + 2][mouseX] == 0 && myMap[mouseY + 1][mouseX] == 0) {
-                            myMap[mouseY - 1][mouseX] = 6;
-                            myMap[mouseY + 2][mouseX] = 6;
-                            myMap[mouseY + 1][mouseX] = 6;
-                            placeShipColision(mouseX,mouseY+1);
-                            placeShipColision(mouseX,mouseY-1);
-                            placeShipColision(mouseX,mouseY+2);
-                        } else
-                            break;
-                    } else
-                        break;
-
                 }
-                placeShipColision(mouseX,mouseY);
-                myMap[mouseY][mouseX] = 6;
-                ship[1][shipType]--;
-                numberOfShipToPlace-=4;
-                if (ship[1][shipType] <= 0)
-                    shipType = -1;
-                return true;
-            }
-            case 4 -> {
-                if (rotate) {
-                    if (mouseX - 1 > 0 && mouseX + 2 < n) {
-                        if (myMap[mouseY][mouseX - 1] == 0 && myMap[mouseY][mouseX - 2] == 0 && myMap[mouseY][mouseX + 2] == 0 && myMap[mouseX][mouseX + 1] == 0) {
-                            myMap[mouseY][mouseX - 1] = 7;
-                            myMap[mouseY][mouseX - 2] = 7;
-                            myMap[mouseY][mouseX + 1] = 7;
-                            myMap[mouseY][mouseX + 2] = 7;
-                            placeShipColision(mouseX-2,mouseY);
-                            placeShipColision(mouseX-1,mouseY);
-                            placeShipColision(mouseX+1,mouseY);
-                            placeShipColision(mouseX+2,mouseY);
-                        } else
-                            break;
-                    } else
+                else
+                {
+                    if(mouseX+2<n && myMap[mouseY][mouseX+2]==0)
+                    {
+                        tmp[i][0]=mouseY;
+                        tmp[i][1]=mouseX+2;
+                        i++;
+                    }
+                    else
                         break;
-                } else {
-                    if (mouseY - 1 > 0 && mouseY + 2 < n) {
-                        if (myMap[mouseY - 1][mouseX] == 0 && myMap[mouseY - 2][mouseX] == 0 && myMap[mouseY + 2][mouseX] == 0 && myMap[mouseY + 1][mouseX] == 0) {
-                            myMap[mouseY - 1][mouseX] = 7;
-                            myMap[mouseY - 2][mouseX] = 7;
-                            myMap[mouseY + 1][mouseX] = 7;
-                            myMap[mouseY + 2][mouseX] = 7;
-                            placeShipColision(mouseX,mouseY+1);
-                            placeShipColision(mouseX,mouseY-1);
-                            placeShipColision(mouseX,mouseY-2);
-                            placeShipColision(mouseX,mouseY+2);
-                        } else
-                            break;
-                    } else
-                        break;
-
                 }
-                placeShipColision(mouseX,mouseY);
-                myMap[mouseY][mouseX] = 7;
-                ship[1][shipType]--;
-                numberOfShipToPlace-=5;
-                if (ship[1][shipType] <= 0)
-                    shipType = -1;
-                return true;
+            case 2:
+                if (!rotate)
+                {
+                    if(mouseY-1>=0 && myMap[mouseY-1][mouseX]==0)
+                    {
+                        tmp[i][0]=mouseY-1;
+                        tmp[i][1]=mouseX;
+                        i++;
+                    }
+                    else
+                        break;
+                }
+                else
+                {
+                    if(mouseX-1>=0 && myMap[mouseY][mouseX-1]==0)
+                    {
+                        tmp[i][0]=mouseY;
+                        tmp[i][1]=mouseX-1;
+                        i++;
+                    }
+                    else
+                        break;
+                }
+            case 1:
+                if (!rotate)
+                {
+                    if(mouseY+1<n && myMap[mouseY+1][mouseX]==0)
+                    {
+                        tmp[i][0]=mouseY+1;
+                        tmp[i][1]=mouseX;
+                        i++;
+                    }
+                    else
+                        break;
+                }
+                else
+                {
+                    if(mouseX+1<n && myMap[mouseY][mouseX+1]==0)
+                    {
+                        tmp[i][0]=mouseY;
+                        tmp[i][1]=mouseX+1;
+                        i++;
+                    }
+                    else
+                        break;
+                }
+            case 0:
+            {
+                if(myMap[mouseY][mouseX]==0)
+                {
+                    tmp[i][0]=mouseY;
+                    tmp[i][1]=mouseX;
+                    i++;
+
+                    for(int j=0;j<i;j++)
+                    {
+                        myMap[tmp[j][0]][tmp[j][1]]=(byte)(3+shipType);
+                        placeShipColision(tmp[j][1],tmp[j][0]);
+
+                    }
+                    ship[1][shipType]--;
+                    numberOfShipToPlace--;
+                    if (ship[1][shipType] <= 0)
+                        shipType = -1;
+
+
+
+                    return true;
+                }
+
             }
         }
         return false;
