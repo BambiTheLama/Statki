@@ -434,8 +434,6 @@ public class MainGameCore {
         return false;
     }
 
-
-
     boolean placeShip(int mouseX,int mouseY) {
         int [][]tmp=new int[5][2];
         for(int i=0;i<5;i++)
@@ -552,11 +550,9 @@ public class MainGameCore {
 
                     }
                     ship[1][shipType]--;
-                    numberOfShipToPlace--;
+                    numberOfShipToPlace-=(shipType+1);
                     if (ship[1][shipType] <= 0)
                         shipType = -1;
-
-
 
                     return true;
                 }

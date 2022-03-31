@@ -21,13 +21,12 @@ public class Start {
         String who = null;
         boolean End=false;
 
-        while(!start.getEnd())
+        while(!start.getEnd() && !End)
         {
             //System.out.println("pentla "+start.getMenuStage());
             if(start.getMenuStage()==3)
             {
                 who=new String("server");
-                System.out.println("JESTES W TWORZENIu SERVERA "+start.getWho() +" ip "+start.getIp()+" port "+start.getPort());
                 communication=new Communication();
                 while(!communication.tryConnect(start.getWho(),start.getPort(),start.getIp()) && start.getMenuStage()==3 &&!start.getEnd())
                 {
@@ -39,7 +38,6 @@ public class Start {
                 }
                 if(start.getMenuStage()==3)
                 {
-                    System.out.println("ELO2");
                     mapSize=start.mapSize;
                     startTime=start.startTime;
                     moveTime=start.moveTime;
@@ -48,11 +46,9 @@ public class Start {
                     startGold=start.startGold;
                     if(communication.connect)
                     {
-                        start.setEnd(true);
                         End=true;
+                        start.setEnd(true);
                     }
-
-
                 }
                 else
                 {
@@ -83,8 +79,10 @@ public class Start {
 
             }
         }
-        if(!End)
+        if(start.getEndAndDontContet())
+        {
             return;
+        }
 
         if(who.equals("server"))
             sendGameInformation();
@@ -95,6 +93,7 @@ public class Start {
         mainGameCore.main();
 
     }
+
     static void sendGameInformation() {
         communication.sendInformation(mapSize+"");
         communication.sendInformation(moveTime+"");

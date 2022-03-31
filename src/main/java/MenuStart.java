@@ -22,8 +22,8 @@ public class MenuStart extends Thread{
     boolean tryConnect=false;
     DrawMenu menu=null;
     Jaylib.Color[] shipColor=new Jaylib.Color[5];
-
-
+    int buttonUse=-1;
+    boolean EndAndDontContet=false;
     public void run() {
 
         tryConnect=false;
@@ -38,7 +38,7 @@ public class MenuStart extends Thread{
             BeginDrawing();
             ClearBackground(WHITE);
             menuStage+=collision();
-            menu.Draw(menuStage,y);
+            menu.Draw(menuStage,y,buttonUse);
 
             DrawText(menuStage+"",0,0,20,BLACK);
 
@@ -46,46 +46,46 @@ public class MenuStart extends Thread{
             System.gc();
 
         }
+        if(!end)
+        {
+            EndAndDontContet=true;
+        }
+        System.out.println(""+mapSize);
         Draw.setShipColor(shipColor);
         menu.clear();
         CloseWindow();
         end=true;
     }
 
-    boolean getEnd()
-    {
-        return end;
-    }
-
-    void setEnd(boolean end)
-    {
-        this.end=end;
-    }
-
-    int getMenuStage()
-    {
-        return menuStage;
-    }
-
-    String getWho()
-    {
-        return who;
-    }
-
-    String getIp()
-    {
-        return ip;
-    }
-
-    int getPort()
-    {
-        return port;
-    }
-
     int collision()
     {
         int tmp=0;
-
+        if(IsKeyPressed(KEY_DOWN))
+        {
+            buttonUse++;
+        }
+        if(IsKeyPressed(KEY_UP)&&buttonUse>0)
+        {
+            buttonUse--;
+        }
+        if(IsKeyPressed(KEY_ENTER))
+        {
+            if(buttonUse==0)
+            {
+                switch (menuStage){
+                    case 1:
+                    case 2:
+                        y=0;
+                    case 3:
+                        buttonUse=-1;
+                        return -1;
+                    case 4:
+                        return -3;
+                    case 5:
+                        return -4;
+                }
+            }
+        }
         switch (menuStage){
             case 1:
 
@@ -99,6 +99,7 @@ public class MenuStart extends Thread{
                 menu.setPort(port);
                 if(tmp==1)
                 {
+                    y=0;
                     try{
                         ip=InetAddress.getLocalHost()+"";
 
@@ -143,31 +144,42 @@ public class MenuStart extends Thread{
                 break;
 
         }
+        if(IsKeyPressed(KEY_ENTER))
+        {
+            buttonUse=-1;
+        }
+        if(tmp!=0)
+            buttonUse=-1;
         return tmp;
     }
-
     int collisionStart()
     {
-
+        int buttonNumber=1;
         if(collision(1202,22,56,56) && IsMouseButtonPressed(0))
             return -1;
 
-        if(button(415,165,450,100,75,"Hostuj"))
+        if(button(415,165,450,100,75,"Hostuj",buttonNumber))
             return 1;
-
-        if(button(415,295,450,100,75,"Dolacz"))
+        buttonNumber++;
+        if(button(415,295,450,100,75,"Dolacz",buttonNumber))
             return 3;
-        if(button(415,425,450,100,75,"Ustawienia"))
+        buttonNumber++;
+        if(button(415,425,450,100,75,"Ustawienia",buttonNumber))
             return 4;
-
+        if(buttonNumber<buttonUse)
+            buttonUse=-1;
         return 0;
     }
     int collisionHostSettings()
     {
+        int buttonNumber=1;
         if(IsMouseButtonPressed(0))
         {
             if(collision(1202,22,56,56))
+            {
+                y=0;
                 return -1;
+            }
 
             if(y<0&&collision(1205,100,50,50))
             {
@@ -191,25 +203,19 @@ public class MenuStart extends Thread{
             }
         }
 
-        if(button(25,885+y,350,80,80,"START"))
-        {
-            return 1;
-        }
-
-
-
         float wheel=GetMouseWheelMove()+MouseWheel;
         MouseWheel=GetMouseWheelMove();
         if(wheel!=0)
         {
+            buttonUse=-1;
             if(wheel*20+y<=-300)
             {
                 y=(-300);
+
             }
             else if(wheel*20+y>-300 && wheel*20+y<0)
             {
                 y+=(wheel*20);
-
             }
             else if(wheel*20+y>=0)
             {
@@ -218,19 +224,45 @@ public class MenuStart extends Thread{
 
         }
 
+        if(textButton(365,25+y,60,60,40,""+mapSize,2,buttonNumber))
+        {
+            mapSize=textCtrInt(mapSize+"",2);
+        }
+        buttonNumber++;
+
+        if(textButton(550,110+y,60,60,40,""+startTime,2,buttonNumber))
+        {
+            startTime=textCtrInt(startTime+"",2);
+        }
+        buttonNumber++;
+
+        if(textButton(275,195+y,60,60,40,""+moveTime,2,buttonNumber))
+        {
+            moveTime=textCtrInt(moveTime+"",2);
+        }
+        buttonNumber++;
+
         for(int i=0;i<5;i++)
-            if(textButton(145+i*110,425+y,110,60,40,""+ship[1][i],1))
+        {
+            if(textButton(145+i*110,425+y,110,60,40,""+ship[1][i],1,buttonNumber))
             {
                 ship[1][i]=textCtrInt(ship[1][i]+"",1);
                 DrawMenu.setShip(ship);
             }
+            buttonNumber++;
+        }
+
 
         for(int i=0;i<5;i++)
-            if(textButton(145+i*110,485+y,110,60,40,""+ship[2][i],4))
+        {
+            if(textButton(145+i*110,485+y,110,60,40,""+ship[2][i],4,buttonNumber))
             {
                 ship[2][i]=textCtrInt(ship[2][i]+"",4);
                 DrawMenu.setShip(ship);
             }
+            buttonNumber++;
+        }
+
 
 
 
@@ -244,38 +276,58 @@ public class MenuStart extends Thread{
                     attackWhiteList[0][i]=1;
                 DrawMenu.setAttackWhiteList(attackWhiteList);
             }
-            if(textButton(145+i*110,634+y,110,64,40,""+attackWhiteList[1][i],4))
+            if(textButton(145+i*110,634+y,110,64,40,""+attackWhiteList[1][i],4,buttonNumber))
             {
 
                 attackWhiteList[1][i]=textCtrInt(attackWhiteList[1][i]+"",4);
                 DrawMenu.setAttackWhiteList(attackWhiteList);
             }
+            buttonNumber++;
 
         }
 
-        if(textButton(365,25+y,60,60,40,""+mapSize,2))
-        {
-            mapSize=textCtrInt(mapSize+"",2);
-        }
-
-        if(textButton(550,110+y,60,60,40,""+startTime,2))
-        {
-            startTime=textCtrInt(startTime+"",2);
-        }
-
-        if(textButton(275,195+y,60,60,40,""+moveTime,2))
-        {
-            moveTime=textCtrInt(moveTime+"",2);
-        }
-        if(textButton(375,715+y,160,60,40,""+startGold,5))
+        if(textButton(375,715+y,160,60,40,""+startGold,5,buttonNumber))
         {
             startGold=textCtrInt(startGold+"",5);
         }
-        if(textButton(160,800+y,160,60,40,""+port,5))
+        buttonNumber++;
+        if(textButton(160,800+y,160,60,40,""+port,5,buttonNumber))
         {
             port=textCtrInt(port+"",5);
             DrawMenu.setPort(port);
         }
+        buttonNumber++;
+        if(button(25,885+y,350,80,80,"START",buttonNumber))
+        {
+            if(mapSize<9)
+                mapSize=9;
+            else if(mapSize>26)
+                mapSize=26;
+            if(moveTime<10)
+                moveTime=10;
+            else if(moveTime>30)
+                moveTime=30;
+            if(startTime<30)
+                startTime=30;
+            else if(startTime>90)
+                startTime=90;
+            int s=0;
+            for(int i=0;i<5;i++)
+            {
+                s=ship[1][i];
+            }
+            if(s==0)
+            {
+                for(int i=0;i<5;i++)
+                {
+                    ship[1][i]++;
+                }
+            }
+            return 1;
+        }
+        buttonNumber++;
+        if(buttonNumber<buttonUse)
+            buttonUse=-1;
         return 0;
     }
     int collisionHostIP()
@@ -286,7 +338,7 @@ public class MenuStart extends Thread{
             {
                 ip="";
                 DrawMenu.setIp(ip);
-
+                buttonUse=-1;
                 return -1;
             }
         }
@@ -295,6 +347,7 @@ public class MenuStart extends Thread{
     }
     int collisionClientMenu()
     {
+        int buttonNumber=1;
         if(IsMouseButtonPressed(0))
         {
             if(collision(1202,22,56,56))
@@ -304,14 +357,7 @@ public class MenuStart extends Thread{
             }
         }
 
-        if(button(440,420,400,60,60,"Dolacz"))
-        {
-            who="client";
-            DrawMenu.setIsLoading(true);
-            tryConnect=true;
-        }
-
-        if(textButton(440,240,400,60,50,"IP:"+ip,18))
+        if(textButton(440,240,400,60,40,"IP:"+ip,18,buttonNumber))
         {
             String t=ip;
             ip=textCtrString(ip,15);
@@ -323,7 +369,9 @@ public class MenuStart extends Thread{
             }
 
         }
-        if(textButton(440,330,400,60,60,"Port:"+port,10))
+        buttonNumber++;
+
+        if(textButton(440,330,400,60,40,"Port:"+port,10,buttonNumber))
         {
             int t=port;
             port=textCtrInt(port+"",5);
@@ -334,7 +382,16 @@ public class MenuStart extends Thread{
             }
 
         }
+        buttonNumber++;
+        if(button(440,420,400,60,60,"Dolacz",buttonNumber))
+        {
+            who="client";
+            DrawMenu.setIsLoading(true);
+            tryConnect=true;
+        }
 
+        if(buttonNumber<buttonUse)
+            buttonUse=-1;
 
         return 0;
     }
@@ -380,7 +437,6 @@ public class MenuStart extends Thread{
     }
     int textCtrInt(String what,int size)
     {
-
         int tmp=0;
         if(what.length()<size)
         {
@@ -482,19 +538,72 @@ public class MenuStart extends Thread{
         return false;
     }
 
-    boolean button(int x,int y,int sizeX,int sizeY,int textSize,String Text)
+    boolean button(int x,int y,int sizeX,int sizeY,int textSize,String Text,int buttonId)
     {
         boolean collision = collision(x, y, sizeX, sizeY);
-        DrawMenu.DrawButton(x,y,sizeX,sizeY,textSize,Text,collision);
+        boolean press=buttonId==buttonUse;
+        if(press)
+        {
+            if(y<0)
+                this.y=this.y-y;
+            if(y+sizeY>GetScreenHeight())
+            {
+                this.y-=20;
+            }
+        }
         if(IsMouseButtonPressed(0))
+        {
+            DrawMenu.DrawButton(x,y,sizeX,sizeY,textSize,Text,collision);
+
             return collision;
-        else
+        }
+        else if(press)
+        {
+            DrawMenu.DrawButton(x,y,sizeX,sizeY,textSize,Text,press);
+            if(IsKeyPressed(KEY_ENTER))
+                return true;
             return false;
+        }
+        else
+        {
+            DrawMenu.DrawButton(x,y,sizeX,sizeY,textSize,Text,collision);
+        }
+        return false;
     }
 
-    boolean textButton(int x,int y,int sizeX,int sizeY,int textSize,String Text,int stringSize)
+    boolean textButton(int x,int y,int sizeX,int sizeY,int textSize,String Text,int stringSize,int buttonId)
     {
+
+
+        boolean press=buttonId==buttonUse;
+        if(press && IsMouseButtonPressed(0))
+        {
+            buttonUse=-1;
+        }
+
+        if(press)
+        {
+            if(y<0)
+                this.y=y;
+            if(y+sizeY>GetScreenHeight())
+            {
+                this.y-=20;
+            }
+        }
+
         boolean collision = collision(x, y, sizeX, sizeY);
+        if(IsMouseButtonPressed(0)&&collision)
+        {
+            if(!press)
+                buttonUse=buttonId;
+        }
+        else if(press)
+        {
+
+            DrawMenu.DrawCtrButton(x,y,sizeX,sizeY,textSize,Text,stringSize,press);
+            return true;
+        }
+
         DrawMenu.DrawCtrButton(x,y,sizeX,sizeY,textSize,Text,stringSize,collision);
         return collision;
 
@@ -507,6 +616,40 @@ public class MenuStart extends Thread{
         c[1]=menu.getxColor();
         c[2]=menu.getoColor();
         return c;
+    }
+
+
+    boolean getEnd()
+    {
+        return end;
+    }
+    boolean getEndAndDontContet()
+    {
+        return EndAndDontContet;
+    }
+    void setEnd(boolean end)
+    {
+        this.end=end;
+    }
+
+    int getMenuStage()
+    {
+        return menuStage;
+    }
+
+    String getWho()
+    {
+        return who;
+    }
+
+    String getIp()
+    {
+        return ip;
+    }
+
+    int getPort()
+    {
+        return port;
     }
 
 }

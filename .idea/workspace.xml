@@ -17,41 +17,16 @@
       <change beforePath="$PROJECT_DIR$/.gradle/7.2/fileHashes/resourceHashesCache.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.2/fileHashes/resourceHashesCache.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/KRISTI TO ODPALASZ .V2/1.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/KRISTI TO ODPALASZ .V2/2.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/KRISTI TO ODPALASZ .V2/3.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/KRISTI TO ODPALASZ .V2/4.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/KRISTI TO ODPALASZ .V2/5.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/KRISTI TO ODPALASZ .V2/Menu/1.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/KRISTI TO ODPALASZ .V2/Menu/2.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/KRISTI TO ODPALASZ .V2/Menu/3.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/KRISTI TO ODPALASZ .V2/Menu/4.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/KRISTI TO ODPALASZ .V2/Menu/5.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/KRISTI TO ODPALASZ .V2/Menu/6.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/KRISTI TO ODPALASZ .V2/cubicmap.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/KRISTI TO ODPALASZ .V2/cubicmap_atlas.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/KRISTI TO ODPALASZ .V2/czciaki/COMIC.TTF" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/KRISTI TO ODPALASZ .V2/czciaki/ComicSansMS3.ttf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/KRISTI TO ODPALASZ .V2/czciaki/comici.ttf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/KRISTI TO ODPALASZ .V2/czciaki/comicz.ttf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/KRISTI TO ODPALASZ .V2/czciaki/design.graffiti.comicsansms.ttf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/KRISTI TO ODPALASZ .V2/czciaki/design.graffiti.comicsansmsgras.ttf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/KRISTI TO ODPALASZ .V2/czciaki/sharefonts.net.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/KRISTI TO ODPALASZ .V2/heightmap.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/KRISTI TO ODPALASZ .V2/load.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/KRISTI TO ODPALASZ .V2/load.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/KRISTI TO ODPALASZ .V2/test.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/KRISTI TO ODPALASZ .V2/wabbit_alpha.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/Communication.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/Communication.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/KRISTI NIE POPSOJ (1).jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/KRISTI NIE POPSOJ (2).jar" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/build/classes/java/main/MainGameCore.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/MainGameCore.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/classes/java/main/MenuStart.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/MenuStart.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/Multithreading.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/Multithreading.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/classes/java/main/Start.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/Start.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/tmp/compileJava/previous-compilation-data.bin" beforeDir="false" afterPath="$PROJECT_DIR$/build/tmp/compileJava/previous-compilation-data.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Communication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Communication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Draw.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Draw.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/DrawMenu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/DrawMenu.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/MainGameCore.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/MainGameCore.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Multithreading.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Multithreading.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/MenuStart.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/MenuStart.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Start.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Start.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -141,7 +116,7 @@
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="settings.editor.selected.configurable" value="project.propCompiler" />
   </component>
-  <component name="RunManager" selected="Application.start2">
+  <component name="RunManager" selected="Application.start">
     <configuration name="start" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="Start" />
       <module name="Statki.main" />
@@ -222,6 +197,7 @@
       <workItem from="1648553476021" duration="71000" />
       <workItem from="1648627443522" duration="600000" />
       <workItem from="1648681070908" duration="4200000" />
+      <workItem from="1648706947109" duration="8805000" />
     </task>
     <servers />
   </component>

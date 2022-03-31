@@ -82,7 +82,7 @@ public class DrawMenu {
     }
 
 
-    void Draw(int menuStage, int StartDrawingY)
+    void Draw(int menuStage, int StartDrawingY,int buttonUse)
     {
         Jaylib.Rectangle rec=new Jaylib.Rectangle(1205,25,50,50);
         DrawRectangleRec(rec,RED);
@@ -96,7 +96,11 @@ public class DrawMenu {
         start.y(75);
         end.y(25);
         DrawLineEx(start,end,5,BLACK);
-
+        if(buttonUse==0)
+        {
+            rec=new Jaylib.Rectangle(1203,23,54,54);
+            DrawRectangleLinesEx(rec,3,RED);
+        }
         switch (menuStage)
         {
 
