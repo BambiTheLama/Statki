@@ -528,7 +528,6 @@ public class MenuStart extends Thread{
 
         return what;
     }
-
     boolean collision(int StartX,int StartY,int SizeX,int SizeY)
     {
         int x=GetMouseX();
@@ -537,7 +536,6 @@ public class MenuStart extends Thread{
             return true;
         return false;
     }
-
     boolean button(int x,int y,int sizeX,int sizeY,int textSize,String Text,int buttonId)
     {
         boolean collision = collision(x, y, sizeX, sizeY);
@@ -570,18 +568,14 @@ public class MenuStart extends Thread{
         }
         return false;
     }
-
     boolean textButton(int x,int y,int sizeX,int sizeY,int textSize,String Text,int stringSize,int buttonId)
     {
-
-
-        boolean press=buttonId==buttonUse;
-        if(press && IsMouseButtonPressed(0))
+        DrawMenu.DrawCtrButton(x,y,sizeX,sizeY,textSize,Text,stringSize,buttonId==buttonUse);
+        if(buttonId==buttonUse && IsMouseButtonPressed(0))
         {
             buttonUse=-1;
         }
-
-        if(press)
+        if(buttonId==buttonUse)
         {
             if(y<0)
                 this.y=y;
@@ -590,22 +584,17 @@ public class MenuStart extends Thread{
                 this.y-=20;
             }
         }
-
         boolean collision = collision(x, y, sizeX, sizeY);
         if(IsMouseButtonPressed(0)&&collision)
         {
-            if(!press)
+            if(!(buttonId==buttonUse))
                 buttonUse=buttonId;
         }
-        else if(press)
+        else if(buttonId==buttonUse)
         {
-
-            DrawMenu.DrawCtrButton(x,y,sizeX,sizeY,textSize,Text,stringSize,press);
             return true;
         }
-
-        DrawMenu.DrawCtrButton(x,y,sizeX,sizeY,textSize,Text,stringSize,collision);
-        return collision;
+        return buttonId==buttonUse;
 
     }
 
@@ -617,7 +606,6 @@ public class MenuStart extends Thread{
         c[2]=menu.getoColor();
         return c;
     }
-
 
     boolean getEnd()
     {

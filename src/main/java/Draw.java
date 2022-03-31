@@ -39,6 +39,7 @@ public class Draw {
     private int numberOfShipToPlace;
     private int numberOfShipAlive;
     private int time;
+    private int gold;
     Texture[] shipTexture=new Texture[5];
     Texture[] menuShipTexture=new Texture[6];
     Texture[] attackTexture=new Texture[6];
@@ -46,6 +47,8 @@ public class Draw {
     int tmpShipOnMap=0;
     int shipOnMap=0;
     int [][] shipOnMapPosition;
+    int []numberOfBombs=new int[6];
+    int[][] attackWhiteList;
 
     public static void setShipColor(Jaylib.Color[] shipColor)
     {
@@ -71,7 +74,7 @@ public class Draw {
         }
     }
 
-    Draw(byte n,int width,int height,int eqSize,int sizeBetweenEqAndMap,int cell,int sizeBetweenMaps,int sizeText,int startEnemyMapLocation,Jaylib.Color []Color) {
+    Draw(byte n,int width,int height,int eqSize,int sizeBetweenEqAndMap,int cell,int sizeBetweenMaps,int sizeText,int startEnemyMapLocation,Jaylib.Color []Color,int [][]attackWhiteList) {
         this(Color[0],Color[1],Color[2]);
         this.n=n;
         this.width=width;
@@ -82,6 +85,7 @@ public class Draw {
         this.sizeBetweenMaps=sizeBetweenMaps;
         this.sizeText=sizeText;
         this.startEnemyMapLocation=startEnemyMapLocation;
+        this.attackWhiteList=attackWhiteList;
         for(int i=0;i<5;i++)
         {
             shipTexture[i]=LoadTexture("resources/"+(i+1)+".png");
@@ -95,13 +99,14 @@ public class Draw {
             attackTexture[i]=LoadTexture("resources/atak"+(i+1)+".png");
         }
     }
-    void clear()
-    {
+
+    void clear() {
         for(int i=0;i<5;i++)
             UnloadTexture(shipTexture[i]);
         for(int i=0;i<6;i++)
         {
             UnloadTexture(menuShipTexture[i]);
+            UnloadTexture(attackTexture[i]);
         }
     }
 
@@ -109,44 +114,100 @@ public class Draw {
         Raylib.DrawLine(0,eqSize,width,eqSize,BLACK);
         Jaylib.Vector2 tmp;
         drawMap(sizeBetweenEqAndMap,myMap,"Twoja Mapa");
-
-
+        tmp=new Jaylib.Vector2(0,40);
+        DrawTextEx(font,"Gold :"+gold,tmp,sizeText,(1f/10f)*sizeText*1,textColor);
 
         if(isPlacingShipTime)
         {
-            tmp=new Jaylib.Vector2(0,0);
-            DrawTextEx(font,"Pozostaly czas ustawiania : "+(time>=60?time/60+" min " +time%60 +" s":time +" s"),tmp,20,(1f/10f)*sizeText*1,textColor);
-            tmp=new Jaylib.Vector2(0,20);
-            DrawTextEx(font,"Statki :"+numberOfShipToPlace,tmp,sizeText,(1f/10f)*sizeText*1,textColor);
-            drawShipTable(ship,rotate,shiptype);
+            drawPlaceShipStage(ship,rotate,shiptype);
         }
         else
         {
-            drawMap(startEnemyMapLocation,enemyMap,"Mapa Wroga");
-            if(isMyMove)
-            {
-                tmp=new Jaylib.Vector2(0,0);
-                DrawTextEx(font,"Moja Tura :"+time/100+" s",tmp,20,(1f/10f)*sizeText*1,textColor);
-
-            }
-            else
-            {
-                tmp=new Jaylib.Vector2(0,0);
-                DrawTextEx(font,"Przeciwnika Tura :"+time/100+" s",tmp,20,(1f/10f)*sizeText*1,textColor);
-            }
-            tmp=new Jaylib.Vector2(0,20);
-            DrawTextEx(font,"Statki :"+numberOfShipAlive,tmp,20,(1f/10f)*sizeText*1,textColor);
+            drawAttackStage(enemyMap,numberOfAttack,attackMode,numberOfShoot,raidMap);
         }
+
+    }
+
+    void drawPlaceShipStage(int[][]ship,boolean rotate,int shiptype)
+    {
+        Raylib.Vector2 tmp=new Jaylib.Vector2(0,0);
+        DrawTextEx(font,"Pozostaly czas ustawiania : "+(time>=60?time/60+" min " +time%60 +" s":time +" s"),tmp,20,(1f/10f)*sizeText*1,textColor);
+        tmp=new Jaylib.Vector2(0,20);
+        DrawTextEx(font,"Statki :"+numberOfShipToPlace,tmp,sizeText,(1f/10f)*sizeText*1,textColor);
+        tmp=new Jaylib.Vector2(0,40);
+        DrawTextEx(font,"Gold :"+gold,tmp,sizeText,(1f/10f)*sizeText*1,textColor);
+        drawShipTable(ship,rotate,shiptype);
+
+        drawOnMyMap(shiptype,rotate);
 
         for(int i=0;i<6;i++)
         {
-            if(i==attackMode-1)
-                DrawRectangle(startEnemyMapLocation+60+i*80,8,64,64,GREEN);
-            else
-                DrawRectangle(startEnemyMapLocation+60+i*80,8,64,64,RED);
+
             Jaylib.Rectangle rec=new Jaylib.Rectangle(0,0,256,256);
-            Jaylib.Rectangle rec2=new Jaylib.Rectangle(startEnemyMapLocation+60+i*80,8,64,64);
+            Jaylib.Rectangle rec2=new Jaylib.Rectangle(startEnemyMapLocation+i%3*160,eqSize+sizeBetweenEqAndMap+i/3*160,100,100);
+            int x=GetMouseX();
+            int y=GetMouseY();
+            if(x>rec2.x() && x<rec2.x()+rec2.width() && y>rec2.y() && y<rec2.y()+rec2.height() && attackWhiteList[0][i]==0)
+            {
+                if(gold<attackWhiteList[1][i])
+                    DrawRectangleRec(rec2,RED);
+                else
+                    DrawRectangleRec(rec2,GREEN);
+            }
+
+            tmp=new Jaylib.Vector2(0,0);
+            DrawRectangleLinesEx(rec2,2,BLACK);
+            DrawTexturePro(attackTexture[i],rec,rec2,tmp,0,WHITE);
+            try{
+                tmp=new Jaylib.Vector2(rec2.x(),rec2.y());
+                DrawTextEx(font,numberOfBombs[i]+"",tmp,20,(1f/10f)*sizeText*1,textColor);
+                tmp.y(tmp.y()+rec2.height());
+                DrawTextEx(font,attackWhiteList[1][i]+"$",tmp,20,(1f/10f)*sizeText*1,textColor);
+                if(attackWhiteList[0][i]==1)
+                {
+                    Jaylib.Vector2 tmp2=new Jaylib.Vector2(rec2.x()+rec2.width(),rec2.y());
+                    DrawLineEx(tmp,tmp2,2,RED);
+                    tmp2.y(tmp2.y()+rec2.height());
+                    tmp.y(rec2.y());
+                    DrawLineEx(tmp,tmp2,2,RED);
+                }
+            }
+            catch (Exception e){
+
+            }
+        }
+    }
+    void drawAttackStage(byte[][] enemyMap,int numberOfAttack,int attackMode,int numberOfShoot,int [][]raidMap)
+    {
+        Raylib.Vector2 tmp;
+        drawMap(startEnemyMapLocation,enemyMap,"Mapa Wroga");
+        if(isMyMove)
+        {
+            tmp=new Jaylib.Vector2(0,0);
+            DrawTextEx(font,"Moja Tura :"+time/100+" s",tmp,20,(1f/10f)*sizeText*1,textColor);
+
+            drawOnEnemyMap(attackMode,numberOfAttack,raidMap,numberOfShoot);
+        }
+        else
+        {
+            tmp=new Jaylib.Vector2(0,0);
+            DrawTextEx(font,"Przeciwnika Tura :"+time/100+" s",tmp,20,(1f/10f)*sizeText*1,textColor);
+        }
+        tmp=new Jaylib.Vector2(0,20);
+        DrawTextEx(font,"Statki :"+numberOfShipAlive,tmp,20,(1f/10f)*sizeText*1,textColor);
+
+        int start=startEnemyMapLocation+60;
+        for(int i=0;i<6;i++)
+        {
+            if(i==attackMode-1)
+                DrawRectangle(start+i*80,8,64,64,GREEN);
+            else
+                DrawRectangle(start+i*80,8,64,64,RED);
+            Jaylib.Rectangle rec=new Jaylib.Rectangle(0,0,256,256);
+            Jaylib.Rectangle rec2=new Jaylib.Rectangle(start+i*80,8,64,64);
             Jaylib.Vector2 v=new Jaylib.Vector2(0,0);
+            tmp=new Jaylib.Vector2(start+i*80,72);
+            DrawTextEx(font,""+numberOfBombs[i],tmp,20,(1f/10f)*sizeText*1,textColor);
             try{
                 DrawTexturePro(attackTexture[i],rec,rec2,v,0,WHITE);
             }
@@ -154,19 +215,7 @@ public class Draw {
             {
 
             }
-
         }
-
-        if(isPlacingShipTime)
-        {
-           drawOnMyMap(shiptype,rotate);
-        }
-        else if(isMyMove)
-        {
-            drawOnEnemyMap(attackMode,numberOfAttack,raidMap,numberOfShoot);
-        }
-
-
     }
 
     void drawShipTable(int [][]ship,boolean rotate,int type)
@@ -207,8 +256,9 @@ public class Draw {
             Raylib.DrawTexturePro(menuShipTexture[i],texture,position,vec,rotate?90:0,WHITE);
 
 
-            tmp=new Jaylib.Vector2( start.x()+3-(rotate ?64:0),(int) start.y());
-            DrawTextEx(font,""+(i+1),tmp,16,(1f/10f)*sizeText*1,textColor);
+            vec=new Jaylib.Vector2( start.x()+3-(rotate ?64:0),(int) start.y());
+            DrawTextEx(font,""+(i+1),vec,16,(1f/10f)*sizeText*1,textColor);
+
 
         }
 
@@ -523,5 +573,15 @@ public class Draw {
         shipOnMapPosition[tmpShipOnMap][4]=height;
         shipOnMapPosition[tmpShipOnMap][5]=rotation;
         tmpShipOnMap++;
+    }
+
+    public void setGold(int gold)
+    {
+        this.gold=gold;
+    }
+
+    public void setNumberOfBombs(int []numberOfBombs)
+    {
+        this.numberOfBombs=numberOfBombs;
     }
 }

@@ -339,7 +339,7 @@ public class DrawMenu {
 
 
         Raylib.Vector2 temp=MeasureTextEx(GetFontDefault(),Text,textSize,7);
-        if(Btime&&stringSize>Text.length()&&collision(startX,startY,sizeX,sizeY))
+        if(Btime&&stringSize>Text.length()&&pressed)
         {
             Jaylib.Vector2 tmp=new Jaylib.Vector2(startX+10,(startY+(sizeY-temp.y())/2)+3);
             DrawTextEx(font,Text+"_",tmp,textSize,(1f/10f)*textSize*textSpace,textColor);

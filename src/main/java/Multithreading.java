@@ -99,8 +99,7 @@ public class Multithreading extends Thread {
         endGame=true;
     }
 
-    void myMove()
-    {
+    void myMove() {
         if (isAttack) {
             attackRes=null;
             communication.sendInformation("attack");
@@ -266,8 +265,6 @@ public class Multithreading extends Thread {
 
     }
 
-
-
     void setIsProgramEnd(boolean isProgramEnd) {
         this.isProgramEnd = isProgramEnd;
     }
@@ -343,7 +340,4 @@ public class Multithreading extends Thread {
     boolean getEndGame(){return endGame;}
 
     boolean getisPlacingShipTime(){return (!isAttackTime);}
-
-
-
 }

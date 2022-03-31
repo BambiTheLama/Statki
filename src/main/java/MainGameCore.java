@@ -26,13 +26,14 @@ public class MainGameCore {
     int cell;
     int sizeBetweenMaps=256;
     int startEnemyMapLocation;
-    byte attackMode=1;
+    byte attackMode=0;
     int numberOfAttack=0;
     int enemyX=-1;
     int enemyY=-1;
     int enemyAttackMode;
     Multithreading multithreading;
     int [][]attack;
+    int []numberOfBombs=new int[6];
     int numberOfShot=0;
     boolean continiuFlag=true;
     int raid=3;
@@ -41,15 +42,12 @@ public class MainGameCore {
     int width=1280,height=720;
     int time;
     int shipType=-1;
-
     int moveTime=10;
     int startTime=10;
     int[][] ship;
     int[][] attackWhiteList;
-
     int startGold;
     boolean rotate=false;
-
 
     MainGameCore(Communication communication,String who,byte mapSize,int[][] ship,int[][] attackWhiteList,int moveTime,int startTime,int startGold, Jaylib.Color[] colors)
     {
@@ -73,7 +71,7 @@ public class MainGameCore {
         InitWindow(width, height, "Statki "+who);
         SetTargetFPS(60);
 
-        draw=new Draw(n,width,height,eqSize,sizeBetweenEqAndMap,cell,sizeBetweenMaps,20,startEnemyMapLocation,colors);
+        draw=new Draw(n,width,height,eqSize,sizeBetweenEqAndMap,cell,sizeBetweenMaps,20,startEnemyMapLocation,colors,attackWhiteList);
 
         try{
             int tmp=0;
@@ -84,7 +82,8 @@ public class MainGameCore {
             }
             draw.setShipOnMap(tmp);
 
-
+            for(int i=0;i<6;i++)
+                numberOfBombs[i]=0;
         }catch(Exception ignored)
         {
 
@@ -167,6 +166,8 @@ public class MainGameCore {
             multithreading.setAttackType(attackMode);
             multithreading.setIsAttack(true);
             continiuFlag=false;
+            if(attackMode>0 && attackMode!=5 && numberOfBombs[attackMode-1]<=0)
+                attackMode=0;
 
         }
         else if(!continiuFlag&&isMyMove&&!isPlacingShipTime)
@@ -267,7 +268,7 @@ public class MainGameCore {
             draw.setTime(time);
         draw.setMyMove(isMyMove);
         draw.setNumberOfShipAlive(numberOfShipAlive);
-
+        draw.setGold(startGold);
     }
 
     boolean collision() {
@@ -280,155 +281,180 @@ public class MainGameCore {
             y=y-(eqSize+sizeBetweenEqAndMap);
             if(isPlacingShipTime)
             {
+                collisionOnPlaceShipStage(x,y);
+            }
+            else
+            {
+                return collisionInAttackingStage(x,y);
+            }
 
-                int startX=startEnemyMapLocation-sizeBetweenMaps+sizeBetweenEqAndMap;
-                int startY=eqSize+sizeBetweenEqAndMap+n*cell/2-192;
-                int mouseX=GetMouseX();
-                int mouseY=GetMouseY();
-                mouseY=mouseY-startY;
-                mouseX=mouseX-startX;
-                if(mouseX >= 0 && mouseX <= 128 && mouseY >= 0 &&mouseY <=320)
+        }
+
+        return false;
+    }
+
+    void collisionOnPlaceShipStage(int x,int y) {
+        int startX=startEnemyMapLocation-sizeBetweenMaps+sizeBetweenEqAndMap;
+        int startY=eqSize+sizeBetweenEqAndMap+n*cell/2-192;
+        int mouseX=GetMouseX();
+        int mouseY=GetMouseY();
+        mouseY=mouseY-startY;
+        mouseX=mouseX-startX;
+        if(mouseX >= 0 && mouseX <= 128 && mouseY >= 0 &&mouseY <=320)
+        {
+            mouseY=mouseY/64;
+            shipType=mouseY;
+            if(ship[1][shipType]>0)
+            {
+
+            }
+            else
+            {
+                shipType=-1;
+            }
+        }
+        else if(mouseX >= 64 && mouseX <= 128 && mouseY >= 320 &&mouseY <=384)
+        {
+            rotate=!rotate;
+        }
+        else if(shipType!=-1)
+        {
+            mouseX=GetMouseX();
+            mouseY=GetMouseY();
+            mouseY=mouseY-(eqSize+sizeBetweenEqAndMap);
+            mouseX=mouseX-(sizeBetweenEqAndMap);
+            mouseX/=cell;
+            mouseY/=cell;
+            if(mouseX >= 0 && mouseX < n && mouseY >= 0 && mouseY < n && myMap[mouseY][mouseX] == 0)
+            {
+                int tmp=shipType;
+                if(placeShip(mouseX,mouseY))
                 {
-                    mouseY=mouseY/64;
-                    shipType=mouseY;
-                    if(ship[1][shipType]>0)
+                    int tmpx=mouseX*cell+sizeBetweenEqAndMap;
+                    int tmpy=mouseY*cell+eqSize+sizeBetweenEqAndMap;
+                    int tmph;
+                    int tmpw;
+                    int r=0;
+                    if(rotate)
                     {
+                        tmpx+=cell;
+                        tmpy+=cell;
+                        r=90;
+                        switch (tmp)
+                        {
+                            case 1:
+                            case 2:
+                                tmpx+=cell;
+                                break;
+                            case 3:
 
+                            case 4:
+                                tmpx+=2*cell;
+                                break;
+                        }
                     }
                     else
                     {
-                        shipType=-1;
-                    }
-                }
-                else if(mouseX >= 64 && mouseX <= 128 && mouseY >= 320 &&mouseY <=384)
-                {
-                    rotate=!rotate;
-                }
-                else if(shipType!=-1)
-                {
-                    mouseX=GetMouseX();
-                    mouseY=GetMouseY();
-                    mouseY=mouseY-(eqSize+sizeBetweenEqAndMap);
-                    mouseX=mouseX-(sizeBetweenEqAndMap);
-                    mouseX/=cell;
-                    mouseY/=cell;
-                    if(mouseX >= 0 && mouseX < n && mouseY >= 0 && mouseY < n && myMap[mouseY][mouseX] == 0)
-                    {
-                        int tmp=shipType;
-                        if(placeShip(mouseX,mouseY))
+                        switch (tmp)
                         {
-                            int tmpx=mouseX*cell+sizeBetweenEqAndMap;
-                            int tmpy=mouseY*cell+eqSize+sizeBetweenEqAndMap;
-                            int tmph;
-                            int tmpw;
-                            int r=0;
-                            if(rotate)
-                            {
-                                tmpx+=cell;
-                                tmpy+=cell;
-                                r=90;
-                                switch (tmp)
-                                {
-                                    case 1:
-                                    case 2:
-                                        tmpx+=cell;
-                                        break;
-                                    case 3:
-
-                                    case 4:
-                                        tmpx+=2*cell;
-                                        break;
-                                }
-                            }
-                            else
-                            {
-                                switch (tmp)
-                                {
-                                    case 2:
-                                    case 3:
-                                        tmpy-=cell;
-                                        break;
-                                    case 4:
-                                        tmpy-=2*cell;
-                                        break;
-                                }
-                            }
-                            tmpw=cell;
-                            tmph=cell*(tmp+1);
-                            draw.setShipOnMapPosition(tmp,tmpx,tmpy,tmpw,tmph,r);
+                            case 2:
+                            case 3:
+                                tmpy-=cell;
+                                break;
+                            case 4:
+                                tmpy-=2*cell;
+                                break;
                         }
                     }
-
+                    tmpw=cell;
+                    tmph=cell*(tmp+1);
+                    draw.setShipOnMapPosition(tmp,tmpx,tmpy,tmpw,tmph,r);
                 }
-
             }
-            else if(isMyMove)
+
+        }
+
+        x=GetMouseX();
+        y=GetMouseY();
+        int size=100;
+        for(int i=0;i<6;i++)
+        {
+            int tmpX=startEnemyMapLocation+i%3*160;
+            int tmpY=eqSize+sizeBetweenEqAndMap+i/3*160;
+
+            if(0==attackWhiteList[0][i] && x>tmpX && x<tmpX+size && y>tmpY && y<tmpY+size && startGold >=attackWhiteList[1][i])
             {
-
-                if(x >= 0 && x <= n*cell && y >= 0 && y <= n*cell)
-                {
-                    x=x/cell;
-                    y=y/cell;
-
-                    if((enemyMap[y][x]==0 || attackMode==5 ||attackMode==6) && attackMode!=4)
-                    {
-                        enemyX=x;
-                        enemyY=y;
-                        return true;
-                    }
-                    else if(attackMode==4 && raid==1)
-                    {
-                        enemyX=x;
-                        enemyY=y;
-                        setRaidMap();
-                        raid=3;
-                        return true;
-                    }
-                    else if(attackMode==4 && raid == 3)
-                    {
-
-                        numberOfShot=0;
-                        enemyX=x;
-                        enemyY=y;
-                        setRaidMap();
-                        raid--;
-
-                    }
-                    else if(attackMode==4)
-                    {
-                        enemyX=x;
-                        enemyY=y;
-                        setRaidMap();
-                        raid--;
-                    }
-
-                }
+                startGold-=attackWhiteList[1][i];
+                numberOfBombs[i]++;
+                draw.setNumberOfBombs(numberOfBombs);
             }
-            if(!isPlacingShipTime)
+        }
+    }
+
+    boolean collisionInAttackingStage(int x,int y) {
+        if(isMyMove)
+        {
+            if(x >= 0 && x <= n*cell && y >= 0 && y <= n*cell)
             {
-                x=GetMouseX();
-                y=GetMouseY();
-                for(int i=0;i<=6;i++)
+                x=x/cell;
+                y=y/cell;
+
+                if((enemyMap[y][x]==0 || attackMode==5 ||attackMode==6) && attackMode!=4)
                 {
-                    if(x>= startEnemyMapLocation-20+i*80 && x<= startEnemyMapLocation+44+i*80  && y >= 8 && y <= 72)
-                    {
-                        if(attackMode==4&&raid!=3)
-                        {
+                    enemyX=x;
+                    enemyY=y;
+                    if(attackMode>0)
+                        numberOfBombs[attackMode-1]--;
+                    return true;
+                }
+                else if(attackMode==4 && raid==1)
+                {
+                    enemyX=x;
+                    enemyY=y;
+                    setRaidMap();
+                    raid=3;
+                    numberOfBombs[attackMode-1]--;
+                    return true;
+                }
+                else if(attackMode==4 && raid == 3)
+                {
 
-                        }
-                        else
-                        {
-                            if(attackMode!=i)
-                                attackMode=(byte)i;
-                            else
-                                attackMode=0;
+                    numberOfShot=0;
+                    enemyX=x;
+                    enemyY=y;
+                    setRaidMap();
+                    raid--;
 
-                        }
+                }
+                else if(attackMode==4)
+                {
+                    enemyX=x;
+                    enemyY=y;
+                    setRaidMap();
+                    raid--;
+                }
 
-                    }
+            }
+        }
+
+        x=GetMouseX();
+        y=GetMouseY();
+        for(int i=0;i<6;i++)
+        {
+            if(x>= startEnemyMapLocation+60+i*80 && x<= startEnemyMapLocation+104+i*80  && y >= 8 && y <= 72 && numberOfBombs[i]>0)
+            {
+                if(attackMode==4&&raid!=3)
+                {
+
+                }
+                else
+                {
+                    if(attackMode!=i)
+                        attackMode=(byte)(i+1);
+                    else
+                        attackMode=0;
                 }
             }
-
         }
 
         return false;
@@ -744,9 +770,18 @@ public class MainGameCore {
 
             if(multithreading.getAttack()!=null)
             {
-                attack= multithreading.getAttack();
-                enemyMap[attack[0][0]][attack[0][1]]=2;
-                multithreading.setAttack(null);
+                try{
+                    attack= multithreading.getAttack();
+                    enemyMap[attack[0][0]][attack[0][1]]=2;
+                    multithreading.setAttack(null);
+                    if(numberOfBombs[attackMode-1]<=0)
+                        attackMode=0;
+                }
+                catch (Exception e)
+                {
+                    return false;
+                }
+
             }
             else
             {
