@@ -9,12 +9,12 @@ public class MenuStart extends Thread{
     String who;
     String ip="";
     int port=25565;
-    int mapSize=0;
-    int startTime=0;
-    int moveTime=0;
+    int mapSize=23;
+    int startTime=30;
+    int moveTime=10;
     int[][] ship=new int[3][5];
     int[][] attackWhiteList=new int[2][6];
-    int startGold=0;
+    int startGold=2555;
     int menuStage=1;
     int y=0;
     float MouseWheel;
@@ -29,8 +29,14 @@ public class MenuStart extends Thread{
         tryConnect=false;
         for(int i=0;i<5;i++)
             ship[0][i]=i+1;
-
+        attackWhiteList[1][0]=100;
+        attackWhiteList[1][1]=125;
+        attackWhiteList[1][2]=125;
+        attackWhiteList[1][3]=250;
+        attackWhiteList[1][4]=500;
+        attackWhiteList[1][5]=200;
         InitWindow(1280,720,"MENU");
+        SetTargetFPS(60);
         menu=new DrawMenu(port,ship,attackWhiteList);
         while (!WindowShouldClose() && menuStage>0 && !end) {
 
@@ -40,7 +46,7 @@ public class MenuStart extends Thread{
             menuStage+=collision();
             menu.Draw(menuStage,y,buttonUse);
 
-            DrawText(menuStage+"",0,0,20,BLACK);
+            DrawText(GetFPS()+"FPS",0,60,20,BLACK);
 
             EndDrawing();
             System.gc();
@@ -299,8 +305,8 @@ public class MenuStart extends Thread{
         buttonNumber++;
         if(button(25,885+y,350,80,80,"START",buttonNumber))
         {
-            if(mapSize<9)
-                mapSize=9;
+            if(mapSize<6)
+                mapSize=6;
             else if(mapSize>26)
                 mapSize=26;
             if(moveTime<10)

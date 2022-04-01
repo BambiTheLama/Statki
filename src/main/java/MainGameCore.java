@@ -115,6 +115,7 @@ public class MainGameCore {
             BeginDrawing();
             ClearBackground(RAYWHITE);
             draw.draw(myMap,enemyMap,raid,attackMode,numberOfShot,raidmap,ship,rotate,shipType);
+
             EndDrawing();
             System.gc();
         }
@@ -145,6 +146,7 @@ public class MainGameCore {
             ClearBackground(RAYWHITE);
             draw.draw(myMap,enemyMap,raid,attackMode,numberOfShot,raidmap,ship,rotate,shipType);
             draw.gameEnd(isOpponentLeft,isSomeoneWin,lost);
+
             EndDrawing();
             System.gc();
         }

@@ -19,47 +19,49 @@ public class DrawMenu {
     private static int[][] attackWhiteList;
 
     private static int time=0;
-    private static int timeMax=120;
+    private static int timeMax=10;
     private static float rotate=0;
     private static boolean Btime=false;
     private static Texture loading;
     private static Font font=GetFontDefault();
     private static boolean isLoading=false;
     private static float textSpace=1;
-    static Texture[] shipTexture=new Texture[5];
+    private static Texture []attacks=new Texture[6];
 
 
-    DrawMenu(int port,int[][] ship,int[][] attackWhiteList)
-    {
+    DrawMenu(int port,int[][] ship,int[][] attackWhiteList) {
         this.port=port;
         this.ship = ship;
         this.attackWhiteList = attackWhiteList;
         loading=LoadTexture("resources/load.png");
         font=LoadFont("resources/czciaki/comici.ttf");
-        for(int i=0;i<5;i++)
+        for(int i=0;i<6;i++)
         {
-            shipTexture[i]=LoadTexture("resources/"+(i+1)+".png");
+            attacks[i]=LoadTexture("resources/atak"+(i+1)+".png");
         }
 
 
     }
-    void reLoad()
-    {
+
+    void reLoad() {
         loading=LoadTexture("resources/load.png");
         font=LoadFont("resources/czciaki/comici.ttf");
-        for(int i=0;i<5;i++)
+        for(int i=0;i<6;i++)
         {
-            shipTexture[i]=LoadTexture("resources/"+(i+1)+".png");
+            attacks[i]=LoadTexture("resources/atak"+(i+1)+".png");
         }
     }
 
-    void clear()
-    {
+    void clear() {
         UnloadTexture(loading);
         UnloadFont(font);
-        for(int i=0;i<5;i++)
-            UnloadTexture(shipTexture[i]);
+        for(int i=0;i<6;i++)
+        {
+            UnloadTexture(attacks[i]);
+        }
+
     }
+
     public static void setPort(int port) {
         DrawMenu.port = port;
     }
@@ -81,9 +83,7 @@ public class DrawMenu {
         DrawMenu.isLoading =isLoading;
     }
 
-
-    void Draw(int menuStage, int StartDrawingY,int buttonUse)
-    {
+    void Draw(int menuStage, int StartDrawingY,int buttonUse) {
         Jaylib.Rectangle rec=new Jaylib.Rectangle(1205,25,50,50);
         DrawRectangleRec(rec,RED);
 
@@ -120,8 +120,7 @@ public class DrawMenu {
         }
     }
 
-    void DrawHostSettings(int StartDrawingY)
-    {
+    void DrawHostSettings(int StartDrawingY) {
         Jaylib.Vector2 tmp1 = new Jaylib.Vector2(1205,150);
         Jaylib.Vector2 tmp2 = new Jaylib.Vector2(1255,150);
         Jaylib.Vector2 tmp3 = new Jaylib.Vector2(1230,100);
@@ -131,30 +130,28 @@ public class DrawMenu {
         tmp2 = new Jaylib.Vector2(1230,695);
         tmp3 = new Jaylib.Vector2(1255,645);
         DrawTriangle(tmp1,tmp2,tmp3,buttonColor);
+
         DrawTextButton(25,25+StartDrawingY,315,60,40,"Wielkosc Mapy");
-
-
-
 
         DrawTextButton(25,110+StartDrawingY,500,60,40,"Czas stawiania statkow");
 
-
         DrawTextButton(25,195+StartDrawingY,225,60,40,"Czas tury");
 
-
         DrawTextButton(25,280+StartDrawingY,140,60,40,"Statki");
-        DrawShipConfig(StartDrawingY);
-        DrawBulletCongig(StartDrawingY);
-        DrawTextButton(25,715+StartDrawingY,325,60,40,"Startowe Zloto");
 
+        DrawShipConfig(StartDrawingY);
+
+        DrawBulletCongig(StartDrawingY);
+
+        DrawTextButton(25,715+StartDrawingY,325,60,40,"Startowe Zloto");
 
         DrawTextButton(25,800+StartDrawingY,110,60,40,"Port");
 
 
 
     }
-    void DrawShipConfig(int StartDrawingY)
-    {
+
+    void DrawShipConfig(int StartDrawingY) {
         DrawTextButton(25,StartDrawingY+365,120,60,40,"Typ");
 
         try{
@@ -186,8 +183,8 @@ public class DrawMenu {
         }
 
     }
-    void DrawBulletCongig(int StartDrawingY)
-    {
+
+    void DrawBulletCongig(int StartDrawingY) {
         DrawTextButton(25,570+StartDrawingY,120,64,40,"Typ");
         DrawTextButton(25,634+StartDrawingY,120,64,40,"Cena");
         DrawLine(25,570+StartDrawingY,25,694+StartDrawingY,BLACK);
@@ -196,11 +193,18 @@ public class DrawMenu {
             for(int i=0;i<6;i++)
             {
                 DrawTextButton(145+i*110,570+StartDrawingY,110,64,0,"");
+                Jaylib.Rectangle rec=new Jaylib.Rectangle(0,0,256,256);
+                Jaylib.Rectangle rec2=new Jaylib.Rectangle(168+i*110,570+StartDrawingY,64,64);
+                Jaylib.Vector2 v=new Jaylib.Vector2(0,0);
+                DrawTexturePro(attacks[i],rec,rec2,v,0,WHITE);
                 if(attackWhiteList[0][i]==1)
                 {
-
-                    DrawLine(145+i*110,570+StartDrawingY,255+i*110,634+StartDrawingY,RED);
-                    DrawLine(255+i*110,570+StartDrawingY,145+i*110,634+StartDrawingY,RED);
+                    v=new Jaylib.Vector2(145+i*110,570+StartDrawingY);
+                    Jaylib.Vector2 v2=new Jaylib.Vector2(255+i*110,634+StartDrawingY);
+                    DrawLineEx(v,v2,3,RED);
+                    v2.y(570+StartDrawingY);
+                    v.y(634+StartDrawingY);
+                    DrawLineEx(v,v2,3,RED);
                 }
 
             }
@@ -227,31 +231,31 @@ public class DrawMenu {
 
 
     }
-    void DrawHostIP()
-    {
+
+    void DrawHostIP() {
         DrawTextButton(440,285,400,60,40,"IP:"+ip);
         DrawTextButton(440,375,400,60,40,"PORT:"+port);
         Jaylib.Rectangle rec=new Jaylib.Rectangle(0,0,loading.width(),loading.height());
         Jaylib.Rectangle rec2=new Jaylib.Rectangle(640,590,loading.width()/2,loading.width()/2);
         Jaylib.Vector2 vec=new Jaylib.Vector2(loading.width()/4,loading.height()/4);
-        rotate+=0.1;
+        rotate+=5;
         rotate=rotate%360;
         DrawTexturePro(loading,rec,rec2,vec,rotate,WHITE);
     }
-    void DrawClientMenu()
-    {
+
+    void DrawClientMenu() {
         if(isLoading)
         {
             Jaylib.Rectangle rec=new Jaylib.Rectangle(0,0,loading.width(),loading.height());
             Jaylib.Rectangle rec2=new Jaylib.Rectangle(640,590,loading.width()/2,loading.width()/2);
             Jaylib.Vector2 vec=new Jaylib.Vector2(loading.width()/4,loading.height()/4);
-            rotate+=0.1;
+            rotate+=5;
             rotate=rotate%360;
             DrawTexturePro(loading,rec,rec2,vec,rotate,WHITE);
         }
     }
-    void DrawSettings()
-    {
+
+    void DrawSettings() {
         DrawTextButton(25,25,300,60,40,"Kolor tekstu");
         Jaylib.Rectangle rec=new Jaylib.Rectangle(350,25,60,60);
         DrawRectangleRec(rec,textColor);
@@ -286,16 +290,8 @@ public class DrawMenu {
         DrawRectangleLinesEx(rec,2,BLACK);
 
     }
-    static boolean collision(int startX, int startY, int sizeX, int sizeY)
-    {
-        int x=GetMouseX();
-        int y=GetMouseY();
-        if(x>startX && x<startX+sizeX && y>startY && y<startY+sizeY)
-            return true;
-        return false;
-    }
-    static void DrawButton(int startX, int startY, int sizeX, int sizeY, int textSize, String Text,boolean pressed)
-    {
+
+    static void DrawButton(int startX, int startY, int sizeX, int sizeY, int textSize, String Text,boolean pressed) {
 
         Jaylib.Rectangle rec=new Jaylib.Rectangle(startX,startY,sizeX,sizeY);
         DrawRectangleRec(rec,buttonColor);
@@ -307,16 +303,16 @@ public class DrawMenu {
         DrawTextEx(font,Text,tmp,textSize,(1f/10f)*textSize*textSpace,textColor);
 
     }
-    static void DrawTextButton(int startX, int startY, int sizeX, int sizeY, int textSize, String Text)
-    {
+
+    static void DrawTextButton(int startX, int startY, int sizeX, int sizeY, int textSize, String Text) {
         Jaylib.Rectangle rec=new Jaylib.Rectangle(startX,startY,sizeX,sizeY);
         DrawRectangleRec(rec,buttonColor);
         Raylib.Vector2 temp=MeasureTextEx(GetFontDefault(),Text,textSize,7);
         Jaylib.Vector2 tmp=new Jaylib.Vector2(startX+10,(startY+(sizeY-temp.y())/2)+3);
         DrawTextEx(font,Text,tmp,textSize,(1f/10f)*textSize*textSpace,textColor);
     }
-    static void DrawCtrButton(int startX, int startY, int sizeX, int sizeY, int textSize, String Text,int stringSize,boolean pressed)
-    {
+
+    static void DrawCtrButton(int startX, int startY, int sizeX, int sizeY, int textSize, String Text,int stringSize,boolean pressed) {
         Jaylib.Rectangle rec=new Jaylib.Rectangle(startX,startY,sizeX,sizeY);
         DrawRectangleRec(rec,buttonColor);
         if(pressed && stringSize>0)
@@ -352,6 +348,7 @@ public class DrawMenu {
         }
 
     }
+
     void setButtonColor(Jaylib.Color color)
     {
         buttonColor=color;
