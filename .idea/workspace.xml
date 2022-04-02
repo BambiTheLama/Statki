@@ -10,15 +10,25 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f75b6a9d-a4dc-4ea2-bf35-47711c55ce36" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.gradle/7.2/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.2/executionHistory/executionHistory.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/7.2/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.2/executionHistory/executionHistory.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/7.2/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.2/fileHashes/fileHashes.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/7.2/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.2/fileHashes/fileHashes.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/7.2/fileHashes/resourceHashesCache.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.2/fileHashes/resourceHashesCache.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/KRISTI/Nowy Dokument programu Microsoft Word.docx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/DrawMenu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/DrawMenu.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Statki.main.jar" beforeDir="false" afterPath="$PROJECT_DIR$/Statki.main.jar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/Draw.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/Draw.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/MainGameCore.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/MainGameCore.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/MenuStart.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/MenuStart.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/Multithreading.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/Multithreading.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/Start.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/Start.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/tmp/compileJava/previous-compilation-data.bin" beforeDir="false" afterPath="$PROJECT_DIR$/build/tmp/compileJava/previous-compilation-data.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Draw.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Draw.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/MainGameCore.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/MainGameCore.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/MenuStart.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/MenuStart.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Multithreading.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Multithreading.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Start.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Start.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -192,6 +202,9 @@
       <workItem from="1648706947109" duration="8805000" />
       <workItem from="1648724005147" duration="599000" />
       <workItem from="1648769723452" duration="1589000" />
+      <workItem from="1648807740876" duration="2742000" />
+      <workItem from="1648921109430" duration="2677000" />
+      <workItem from="1648924564662" duration="13347000" />
     </task>
     <servers />
   </component>

@@ -49,6 +49,7 @@ public class Draw {
     int [][] shipOnMapPosition;
     int []numberOfBombs=new int[6];
     int[][] attackWhiteList;
+    boolean KristiFlag;
 
     public static void setShipColor(Jaylib.Color[] shipColor)
     {
@@ -74,7 +75,7 @@ public class Draw {
         }
     }
 
-    Draw(byte n,int width,int height,int eqSize,int sizeBetweenEqAndMap,int cell,int sizeBetweenMaps,int sizeText,int startEnemyMapLocation,Jaylib.Color []Color,int [][]attackWhiteList) {
+    Draw(byte n,int width,int height,int eqSize,int sizeBetweenEqAndMap,int cell,int sizeBetweenMaps,int sizeText,int startEnemyMapLocation,Jaylib.Color []Color,int [][]attackWhiteList,boolean KristiFlag) {
         this(Color[0],Color[1],Color[2]);
         this.n=n;
         this.width=width;
@@ -86,6 +87,7 @@ public class Draw {
         this.sizeText=sizeText;
         this.startEnemyMapLocation=startEnemyMapLocation;
         this.attackWhiteList=attackWhiteList;
+        this.KristiFlag=KristiFlag;
         for(int i=0;i<5;i++)
         {
             shipTexture[i]=LoadTexture("resources/"+(i+1)+".png");
@@ -140,25 +142,27 @@ public class Draw {
 
         drawOnMyMap(shiptype,rotate);
 
-        for(int i=0;i<6;i++)
-        {
-
-            Jaylib.Rectangle rec=new Jaylib.Rectangle(0,0,256,256);
-            Jaylib.Rectangle rec2=new Jaylib.Rectangle(startEnemyMapLocation+i%3*160,eqSize+sizeBetweenEqAndMap+i/3*160,100,100);
-            int x=GetMouseX();
-            int y=GetMouseY();
-            if(x>rec2.x() && x<rec2.x()+rec2.width() && y>rec2.y() && y<rec2.y()+rec2.height() && attackWhiteList[0][i]==0)
+        if(KristiFlag) {
+            for(int i=0;i<6;i++)
             {
-                if(gold<attackWhiteList[1][i])
-                    DrawRectangleRec(rec2,RED);
-                else
-                    DrawRectangleRec(rec2,GREEN);
-            }
 
-            tmp=new Jaylib.Vector2(0,0);
-            DrawRectangleLinesEx(rec2,2,BLACK);
-            DrawTexturePro(attackTexture[i],rec,rec2,tmp,0,WHITE);
-            try{
+                Jaylib.Rectangle rec=new Jaylib.Rectangle(0,0,256,256);
+                Jaylib.Rectangle rec2=new Jaylib.Rectangle(startEnemyMapLocation+i%3*160,eqSize+sizeBetweenEqAndMap+i/3*160,100,100);
+                int x=GetMouseX();
+                int y=GetMouseY();
+                if(x>rec2.x() && x<rec2.x()+rec2.width() && y>rec2.y() && y<rec2.y()+rec2.height() && attackWhiteList[0][i]==0)
+                {
+                    if(gold<attackWhiteList[1][i])
+                        DrawRectangleRec(rec2,RED);
+                    else
+                        DrawRectangleRec(rec2,GREEN);
+                }
+
+                tmp=new Jaylib.Vector2(0,0);
+                DrawRectangleLinesEx(rec2,2,BLACK);
+
+                DrawTexturePro(attackTexture[i],rec,rec2,tmp,0,WHITE);
+
                 tmp=new Jaylib.Vector2(rec2.x(),rec2.y());
                 DrawTextEx(font,numberOfBombs[i]+"",tmp,20,(1f/10f)*sizeText*1,textColor);
                 tmp.y(tmp.y()+rec2.height());
@@ -172,11 +176,9 @@ public class Draw {
                     DrawLineEx(tmp,tmp2,2,RED);
                 }
             }
-            catch (Exception e){
-
-            }
         }
     }
+
     void drawAttackStage(byte[][] enemyMap,int numberOfAttack,int attackMode,int numberOfShoot,int [][]raidMap)
     {
         Raylib.Vector2 tmp;
@@ -207,7 +209,8 @@ public class Draw {
             Jaylib.Rectangle rec2=new Jaylib.Rectangle(start+i*80,8,64,64);
             Jaylib.Vector2 v=new Jaylib.Vector2(0,0);
             tmp=new Jaylib.Vector2(start+i*80,72);
-            DrawTextEx(font,""+numberOfBombs[i],tmp,20,(1f/10f)*sizeText*1,textColor);
+
+            DrawTextEx(font,KristiFlag?""+numberOfBombs[i]:attackWhiteList[1][i]+"$",tmp,20,(1f/10f)*sizeText*1,textColor);
             try{
                 DrawTexturePro(attackTexture[i],rec,rec2,v,0,WHITE);
             }
@@ -503,7 +506,10 @@ public class Draw {
                         break;
                     case 8:
                         if(IsKeyDown(KEY_TAB))
-                            Jaylib.DrawCircle(x+j*cell+cell/2,sizeBetweenEqAndMap+eqSize+i*cell+cell/2,cell-10,mapAttackMiss);
+                        {
+                            Jaylib.DrawCircle(x+j*cell+cell/2,sizeBetweenEqAndMap+eqSize+i*cell+cell/2,cell/2,GREEN);
+                            Jaylib.DrawCircle(x+j*cell+cell/2,sizeBetweenEqAndMap+eqSize+i*cell+cell/2,cell/2-3,DARKGREEN);
+                        }
 
                         break;
                 }
@@ -517,18 +523,25 @@ public class Draw {
     void gameEnd(boolean isOpponentLeft,boolean isSomeoneWin,boolean lost) {
         if(isOpponentLeft)
         {
-            Jaylib.DrawText("WYGRALES",sizeBetweenEqAndMap,(int)((1.0/3.0)*height),150,RED);
+
+            Jaylib.DrawText("WYGRALES",432,(int)((1.0/3.0)*height)+2,100,BLACK);
+            Jaylib.DrawText("WYGRALES",430,(int)((1.0/3.0)*height),100,RED);
         }
 
         if(isSomeoneWin) {
             if (lost) {
-                Jaylib.DrawText("PRZEGRALES", sizeBetweenEqAndMap, (int)((1.0/3.0)*height), 150, RED);
+
+                Jaylib.DrawText("PRZEGRALES",432,(int)((1.0/3.0)*height)+2,100,BLACK);
+                Jaylib.DrawText("PRZEGRALES",430,(int)((1.0/3.0)*height),100,RED);
             }
             else
             {
-                Jaylib.DrawText("WYGRALES",sizeBetweenEqAndMap,(int)((1.0/3.0)*height),150,RED);
+
+                Jaylib.DrawText("WYGRALES",432,(int)((1.0/3.0)*height)+2,100,BLACK);
+                Jaylib.DrawText("WYGRALES",430,(int)((1.0/3.0)*height),100,RED);
             }
         }
+
     }
 
     boolean isOnEnemyMap(int x,int y) {

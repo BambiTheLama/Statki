@@ -1,7 +1,6 @@
 import com.raylib.Jaylib;
 import com.raylib.Raylib;
 import java.util.Random;
-import java.util.Objects;
 import static com.raylib.Jaylib.*;
 
 public class MainGameCore {
@@ -17,6 +16,7 @@ public class MainGameCore {
     boolean isSomeoneWin=false;
     boolean isMyMove;
     boolean lost=false;
+    boolean KristiFlag=false;
     Random rand=new Random();
     byte[][] myMap;
     byte[][] enemyMap;
@@ -49,7 +49,7 @@ public class MainGameCore {
     int startGold;
     boolean rotate=false;
 
-    MainGameCore(Communication communication,String who,byte mapSize,int[][] ship,int[][] attackWhiteList,int moveTime,int startTime,int startGold, Jaylib.Color[] colors)
+    MainGameCore(Communication communication,String who,byte mapSize,int[][] ship,int[][] attackWhiteList,int moveTime,int startTime,int startGold, Jaylib.Color[] colors,boolean KristiFlag)
     {
         n=mapSize;
         this.ship = ship;
@@ -58,6 +58,7 @@ public class MainGameCore {
         this.startTime = startTime;
         this.startGold = startGold;
         this.communication=communication;
+        this.KristiFlag=KristiFlag;
         cell=(22*20)/n;
         myMap=new byte[n][n];
         enemyMap=new byte[n][n];
@@ -71,7 +72,7 @@ public class MainGameCore {
         InitWindow(width, height, "Statki "+who);
         SetTargetFPS(60);
 
-        draw=new Draw(n,width,height,eqSize,sizeBetweenEqAndMap,cell,sizeBetweenMaps,20,startEnemyMapLocation,colors,attackWhiteList);
+        draw=new Draw(n,width,height,eqSize,sizeBetweenEqAndMap,cell,sizeBetweenMaps,20,startEnemyMapLocation,colors,attackWhiteList,KristiFlag);
 
         try{
             int tmp=0;
@@ -105,7 +106,7 @@ public class MainGameCore {
 
     }
 
-    public void main(){
+    public boolean main(){
 
         multithreading.start();
 
@@ -124,7 +125,7 @@ public class MainGameCore {
             isProgramEnd=true;
             multithreading.setIsProgramEnd(true);
             CloseWindow();
-            return;
+            return false;
         }
         else
         {
@@ -138,15 +139,24 @@ public class MainGameCore {
             }
 
         }
-
+        DrawMenu menu=new DrawMenu(0,null,null);
         while (!isProgramEnd &&!WindowShouldClose() )
         {
+            boolean press=false;
+            if(GetMouseX()>430 && GetMouseX()<830 && GetMouseY()>350 && GetMouseY()<400)
+                press=true;
+            if(IsKeyPressed(KEY_ENTER) || (press && IsMouseButtonPressed(0)))
+            {
+                CloseWindow();
+                return true;
+            }
 
             BeginDrawing();
             ClearBackground(RAYWHITE);
             draw.draw(myMap,enemyMap,raid,attackMode,numberOfShot,raidmap,ship,rotate,shipType);
             draw.gameEnd(isOpponentLeft,isSomeoneWin,lost);
 
+            DrawMenu.DrawButton(430,400,350,50,40,"Zagraj ponownie",press);
             EndDrawing();
             System.gc();
         }
@@ -154,6 +164,7 @@ public class MainGameCore {
         draw=null;
 
         CloseWindow();
+        return false;
 
     }
 
@@ -168,11 +179,10 @@ public class MainGameCore {
             multithreading.setAttackType(attackMode);
             multithreading.setIsAttack(true);
             continiuFlag=false;
-            if(attackMode>0 && attackMode!=5 && numberOfBombs[attackMode-1]<=0)
-                attackMode=0;
+
 
         }
-        else if(!continiuFlag&&isMyMove&&!isPlacingShipTime)
+        else if(!continiuFlag && isMyMove && !isPlacingShipTime)
         {
             if(setShootRes())
             {
@@ -182,10 +192,12 @@ public class MainGameCore {
                     attack=null;
 
                 numberOfShot=0;
+                if((attackMode>0 && KristiFlag  && numberOfBombs[attackMode-1]<=0 )||(attackMode>0 && !KristiFlag && startGold-attackWhiteList[1][attackMode-1]<0))
+                    attackMode=0;
             }
 
         }
-        else if(continiuFlag&&!isPlacingShipTime&&!isMyMove&&!waitingFlag)
+        else if(continiuFlag && !isPlacingShipTime && !isMyMove && !waitingFlag)
         {
             if(isOpponentAttack)
             {
@@ -206,6 +218,8 @@ public class MainGameCore {
 
             if(!isPlacingShipTime)
             {
+                shipType=4;
+                random();
                 numberOfShipAlive=numberOfShipAlive-numberOfShipToPlace;
                 shipType=-1;
             }
@@ -215,6 +229,7 @@ public class MainGameCore {
         {
             time = multithreading.getMoveTime();
         }
+
         multithreading.setNumberOfShip(numberOfShipAlive);
         boolean tmp=isMyMove;
         isMyMove=multithreading.getIsMyMove();
@@ -235,6 +250,7 @@ public class MainGameCore {
                         waitingFlag=true;
                     else
                     {
+                        System.out.println("jej"+attack);
                         attack=multithreading.getAttack();
                         if(attack==null)
                             waitingFlag=true;
@@ -332,65 +348,34 @@ public class MainGameCore {
                 int tmp=shipType;
                 if(placeShip(mouseX,mouseY))
                 {
-                    int tmpx=mouseX*cell+sizeBetweenEqAndMap;
-                    int tmpy=mouseY*cell+eqSize+sizeBetweenEqAndMap;
-                    int tmph;
-                    int tmpw;
-                    int r=0;
-                    if(rotate)
-                    {
-                        tmpx+=cell;
-                        tmpy+=cell;
-                        r=90;
-                        switch (tmp)
-                        {
-                            case 1:
-                            case 2:
-                                tmpx+=cell;
-                                break;
-                            case 3:
-
-                            case 4:
-                                tmpx+=2*cell;
-                                break;
-                        }
-                    }
-                    else
-                    {
-                        switch (tmp)
-                        {
-                            case 2:
-                            case 3:
-                                tmpy-=cell;
-                                break;
-                            case 4:
-                                tmpy-=2*cell;
-                                break;
-                        }
-                    }
-                    tmpw=cell;
-                    tmph=cell*(tmp+1);
-                    draw.setShipOnMapPosition(tmp,tmpx,tmpy,tmpw,tmph,r);
+                    setToDraw(mouseX,mouseY,tmp);
                 }
             }
 
         }
-
-        x=GetMouseX();
-        y=GetMouseY();
-        int size=100;
-        for(int i=0;i<6;i++)
+        if(KristiFlag)
         {
-            int tmpX=startEnemyMapLocation+i%3*160;
-            int tmpY=eqSize+sizeBetweenEqAndMap+i/3*160;
-
-            if(0==attackWhiteList[0][i] && x>tmpX && x<tmpX+size && y>tmpY && y<tmpY+size && startGold >=attackWhiteList[1][i])
+            x=GetMouseX();
+            y=GetMouseY();
+            int size=100;
+            for(int i=0;i<6;i++)
             {
-                startGold-=attackWhiteList[1][i];
-                numberOfBombs[i]++;
-                draw.setNumberOfBombs(numberOfBombs);
+                int tmpX=startEnemyMapLocation+i%3*160;
+                int tmpY=eqSize+sizeBetweenEqAndMap+i/3*160;
+
+                if(0==attackWhiteList[0][i] && x>tmpX && x<tmpX+size && y>tmpY && y<tmpY+size && startGold >=attackWhiteList[1][i])
+                {
+                    startGold-=attackWhiteList[1][i];
+                    numberOfBombs[i]++;
+                    draw.setNumberOfBombs(numberOfBombs);
+                }
             }
         }
+        else
+        {
+
+        }
+
     }
 
     boolean collisionInAttackingStage(int x,int y) {
@@ -405,8 +390,12 @@ public class MainGameCore {
                 {
                     enemyX=x;
                     enemyY=y;
-                    if(attackMode>0)
+                    if(attackMode>0 && KristiFlag)
                         numberOfBombs[attackMode-1]--;
+                    else if(!KristiFlag && attackMode>0)
+                    {
+                        startGold-=attackWhiteList[1][attackMode-1];
+                    }
                     return true;
                 }
                 else if(attackMode==4 && raid==1)
@@ -415,7 +404,10 @@ public class MainGameCore {
                     enemyY=y;
                     setRaidMap();
                     raid=3;
-                    numberOfBombs[attackMode-1]--;
+                    if(KristiFlag)
+                        numberOfBombs[attackMode-1]--;
+                    else
+                        startGold-=attackWhiteList[1][attackMode-1];
                     return true;
                 }
                 else if(attackMode==4 && raid == 3)
@@ -443,20 +435,21 @@ public class MainGameCore {
         y=GetMouseY();
         for(int i=0;i<6;i++)
         {
-            if(x>= startEnemyMapLocation+60+i*80 && x<= startEnemyMapLocation+104+i*80  && y >= 8 && y <= 72 && numberOfBombs[i]>0)
-            {
-                if(attackMode==4&&raid!=3)
+            if((numberOfBombs[i]>0 &&KristiFlag)||(startGold-attackWhiteList[1][i]>=0 && !KristiFlag))
+                if(x>= startEnemyMapLocation+60+i*80 && x<= startEnemyMapLocation+104+i*80  && y >= 8 && y <= 72)
                 {
+                    if(attackMode==4&&raid!=3)
+                    {
 
-                }
-                else
-                {
-                    if(attackMode!=i)
-                        attackMode=(byte)(i+1);
+                    }
                     else
-                        attackMode=0;
+                    {
+                        if(attackMode!=(i+1))
+                            attackMode=(byte)(i+1);
+                        else
+                            attackMode=0;
+                    }
                 }
-            }
         }
 
         return false;
@@ -464,11 +457,6 @@ public class MainGameCore {
 
     boolean placeShip(int mouseX,int mouseY) {
         int [][]tmp=new int[5][2];
-        for(int i=0;i<5;i++)
-        {
-            tmp[i][0]=-1;
-            tmp[i][1]=-1;
-        }
         int i=0;
         switch (shipType) {
             case 4:
@@ -481,7 +469,9 @@ public class MainGameCore {
                         i++;
                     }
                     else
-                        break;
+                    {
+                        return false;
+                    }
                 }
                 else
                 {
@@ -492,7 +482,9 @@ public class MainGameCore {
                         i++;
                     }
                     else
-                        break;
+                    {
+                        return false;
+                    }
                 }
             case 3:
                 if (!rotate)
@@ -504,7 +496,9 @@ public class MainGameCore {
                         i++;
                     }
                     else
-                        break;
+                    {
+                        return false;
+                    }
                 }
                 else
                 {
@@ -515,7 +509,9 @@ public class MainGameCore {
                         i++;
                     }
                     else
-                        break;
+                    {
+                        return false;
+                    }
                 }
             case 2:
                 if (!rotate)
@@ -527,7 +523,9 @@ public class MainGameCore {
                         i++;
                     }
                     else
-                        break;
+                    {
+                        return false;
+                    }
                 }
                 else
                 {
@@ -538,7 +536,9 @@ public class MainGameCore {
                         i++;
                     }
                     else
-                        break;
+                    {
+                        return false;
+                    }
                 }
             case 1:
                 if (!rotate)
@@ -550,7 +550,9 @@ public class MainGameCore {
                         i++;
                     }
                     else
-                        break;
+                    {
+                        return false;
+                    }
                 }
                 else
                 {
@@ -561,7 +563,10 @@ public class MainGameCore {
                         i++;
                     }
                     else
-                        break;
+                    {
+                        return false;
+                    }
+
                 }
             case 0:
             {
@@ -599,6 +604,49 @@ public class MainGameCore {
             myMap[y-1][x]=8;
         if(y+1<n && myMap[y+1][x]==0)
             myMap[y+1][x]=8;
+    }
+
+    void setToDraw(int mouseX,int mouseY,int ship)
+    {
+        int tmpx=mouseX*cell+sizeBetweenEqAndMap;
+        int tmpy=mouseY*cell+eqSize+sizeBetweenEqAndMap;
+        int tmph;
+        int tmpw;
+        int r=0;
+        if(rotate)
+        {
+            tmpx+=cell;
+            tmpy+=cell;
+            r=90;
+            switch (ship)
+            {
+                case 1:
+                case 2:
+                    tmpx+=cell;
+                    break;
+                case 3:
+
+                case 4:
+                    tmpx+=2*cell;
+                    break;
+            }
+        }
+        else
+        {
+            switch (ship)
+            {
+                case 2:
+                case 3:
+                    tmpy-=cell;
+                    break;
+                case 4:
+                    tmpy-=2*cell;
+                    break;
+            }
+        }
+        tmpw=cell;
+        tmph=cell*(ship+1);
+        draw.setShipOnMapPosition(ship,tmpx,tmpy,tmpw,tmph,r);
     }
 
     void setRaidMap() {
@@ -639,7 +687,6 @@ public class MainGameCore {
     void shoot(){
         if(attackMode!=4)
             numberOfShot=0;
-        attack = new int[0][];
         int s=0;
         switch (attackMode) {
             case 0 -> {
@@ -750,6 +797,7 @@ public class MainGameCore {
             }
 
             System.out.println("set Shoot Res 2");
+            startGold+=multithreading.getGold();
             multithreading.setAttackRes(null);
             for(int i=0;i<numberOfShot;i++)
             {
@@ -775,6 +823,7 @@ public class MainGameCore {
                 try{
                     attack= multithreading.getAttack();
                     enemyMap[attack[0][0]][attack[0][1]]=2;
+                    startGold+=multithreading.getGold();
                     multithreading.setAttack(null);
                     if(numberOfBombs[attackMode-1]<=0)
                         attackMode=0;
@@ -808,14 +857,16 @@ public class MainGameCore {
             System.out.println("set Shoot 1 numberOfAttack "+numberOfAttack+" enemyAttackMode "+enemyAttackMode);
 
             byte[] attackRes=new byte[numberOfAttack];
+            int goldToSend=0;
             for(int i=0;i<numberOfAttack;i++)
             {
 
                 if(myMap[attack[i][0]][attack[i][1]] == 0 || myMap[attack[i][0]][attack[i][1]] == 8 )
                     myMap[attack[i][0]][attack[i][1]]=1;
-                else if(myMap[attack[i][0]][attack[i][1]] == 3|| myMap[attack[i][0]][attack[i][1]] == 4|| myMap[attack[i][0]][attack[i][1]] == 5
-                        || myMap[attack[i][0]][attack[i][1]] == 6|| myMap[attack[i][0]][attack[i][1]] == 7)
+                else if(myMap[attack[i][0]][attack[i][1]] >= 3  && myMap[attack[i][0]][attack[i][1]] <= 7)
                 {
+                    int type=myMap[attack[i][0]][attack[i][1]]-3;
+                    goldToSend+=ship[2][type]/(type+1);
                     myMap[attack[i][0]][attack[i][1]]=2;
                     numberOfShipAlive--;
                 }
@@ -825,6 +876,7 @@ public class MainGameCore {
 
             }
             System.out.println("set Shoot 2 ");
+            multithreading.setGold(goldToSend);
             multithreading.setAttackRes(attackRes);
             isOpponentAttack=false;
         }
@@ -837,7 +889,7 @@ public class MainGameCore {
             {
                 for (int j=0;j<n;j++)
                 {
-                    if(myMap[i][j]==3||myMap[i][j]==4||myMap[i][j]==5||myMap[i][j]==6||myMap[i][j]==7)
+                    if(myMap[i][j]>=3 && myMap[i][j]<=7)
                     {
                         ship[s][0]=i;
                         ship[s][1]=j;
@@ -863,8 +915,11 @@ public class MainGameCore {
             attack=new int [1][2];
             attack[0][0]=ship[tmp][0];
             attack[0][1]=ship[tmp][1];
+            int type=myMap[attack[0][0]][attack[0][1]]-3;
+            int goldToSend=(this.ship[2][type])/(type+1);
             myMap[attack[0][0]][attack[0][1]]=2;
             numberOfShipAlive--;
+            multithreading.setGold(goldToSend);
             multithreading.setAttack(attack);
             attack=null;
             System.out.println("set Shoot 4 ");
@@ -874,6 +929,33 @@ public class MainGameCore {
 
     boolean isOnEnemyMap(int x,int y) {
         return x >= 0 && x < n && y >= 0 && y < n && enemyMap[y][x] == 0;
+    }
+
+    void random()
+    {
+        while(shipType>=0)
+        {
+            if(shipType >=0 &&ship[1][shipType]>0)
+            {
+                int a=rand.nextInt(n);
+                int b=rand.nextInt(n);
+                int tmp=shipType;
+                rotate=rand.nextBoolean();
+                if(placeShip(a,b))
+                {
+                    setToDraw(a,b,tmp);
+                }
+                shipType=tmp;
+            }
+            else if(shipType >=0)
+            {
+                shipType--;
+
+            }
+
+        }
+
+
     }
 
 }

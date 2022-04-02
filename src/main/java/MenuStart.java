@@ -5,7 +5,6 @@ import static com.raylib.Raylib.WindowShouldClose;
 
 
 public class MenuStart extends Thread{
-    int t=0;
     String who;
     String ip="";
     int port=25565;
@@ -24,6 +23,7 @@ public class MenuStart extends Thread{
     Jaylib.Color[] shipColor=new Jaylib.Color[5];
     int buttonUse=-1;
     boolean EndAndDontContet=false;
+    boolean KristiFlag =false;
     public void run() {
 
         tryConnect=false;
@@ -35,18 +35,21 @@ public class MenuStart extends Thread{
         attackWhiteList[1][3]=250;
         attackWhiteList[1][4]=500;
         attackWhiteList[1][5]=200;
+        ship[2][0]=400;
+        ship[2][1]=350;
+        ship[2][2]=300;
+        ship[2][3]=250;
+        ship[2][4]=200;
         InitWindow(1280,720,"MENU");
         SetTargetFPS(60);
         menu=new DrawMenu(port,ship,attackWhiteList);
+        numberOfShip();
         while (!WindowShouldClose() && menuStage>0 && !end) {
-
 
             BeginDrawing();
             ClearBackground(WHITE);
             menuStage+=collision();
             menu.Draw(menuStage,y,buttonUse);
-
-            DrawText(GetFPS()+"FPS",0,60,20,BLACK);
 
             EndDrawing();
             System.gc();
@@ -233,9 +236,17 @@ public class MenuStart extends Thread{
         if(textButton(365,25+y,60,60,40,""+mapSize,2,buttonNumber))
         {
             mapSize=textCtrInt(mapSize+"",2);
+            numberOfShip();
         }
         buttonNumber++;
-
+        if(button(500,25+y,350,60,40,"GameMode : "+(KristiFlag ?"1":"0"),buttonNumber))
+        {
+            if(IsMouseButtonPressed(0))
+            {
+                KristiFlag =!KristiFlag;
+            }
+        }
+        buttonNumber++;
         if(textButton(550,110+y,60,60,40,""+startTime,2,buttonNumber))
         {
             startTime=textCtrInt(startTime+"",2);
@@ -250,12 +261,12 @@ public class MenuStart extends Thread{
 
         for(int i=0;i<5;i++)
         {
-            if(textButton(145+i*110,425+y,110,60,40,""+ship[1][i],1,buttonNumber))
+            if(textButton(145+i*110,425+y,110,60,40,""+ship[1][i],1,-8))
             {
-                ship[1][i]=textCtrInt(ship[1][i]+"",1);
-                DrawMenu.setShip(ship);
+                //ship[1][i]=textCtrInt(ship[1][i]+"",1);
+                //DrawMenu.setShip(ship);
             }
-            buttonNumber++;
+            //buttonNumber++;
         }
 
 
@@ -306,7 +317,11 @@ public class MenuStart extends Thread{
         if(button(25,885+y,350,80,80,"START",buttonNumber))
         {
             if(mapSize<6)
+            {
                 mapSize=6;
+                numberOfShip();
+            }
+
             else if(mapSize>26)
                 mapSize=26;
             if(moveTime<10)
@@ -329,12 +344,22 @@ public class MenuStart extends Thread{
                     ship[1][i]++;
                 }
             }
+            numberOfShip();
             return 1;
         }
         buttonNumber++;
         if(buttonNumber<buttonUse)
             buttonUse=-1;
         return 0;
+    }
+    void numberOfShip()
+    {
+        ship[1][4]=mapSize/12;
+        ship[1][3]=mapSize/8;
+        ship[1][2]=mapSize/6;
+        ship[1][1]=mapSize/5;
+        ship[1][0]=mapSize/4;
+        DrawMenu.setShip(ship);
     }
     int collisionHostIP()
     {
@@ -591,7 +616,7 @@ public class MenuStart extends Thread{
             }
         }
         boolean collision = collision(x, y, sizeX, sizeY);
-        if(IsMouseButtonPressed(0)&&collision)
+        if(IsMouseButtonPressed(0) && collision && buttonId>=0)
         {
             if(!(buttonId==buttonUse))
                 buttonUse=buttonId;
@@ -617,10 +642,12 @@ public class MenuStart extends Thread{
     {
         return end;
     }
+
     boolean getEndAndDontContet()
     {
         return EndAndDontContet;
     }
+
     void setEnd(boolean end)
     {
         this.end=end;

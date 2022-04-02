@@ -16,7 +16,7 @@ public class Multithreading extends Thread {
     private int moveTime;
     private int moveTimeTmp;
     private int startTime;
-
+    private int gold=0;
 
     Multithreading(Communication communication, boolean isOpponentLeft, boolean isMyMove, boolean isProgramEnd,int moveTime,int startTime) {
         this.communication = communication;
@@ -34,6 +34,7 @@ public class Multithreading extends Thread {
 
     @Override
     public void run() {
+
         while (!isOpponentLeft && !isProgramEnd) {
 
             if(numberOfShip <= 0 && isAttackTime)
@@ -146,9 +147,12 @@ public class Multithreading extends Thread {
                     String tmp=communication.getInformation();
                     tmpAttackRes[i]=Byte.parseByte(tmp);
                 }
-                attackRes=tmpAttackRes;
-
+                String tmp=communication.getInformation();
+                gold=Integer.parseInt(tmp);
                 System.out.println("5");
+
+                attackRes=tmpAttackRes;
+                System.out.println("5a");
                 while (attackRes != null) {
                     try {
                         sleep(10);
@@ -168,6 +172,8 @@ public class Multithreading extends Thread {
                 tmpAttack[0][0] = Integer.parseInt(tmp);
                 tmp = communication.getInformation();
                 tmpAttack[0][1] = Integer.parseInt(tmp);
+                tmp = communication.getInformation();
+                gold = Integer.parseInt(tmp);
                 System.out.println("q4");
                 attack=tmpAttack;
                 while (attack != null) {
@@ -179,15 +185,8 @@ public class Multithreading extends Thread {
                 }
                 System.out.println("q5");
             }
-            isMyMove = false;
-            if(attack!=null)
-                attack = null;
-            if(attackRes!=null)
-                attackRes=null;
-            isAttack=false;
-            attackType = -1;
-            numberOfAttack = -1;
-            moveTimeTmp=moveTime;
+
+            setDefult();
             System.out.println("7");
 
         }
@@ -198,7 +197,6 @@ public class Multithreading extends Thread {
     }
 
     void waiting() {
-
         String tmp = communication.getInformation();
         if (tmp.equals("attack"))
         {
@@ -221,8 +219,8 @@ public class Multithreading extends Thread {
                     tmp = communication.getInformation();
                     tmpattack[i][1] = Integer.parseInt(tmp);
                 }
-                attack=tmpattack;
                 System.out.println("3");
+                attack=tmpattack;
                 while (attackRes == null) {
                     try {
                         sleep(10);
@@ -235,6 +233,8 @@ public class Multithreading extends Thread {
                 for (int i = 0; i < numberOfAttack; i++) {
                     communication.sendInformation(attackRes[i] + "");
                 }
+                communication.sendInformation(gold+"");
+
                 System.out.println("5");
 
             }
@@ -249,20 +249,27 @@ public class Multithreading extends Thread {
                 }
                 communication.sendInformation(attack[0][0] + "");
                 communication.sendInformation(attack[0][1] + "");
+                communication.sendInformation(gold+"");
                 System.out.println("4");
             }
             System.out.println("6");
-            isMyMove = true;
-            if(attack!=null)
-                attack = null;
-            if(attackRes!=null)
-                attackRes=null;
-            isAttack=false;
-            attackType = -1;
-            numberOfAttack = -1;
-            moveTimeTmp=moveTime;
+            setDefult();
+
         }
 
+    }
+
+    void setDefult() {
+        isMyMove = !isMyMove;
+        if(attack!=null)
+            attack = null;
+        if(attackRes!=null)
+            attackRes=null;
+        isAttack=false;
+        attackType = -1;
+        numberOfAttack = -1;
+        moveTimeTmp=moveTime;
+        gold=0;
     }
 
     void setIsProgramEnd(boolean isProgramEnd) {
@@ -293,6 +300,8 @@ public class Multithreading extends Thread {
     void setAttackRes(byte[] attackRes) {
         this.attackRes = attackRes;
     }
+
+    void setGold(int gold){this.gold=gold;}
 
     boolean getIsOpponentLeft() {
         return isOpponentLeft;
@@ -340,4 +349,6 @@ public class Multithreading extends Thread {
     boolean getEndGame(){return endGame;}
 
     boolean getisPlacingShipTime(){return (!isAttackTime);}
+
+    int getGold(){return gold;}
 }
