@@ -94,10 +94,17 @@ public class Start {
                 getGameInformation();
             Jaylib.Color []Colors=start.getColors();
             boolean play=true;
+            int gold=startGold;
+            int[] bombs=null;
             while(play)
             {
-                MainGameCore mainGameCore=new MainGameCore(communication,who, (byte) mapSize,ship,attackWhiteList,moveTime,startTime,startGold,Colors, KristiFlag);
+                MainGameCore mainGameCore=new MainGameCore(communication,who, (byte) mapSize,ship,attackWhiteList,moveTime,startTime,gold,Colors, KristiFlag);
+                if(bombs!=null && KristiFlag)
+                    mainGameCore.setNumberOfBombs(bombs);
                 play=mainGameCore.main();
+                if(KristiFlag)
+                    bombs=mainGameCore.getNumberOfBombs();
+                gold=mainGameCore.startGold;
                 if(who.equals("server"))
                 {
 

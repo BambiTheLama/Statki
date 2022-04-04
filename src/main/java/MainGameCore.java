@@ -143,7 +143,7 @@ public class MainGameCore {
         while (!isProgramEnd &&!WindowShouldClose() )
         {
             boolean press=false;
-            if(GetMouseX()>430 && GetMouseX()<830 && GetMouseY()>350 && GetMouseY()<400)
+            if(GetMouseX()>430 && GetMouseX()<830 && GetMouseY()>375 && GetMouseY()<425)
                 press=true;
             if(IsKeyPressed(KEY_ENTER) || (press && IsMouseButtonPressed(0)))
             {
@@ -156,7 +156,7 @@ public class MainGameCore {
             draw.draw(myMap,enemyMap,raid,attackMode,numberOfShot,raidmap,ship,rotate,shipType);
             draw.gameEnd(isOpponentLeft,isSomeoneWin,lost);
 
-            DrawMenu.DrawButton(430,400,350,50,40,"Zagraj ponownie",press);
+            DrawMenu.DrawButton(430,375,400,50,40,"Zagraj ponownie",press);
             EndDrawing();
             System.gc();
         }
@@ -956,6 +956,15 @@ public class MainGameCore {
         }
 
 
+    }
+    int[] getNumberOfBombs()
+    {
+        return numberOfBombs;
+    }
+    void setNumberOfBombs(int[] bombs)
+    {
+        numberOfBombs=bombs;
+        draw.setNumberOfBombs(bombs);
     }
 
 }
