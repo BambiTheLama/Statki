@@ -1,0 +1,25 @@
+2022_04_07_17_51_19
+Map size :23 NumberOfShip 15 Start gold 2555 gamemode 0
+Random Ships :
+ShipType = 5 (s 21) isRotate false
+ShipType = 4 (u 11) isRotate false
+ShipType = 4 (c 11) isRotate true
+ShipType = 3 (m 4) isRotate false
+ShipType = 3 (c 3) isRotate true
+ShipType = 3 (l 18) isRotate true
+ShipType = 2 (i 21) isRotate false
+ShipType = 2 (w 8) isRotate false
+ShipType = 2 (b 11) isRotate false
+ShipType = 2 (p 23) isRotate false
+ShipType = 2 (t 19) isRotate false
+ShipType = 2 (a 7) isRotate false
+ShipType = 2 (b 14) isRotate true
+ShipType = 1 (d 5) isRotate false
+ShipType = 1 (j 20) isRotate true
+ShipType = 1 (s 16) isRotate true
+ShipType = 1 (m 4) isRotate false
+ShipType = 1 (h 10) isRotate false
+ShipType = 1 (o 4) isRotate true
+YOU WIN Oponet left
+2022/04/07 17:54:41
+END

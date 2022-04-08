@@ -1,0 +1,154 @@
+2022_04_07_20_51_41
+Map size :23 NumberOfShip 15 Start gold 2555 gamemode 0
+YOU PLACE SHIP (2) AT o 6 Rotate false
+YOU PLACE SHIP (2) AT n 12 Rotate false
+YOU PLACE SHIP (2) AT s 16 Rotate false
+YOU PLACE SHIP (2) AT u 9 Rotate true
+Random Ships :
+ShipType = 5 (e 6) isRotate true
+ShipType = 4 (c 2) isRotate false
+ShipType = 4 (i 11) isRotate false
+ShipType = 3 (r 7) isRotate false
+ShipType = 3 (q 18) isRotate false
+ShipType = 3 (f 2) isRotate false
+ShipType = 1 (b 21) isRotate false
+ShipType = 1 (l 23) isRotate false
+ShipType = 1 (v 18) isRotate true
+ShipType = 1 (q 22) isRotate true
+ShipType = 1 (f 9) isRotate false
+
+MY MOVE
+Attack Mode 3 c3
+RES FROM ATTACK Number OF SHOT : 10
+RES = 1 a3
+RES = 2 c1
+RES = 1 b3
+RES = 2 c2
+RES = 2 c3
+RES = 2 c3
+RES = 1 d3
+RES = 2 c4
+RES = 1 e3
+RES = 1 c5
+Gold :2678
+
+ENEMY MOVE 
+attack type3
+Res = 1 c2
+Res = 2 a0
+Res = 1 c2
+Res = 2 b1
+Res = 2 c2
+Res = 2 c2
+Res = 1 c2
+Res = 2 d3
+Res = 1 c2
+Res = 1 e4
+Gold to send 248
+
+MY MOVE
+Attack Mode 3 f4
+RES FROM ATTACK Number OF SHOT : 10
+RES = 1 d4
+RES = 2 f2
+RES = 1 e4
+RES = 2 f3
+RES = 1 f4
+RES = 1 f4
+RES = 1 g4
+RES = 1 f5
+RES = 1 h4
+RES = 2 f6
+Gold :2943
+
+ENEMY MOVE 
+attack type3
+Res = 1 d3
+Res = 2 b1
+Res = 1 d3
+Res = 2 c2
+Res = 1 d3
+Res = 1 d3
+Res = 1 d3
+Res = 1 e4
+Res = 1 d3
+Res = 2 f5
+Gold to send 240
+
+MY MOVE
+Attack Mode 3 i5
+RES FROM ATTACK Number OF SHOT : 10
+RES = 1 g5
+RES = 1 i3
+RES = 1 h5
+RES = 1 i4
+RES = 1 i5
+RES = 1 i5
+RES = 1 j5
+RES = 1 i6
+RES = 1 k5
+RES = 1 i7
+Gold :2818
+
+ENEMY MOVE 
+attack type3
+Res = 1 e4
+Res = 1 c2
+Res = 1 e4
+Res = 1 d3
+Res = 1 e4
+Res = 1 e4
+Res = 1 e4
+Res = 1 f5
+Res = 1 e4
+Res = 1 g6
+Gold to send 0
+
+MY MOVE
+Attack Mode 3 l6
+RES FROM ATTACK Number OF SHOT : 10
+RES = 1 j6
+RES = 1 l4
+RES = 1 k6
+RES = 1 l5
+RES = 1 l6
+RES = 1 l6
+RES = 1 m6
+RES = 1 l7
+RES = 1 n6
+RES = 1 l8
+Gold :2693
+
+ENEMY MOVE 
+attack type3
+Res = 1 f5
+Res = 1 d3
+Res = 1 f5
+Res = 1 e4
+Res = 1 f5
+Res = 1 f5
+Res = 1 f5
+Res = 1 g6
+Res = 1 f5
+Res = 1 h7
+Gold to send 0
+
+MY MOVE
+Attack Mode 0 r8
+RES FROM ATTACK Number OF SHOT : 1
+RES = 2 r8
+Gold :2793
+
+ENEMY MOVE 
+attack type0
+Res = 1 n13
+Gold to send 0
+
+MY MOVE
+Attack Mode 0 u11
+RES FROM ATTACK Number OF SHOT : 1
+RES = 1 u11
+Gold :2793
+YOU CLOSE WINDOW
+2022/04/07 20:52:39
+END

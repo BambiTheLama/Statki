@@ -1,5 +1,4 @@
 import com.raylib.Jaylib;
-
 import static java.lang.Thread.sleep;
 
 public class Start {
@@ -12,86 +11,37 @@ public class Start {
     static int startGold=0;
     static Communication communication=new Communication();
     static boolean KristiFlag=false;
-
+    static String who = null;
     
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) {
 
         while(true)
         {
-            Jaylib.Color tmp=new Jaylib.Color(245,12,0,255);
             MenuStart start=new MenuStart();
             start.start();
-            String who = null;
-            boolean End=false;
+            boolean end=false;
 
-            while(!start.getEnd() && !End)
+            while(!start.getEnd() && !end)
             {
-                //System.out.println("pentla "+start.getMenuStage());
                 if(start.getMenuStage()==3)
                 {
-                    who=new String("server");
-                    communication=new Communication();
-                    while(!communication.tryConnect(start.getWho(),start.getPort(),start.getIp()) && start.getMenuStage()==3 &&!start.getEnd())
-                    {
-
-                    }
-                    if(start.getMenuStage()!=3 ||start.getEnd()) {
-                        communication.tryConnect("client",start.getPort(),start.getIp());
-                        start.port++;
-                    }
-                    if(start.getMenuStage()==3)
-                    {
-                        mapSize=start.mapSize;
-                        startTime=start.startTime;
-                        moveTime=start.moveTime;
-                        ship= start.ship;
-                        attackWhiteList=start.attackWhiteList;
-                        startGold=start.startGold;
-                        KristiFlag= start.KristiFlag;
-                        if(communication.connect)
-                        {
-                            End=true;
-                            start.setEnd(true);
-                        }
-                    }
-                    else
-                    {
-                        End=false;
-                    }
+                    end = createServer(start);
                 }
-                else if(start.getMenuStage()==4 && start.tryConnect)
+                else if(start.getMenuStage()==4)
                 {
-                    who=new String("client");
-                    System.out.println("JESTES W DOLACZANIA KLIENTA"+start.getWho() +" ip "+start.getIp()+" port "+start.getPort());
-
-                    if(communication.tryConnect(start.getWho(),start.getPort(),start.getIp()))
-                    {
-                        End=true;
-                        start.setEnd(true);
-                    }
-
-                }
-                else if(start.getMenuStage()==5)
-                {
-
+                    end = joinToServer(start);
                 }
                 try{
                     sleep(100);
                 }
-                catch (Exception e)
-                {
-
-                }
+                catch (Exception ignored)
+                {}
             }
             if(start.getEndAndDontContet())
             {
                 return;
             }
-
-            if(who.equals("server"))
-                sendGameInformation();
-            else if(who.equals("client"))
-                getGameInformation();
+            setData();
             Jaylib.Color []Colors=start.getColors();
             boolean play=true;
             int gold=startGold;
@@ -105,24 +55,34 @@ public class Start {
                 if(KristiFlag)
                     bombs=mainGameCore.getNumberOfBombs();
                 gold=mainGameCore.startGold;
-                if(who.equals("server"))
-                {
-
-                    String tmp2=communication.getInformation();
-                    boolean playtmp=Boolean.parseBoolean(tmp2);
-                    play=play&&playtmp;
-                    communication.sendInformation(play+"");
-                }
-                else if(who.equals("client"))
-                {
-                    communication.sendInformation(play+"");
-                    String tmp2=communication.getInformation();
-                    play=Boolean.parseBoolean(tmp2);
-                }
-
+                play=checkEnd(play);
             }
         }
 
+    }
+
+    static boolean checkEnd(boolean play) {
+        if(who.equals("server"))
+        {
+            String tmp2=communication.getInformation();
+            boolean playtmp=Boolean.parseBoolean(tmp2);
+            play=play&&playtmp;
+            communication.sendInformation(play+"");
+            return play;
+        }
+        else
+        {
+            communication.sendInformation(play+"");
+            String tmp2=communication.getInformation();
+            return Boolean.parseBoolean(tmp2);
+        }
+    }
+
+    static void setData() {
+        if(who.equals("server"))
+            sendGameInformation();
+        else
+            getGameInformation();
     }
 
     static void sendGameInformation() {
@@ -178,5 +138,52 @@ public class Start {
         }
         tmp=communication.getInformation();
         KristiFlag=Boolean.parseBoolean(tmp);
+    }
+
+    static void getGameParameters(MenuStart start) {
+        mapSize=start.mapSize;
+        startTime=start.startTime;
+        moveTime=start.moveTime;
+        ship= start.ship;
+        attackWhiteList=start.attackWhiteList;
+        startGold=start.startGold;
+        KristiFlag= start.KristiFlag;
+    }
+
+    static boolean createServer(MenuStart start) {
+        who= "server";
+        communication=new Communication();
+        while(!communication.tryConnect(start.getWho(),start.getPort(),start.getIp()) && start.getMenuStage()==3 &&!start.getEnd())
+        {
+            try{
+                sleep(100);
+            }
+            catch (Exception ignored)
+            {}
+        }
+        if(start.getMenuStage()!=3 ||start.getEnd()) {
+            communication.tryConnect("client",start.getPort(),start.getIp());
+            start.port++;
+        }
+        if(start.getMenuStage()==3)
+        {
+            getGameParameters(start);
+            if(communication.connect)
+            {
+                start.setEnd(true);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    static boolean joinToServer(MenuStart start) {
+        who= "client";
+        if(communication.tryConnect(start.getWho(),start.getPort(),start.getIp()))
+        {
+            start.setEnd(true);
+            return true;
+        }
+        return false;
     }
 }

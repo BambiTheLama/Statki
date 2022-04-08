@@ -1,8 +1,11 @@
 import com.raylib.Jaylib;
+import java.io.File;
 import java.net.InetAddress;
 import static com.raylib.Jaylib.*;
 import static com.raylib.Raylib.WindowShouldClose;
-
+import java.io.PrintWriter;
+import java.util.Objects;
+import java.util.Scanner;
 
 public class MenuStart extends Thread{
     String who;
@@ -20,11 +23,63 @@ public class MenuStart extends Thread{
     boolean end=false;
     boolean tryConnect=false;
     DrawMenu menu=null;
-    Jaylib.Color[] shipColor=new Jaylib.Color[5];
     int buttonUse=-1;
     boolean EndAndDontContet=false;
     boolean KristiFlag =false;
+    Jaylib.Color[] colors;
+    Texture []background;
+    int usedBackground=0;
+    int maxBackground=2;
+
     public void run() {
+        File file = new File("Colors.txt");
+        setStartData(file);
+        InitWindow(1280,720,"MENU");
+        SetTargetFPS(60);
+        setBackdround();
+        menu=new DrawMenu(port,ship,attackWhiteList,colors);
+        numberOfShip();
+        while (!WindowShouldClose() && menuStage>0 && !end) {
+
+            BeginDrawing();
+            ClearBackground(WHITE);
+            DrawTexture(background[usedBackground],0,0,WHITE);
+            menuStage+=collision();
+            menu.Draw(menuStage,y,buttonUse);
+            EndDrawing();
+            System.gc();
+        }
+        if(!end)
+        {
+            EndAndDontContet=true;
+        }
+        System.out.println(""+mapSize);
+        menu.clear();
+        CloseWindow();
+        end=true;
+        saveColors(file);
+    }
+
+    void setStartData(File file)
+    {
+        try {
+            Scanner readFile = new Scanner(file);
+            usedBackground=readFile.nextInt();
+            colors=new Jaylib.Color[5];
+            for(int i=0;i<5;i++)
+            {
+                byte r=readFile.nextByte();
+                byte g=readFile.nextByte();
+                byte b=readFile.nextByte();
+                byte a=readFile.nextByte();
+                colors[i]=new Jaylib.Color(r,g,b,a);
+            }
+            readFile.close();
+        }
+        catch (Exception ignored)
+        {
+
+        }
 
         tryConnect=false;
         for(int i=0;i<5;i++)
@@ -40,32 +95,34 @@ public class MenuStart extends Thread{
         ship[2][2]=300;
         ship[2][3]=250;
         ship[2][4]=200;
-        InitWindow(1280,720,"MENU");
-        SetTargetFPS(60);
-        menu=new DrawMenu(port,ship,attackWhiteList);
-        numberOfShip();
-        while (!WindowShouldClose() && menuStage>0 && !end) {
-
-            BeginDrawing();
-            ClearBackground(WHITE);
-            menuStage+=collision();
-            menu.Draw(menuStage,y,buttonUse);
-
-            EndDrawing();
-            System.gc();
-
-        }
-        if(!end)
-        {
-            EndAndDontContet=true;
-        }
-        System.out.println(""+mapSize);
-        Draw.setShipColor(shipColor);
-        menu.clear();
-        CloseWindow();
-        end=true;
     }
+    void setBackdround()
+    {
+        background=new Texture[maxBackground];
+        for(int i=0;i<maxBackground;i++)
+        {
+            background[i]=LoadTexture("resources/tla/tlo"+(i+1)+".png");
+        }
+    }
+    void saveColors(File file)
+    {
 
+        try {
+            PrintWriter in = new PrintWriter(file);
+            in.println(usedBackground+" ");
+            colors= menu.Color();
+            for(int i=0;i<5;i++)
+            {
+                in.println(colors[i].r()+" "+colors[i].g()+" "+colors[i].b()+" "+colors[i].a());
+            }
+            in.close();
+        }
+        catch (Exception ignored)
+        {
+
+        }
+
+    }
     int collision()
     {
         int tmp=0;
@@ -95,63 +152,48 @@ public class MenuStart extends Thread{
                 }
             }
         }
-        switch (menuStage){
-            case 1:
+        switch (menuStage) {
+            case 1 -> {
+                tmp = collisionStart();
+                if (tmp == 1)
+                    MouseWheel = GetMouseWheelMove();
+            }
+            case 2 -> {
+                tmp = collisionHostSettings();
+                DrawMenu.setPort(port);
+                if (tmp == 1) {
+                    y = 0;
+                    try {
+                        ip = InetAddress.getLocalHost() + "";
 
-                tmp=collisionStart();
-                if(tmp==1)
-                    MouseWheel=GetMouseWheelMove();
-                break;
-            case 2:
-
-                tmp=collisionHostSettings();
-                menu.setPort(port);
-                if(tmp==1)
-                {
-                    y=0;
-                    try{
-                        ip=InetAddress.getLocalHost()+"";
-
-                        int index = ip.indexOf( '/' );
-                        ip=ip.substring(index+1,ip.length());
+                        int index = ip.indexOf('/');
+                        ip = ip.substring(index + 1);
                         System.out.println(ip);
                         DrawMenu.setIp(ip);
-                        who="server";
-                    }
-                    catch (Exception e)
-                    {
+                        who = "server";
+                    } catch (Exception e) {
 
                     }
-                    if(port<25565)
-                        port=25565;
-                    else if(port>65535)
-                        port=65535;
+                    if (port < 25565)
+                        port = 25565;
+                    else if (port > 65535)
+                        port = 65535;
                     DrawMenu.setPort(port);
                 }
-                break;
-            case 3:
-
-                tmp=collisionHostIP();
-                if(tmp==-1)
-                {
-                    MouseWheel=GetMouseWheelMove();
+            }
+            case 3 -> {
+                tmp = collisionHostIP();
+                if (tmp == -1) {
+                    MouseWheel = GetMouseWheelMove();
                 }
-
-
-                break;
-            case 4:
-
-                tmp=collisionClientMenu();
-                if(tmp==-1)
-                {
-                    tryConnect=false;
+            }
+            case 4 -> {
+                tmp = collisionClientMenu();
+                if (tmp == -1) {
+                    tryConnect = false;
                 }
-                break;
-            case 5:
-
-                tmp=collisionSettings();
-                break;
-
+            }
+            case 5 -> tmp = collisionSettings();
         }
         if(IsKeyPressed(KEY_ENTER))
         {
@@ -261,12 +303,15 @@ public class MenuStart extends Thread{
 
         for(int i=0;i<5;i++)
         {
-            if(textButton(145+i*110,425+y,110,60,40,""+ship[1][i],1,-8))
+            textButton(145+i*110,425+y,110,60,40,""+ship[1][i],1,-8);
+            /*if()
             {
-                //ship[1][i]=textCtrInt(ship[1][i]+"",1);
-                //DrawMenu.setShip(ship);
+                ship[1][i]=textCtrInt(ship[1][i]+"",1);
+                DrawMenu.setShip(ship);
             }
-            //buttonNumber++;
+            buttonNumber++;
+
+            */
         }
 
 
@@ -316,35 +361,8 @@ public class MenuStart extends Thread{
         buttonNumber++;
         if(button(25,885+y,350,80,80,"START",buttonNumber))
         {
-            if(mapSize<6)
-            {
-                mapSize=6;
-                numberOfShip();
-            }
+            checkAndSetGameParamaters();
 
-            else if(mapSize>26)
-                mapSize=26;
-            if(moveTime<10)
-                moveTime=10;
-            else if(moveTime>30)
-                moveTime=30;
-            if(startTime<30)
-                startTime=30;
-            else if(startTime>90)
-                startTime=90;
-            int s=0;
-            for(int i=0;i<5;i++)
-            {
-                s=ship[1][i];
-            }
-            if(s==0)
-            {
-                for(int i=0;i<5;i++)
-                {
-                    ship[1][i]++;
-                }
-            }
-            numberOfShip();
             return 1;
         }
         buttonNumber++;
@@ -393,7 +411,7 @@ public class MenuStart extends Thread{
             String t=ip;
             ip=textCtrString(ip,15);
             tryConnect=false;
-            if(ip!=t)
+            if(!Objects.equals(ip, t))
             {
                 DrawMenu.setIsLoading(false);
                 tryConnect=false;
@@ -428,6 +446,7 @@ public class MenuStart extends Thread{
     }
     int collisionSettings()
     {
+        int buttonNumber=1;
         if(collision(1202,22,56,56) && IsMouseButtonPressed(0))
             return -4;
 
@@ -435,6 +454,7 @@ public class MenuStart extends Thread{
         {
             menu.setTextColor(colorWheel.setColor(menu.getTextColor()));
             InitWindow(1280,720,"MENU");
+            setBackdround();
             menu.reLoad();
         }
 
@@ -442,27 +462,36 @@ public class MenuStart extends Thread{
         {
             menu.setButtonColor(colorWheel.setColor(menu.getButtonColor()));
             InitWindow(1280,720,"MENU");
+            setBackdround();
             menu.reLoad();
         }
         if(collision(435,110,60,60) && IsMouseButtonDown(0))
         {
             menu.setButtonPressColor(colorWheel.setColor(menu.getButtonPressColor()));
             InitWindow(1280,720,"MENU");
+            setBackdround();
             menu.reLoad();
         }
         if(collision(435,195,60,60) && IsMouseButtonDown(0))
         {
             menu.setxColor(colorWheel.setColor(menu.getxColor()));
             InitWindow(1280,720,"MENU");
+            setBackdround();
             menu.reLoad();
         }
         if(collision(625,195,60,60) && IsMouseButtonDown(0))
         {
             menu.setoColor(colorWheel.setColor(menu.getoColor()));
             InitWindow(1280,720,"MENU");
+            setBackdround();
             menu.reLoad();
         }
-
+        if(button(25,280,400,60,40,"Tlo:"+usedBackground,buttonNumber))
+        {
+            usedBackground++;
+            if(usedBackground>=maxBackground)
+                usedBackground=0;
+        }
 
         return 0;
     }
@@ -629,13 +658,44 @@ public class MenuStart extends Thread{
 
     }
 
+    void checkAndSetGameParamaters()
+    {
+        if(mapSize<6)
+        {
+            mapSize=6;
+            numberOfShip();
+        }
+        else if(mapSize>26) {
+            mapSize = 26;
+            numberOfShip();
+        }
+        if(moveTime<10)
+            moveTime=10;
+        else if(moveTime>30)
+            moveTime=30;
+
+        if(startTime<30)
+            startTime=30;
+        else if(startTime>90)
+            startTime=90;
+
+        int s=0;
+        for(int i=0;i<5;i++)
+        {
+            s=ship[1][i];
+        }
+        if(s==0)
+        {
+            for(int i=0;i<5;i++)
+            {
+                ship[1][i]++;
+            }
+        }
+    }
+
     Jaylib.Color[] getColors()
     {
-        Jaylib.Color[] c=new Jaylib.Color[3];
-        c[0]=menu.getTextColor();
-        c[1]=menu.getxColor();
-        c[2]=menu.getoColor();
-        return c;
+        return colors;
     }
 
     boolean getEnd()

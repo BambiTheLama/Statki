@@ -1,8 +1,12 @@
 import com.raylib.Jaylib;
 import com.raylib.Raylib;
+
+import java.io.PrintWriter;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Random;
 import static com.raylib.Jaylib.*;
-
+import java.io.File;
 public class MainGameCore {
 
     Draw draw;
@@ -16,7 +20,7 @@ public class MainGameCore {
     boolean isSomeoneWin=false;
     boolean isMyMove;
     boolean lost=false;
-    boolean KristiFlag=false;
+    boolean KristiFlag;
     Random rand=new Random();
     byte[][] myMap;
     byte[][] enemyMap;
@@ -42,15 +46,29 @@ public class MainGameCore {
     int width=1280,height=720;
     int time;
     int shipType=-1;
-    int moveTime=10;
-    int startTime=10;
+    int moveTime;
+    int startTime;
     int[][] ship;
     int[][] attackWhiteList;
     int startGold;
     boolean rotate=false;
-
+    File file;
+    PrintWriter toFile;
     MainGameCore(Communication communication,String who,byte mapSize,int[][] ship,int[][] attackWhiteList,int moveTime,int startTime,int startGold, Jaylib.Color[] colors,boolean KristiFlag)
     {
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy_MM_dd_HH_mm_ss");
+        LocalDateTime now = LocalDateTime.now();
+        String data=dtf.format(now)+"_"+who;
+        file=new File("logi/gra_nr_"+data+".txt");
+
+        try
+        {
+            toFile = new PrintWriter(file);
+            saveToFile(dtf.format(now));
+        }catch (Exception ignored)
+        {
+
+        }
         n=mapSize;
         this.ship = ship;
         this.attackWhiteList = attackWhiteList;
@@ -73,25 +91,21 @@ public class MainGameCore {
         SetTargetFPS(60);
 
         draw=new Draw(n,width,height,eqSize,sizeBetweenEqAndMap,cell,sizeBetweenMaps,20,startEnemyMapLocation,colors,attackWhiteList,KristiFlag);
+        int tmp=0;
 
-        try{
-            int tmp=0;
-            for(int i=0;i<5;i++)
-            {
-                numberOfShipToPlace+=ship[1][i]*(i+1);
-                tmp+=ship[1][i];
-            }
-            draw.setShipOnMap(tmp);
-
-            for(int i=0;i<6;i++)
-                numberOfBombs[i]=0;
-        }catch(Exception ignored)
+        for(int i=0;i<5;i++)
         {
-
+            numberOfShipToPlace+=ship[1][i]*(i+1);
+            tmp+=ship[1][i];
         }
+        draw.setShipOnMap(tmp);
+
+        for(int i=0;i<6;i++)
+            numberOfBombs[i]=0;
+
         numberOfShipAlive=numberOfShipToPlace;
 
-
+        saveToFile("Map size :"+mapSize+" NumberOfShip "+ tmp+" Start gold "+startGold+" gamemode "+(KristiFlag?1:0));
     }
 
     void clear() {
@@ -125,6 +139,8 @@ public class MainGameCore {
             isProgramEnd=true;
             multithreading.setIsProgramEnd(true);
             CloseWindow();
+            saveToFile("YOU CLOSE WINDOW");
+            endFile();
             return false;
         }
         else
@@ -139,15 +155,17 @@ public class MainGameCore {
             }
 
         }
-        DrawMenu menu=new DrawMenu(0,null,null);
+        saveToFile("YOU "+(lost?"LOST":"WIN")+(isOpponentLeft?" Oponet left":""));
+        DrawMenu menu=new DrawMenu(0,null,null,null);
         while (!isProgramEnd &&!WindowShouldClose() )
         {
-            boolean press=false;
-            if(GetMouseX()>430 && GetMouseX()<830 && GetMouseY()>375 && GetMouseY()<425)
-                press=true;
+            boolean press=(GetMouseX()>430 && GetMouseX()<830 && GetMouseY()>375 && GetMouseY()<425);
+
             if(IsKeyPressed(KEY_ENTER) || (press && IsMouseButtonPressed(0)))
             {
                 CloseWindow();
+
+                endFile();
                 return true;
             }
 
@@ -164,6 +182,7 @@ public class MainGameCore {
         draw=null;
 
         CloseWindow();
+        endFile();
         return false;
 
     }
@@ -222,8 +241,15 @@ public class MainGameCore {
                 random();
                 numberOfShipAlive=numberOfShipAlive-numberOfShipToPlace;
                 shipType=-1;
+                if(KristiFlag)
+                {
+                    for(int i=0;i<6;i++)
+                    {
+                        saveToFile("YOU HAVE "+numberOfBombs[i]+" bombs type "+(i+1));
+                    }
+                    saveToFile("YOU HAVE "+startGold+" gold");
+                }
             }
-
         }
         else
         {
@@ -349,6 +375,7 @@ public class MainGameCore {
                 if(placeShip(mouseX,mouseY))
                 {
                     setToDraw(mouseX,mouseY,tmp);
+                    saveToFile("YOU PLACE SHIP ("+(tmp+1)+") AT "+((char)('a'+mouseX))+" "+(mouseY+1)+" Rotate "+rotate);
                 }
             }
 
@@ -371,10 +398,6 @@ public class MainGameCore {
                 }
             }
         }
-        else
-        {
-
-        }
 
     }
 
@@ -396,6 +419,7 @@ public class MainGameCore {
                     {
                         startGold-=attackWhiteList[1][attackMode-1];
                     }
+
                     return true;
                 }
                 else if(attackMode==4 && raid==1)
@@ -685,6 +709,8 @@ public class MainGameCore {
     }
 
     void shoot(){
+        saveToFile("\nMY MOVE");
+        saveToFile("Attack Mode "+attackMode+" "+(attackMode==4||attackMode==5?"":(char)('a'+enemyX)+""+(1+enemyY)));
         if(attackMode!=4)
             numberOfShot=0;
         int s=0;
@@ -790,13 +816,11 @@ public class MainGameCore {
         if(attackMode!=5)
         {
             byte []res= multithreading.getAttackRes();
-            System.out.println("set Shoot Res 1 attackmode :"+attackMode);
             if(res==null)
             {
                 return false;
             }
 
-            System.out.println("set Shoot Res 2");
             startGold+=multithreading.getGold();
             multithreading.setAttackRes(null);
             for(int i=0;i<numberOfShot;i++)
@@ -811,19 +835,23 @@ public class MainGameCore {
                 }
 
             }
-            System.out.println("set Shoot Res 3");
             multithreading.setAttack(attack);
+            saveToFile("RES FROM ATTACK Number OF SHOT : "+numberOfShot);
+            for(int i=0;i<numberOfShot;i++) {
+                saveToFile("RES = "+res[i]+" "+((char)('a'+attack[i][1]))+ (1+attack[i][0]));
+            }
+            saveToFile("Gold :"+startGold);
         }
         else
         {
-            System.out.println("set Shoot Res 1 attackmode :"+attackMode);
-
             if(multithreading.getAttack()!=null)
             {
                 try{
                     attack= multithreading.getAttack();
                     enemyMap[attack[0][0]][attack[0][1]]=2;
+                    saveToFile("RES = "+2+" "+((char)('a'+attack[0][1]))+ (1+attack[0][0]));
                     startGold+=multithreading.getGold();
+                    saveToFile("Gold :"+startGold);
                     multithreading.setAttack(null);
                     if(numberOfBombs[attackMode-1]<=0)
                         attackMode=0;
@@ -840,8 +868,6 @@ public class MainGameCore {
             }
 
 
-            System.out.println("set Shoot Res 2");
-
         }
         if(attack!=null)
         {
@@ -852,9 +878,9 @@ public class MainGameCore {
     }
 
     void setShoot(){
+        saveToFile("\nENEMY MOVE \nattack type"+enemyAttackMode);
         if(enemyAttackMode!=5)
         {
-            System.out.println("set Shoot 1 numberOfAttack "+numberOfAttack+" enemyAttackMode "+enemyAttackMode);
 
             byte[] attackRes=new byte[numberOfAttack];
             int goldToSend=0;
@@ -870,19 +896,20 @@ public class MainGameCore {
                     myMap[attack[i][0]][attack[i][1]]=2;
                     numberOfShipAlive--;
                 }
-
-
                 attackRes[i]=myMap[attack[i][0]][attack[i][1]];
 
             }
-            System.out.println("set Shoot 2 ");
+            for(int i=0;i<numberOfAttack;i++)
+            {
+                saveToFile("Res = "+attackRes[i]+" "+(char)('a'+attack[i][0])+attack[i][0]);
+            }
+            saveToFile("Gold to send "+goldToSend);
             multithreading.setGold(goldToSend);
             multithreading.setAttackRes(attackRes);
             isOpponentAttack=false;
         }
         else
         {
-            System.out.println("set Shoot 1 enemy attack mode"+enemyAttackMode);
             int s=0;
             int[][]ship=new int[numberOfShipAlive][2];
             for(int i=0;i<n;i++)
@@ -901,7 +928,6 @@ public class MainGameCore {
                 if(s==numberOfShipAlive-1)
                     break;
             }
-            System.out.println("set Shoot 2 ");
             int tmp=0;
             if(s>1)
             {
@@ -911,7 +937,6 @@ public class MainGameCore {
             {
                 tmp=0;
             }
-            System.out.println("set Shoot 3 ");
             attack=new int [1][2];
             attack[0][0]=ship[tmp][0];
             attack[0][1]=ship[tmp][1];
@@ -919,10 +944,14 @@ public class MainGameCore {
             int goldToSend=(this.ship[2][type])/(type+1);
             myMap[attack[0][0]][attack[0][1]]=2;
             numberOfShipAlive--;
+
+
+            saveToFile("Res = "+2+" "+(char)('a'+ship[tmp][1])+ship[tmp][0]);
+
+            saveToFile("Gold to send "+goldToSend);
             multithreading.setGold(goldToSend);
             multithreading.setAttack(attack);
             attack=null;
-            System.out.println("set Shoot 4 ");
 
         }
     }
@@ -931,8 +960,8 @@ public class MainGameCore {
         return x >= 0 && x < n && y >= 0 && y < n && enemyMap[y][x] == 0;
     }
 
-    void random()
-    {
+    void random() {
+        saveToFile("Random Ships :");
         while(shipType>=0)
         {
             if(shipType >=0 &&ship[1][shipType]>0)
@@ -944,8 +973,10 @@ public class MainGameCore {
                 if(placeShip(a,b))
                 {
                     setToDraw(a,b,tmp);
+                    saveToFile("ShipType = "+(tmp+1)+" ("+((char)('a'+a))+" "+(1+b)+") isRotate "+rotate);
                 }
                 shipType=tmp;
+
             }
             else if(shipType >=0)
             {
@@ -954,17 +985,32 @@ public class MainGameCore {
             }
 
         }
-
-
     }
+
     int[] getNumberOfBombs()
     {
         return numberOfBombs;
     }
-    void setNumberOfBombs(int[] bombs)
-    {
+
+    void setNumberOfBombs(int[] bombs) {
         numberOfBombs=bombs;
         draw.setNumberOfBombs(bombs);
+    }
+
+    void saveToFile(String s)
+    {
+        if(toFile==null) return;
+        toFile.println(s);
+        toFile.flush();
+    }
+    void endFile()
+    {
+        if(toFile==null)return;
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+        LocalDateTime now = LocalDateTime.now();
+        saveToFile(dtf.format(now));
+        saveToFile("END");
+        toFile.close();
     }
 
 }

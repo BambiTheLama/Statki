@@ -1,0 +1,5 @@
+2022_04_07_19_44_40
+Map size :23 NumberOfShip 15 Start gold 2555 gamemode 0
+YOU WIN
+2022/04/07 19:45:03
+END

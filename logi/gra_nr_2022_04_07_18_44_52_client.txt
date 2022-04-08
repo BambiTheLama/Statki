@@ -1,0 +1,227 @@
+2022_04_07_18_44_52
+Map size :23 NumberOfShip 15 Start gold 2555 gamemode 0
+Random Ships :
+ShipType = 5 (s 17) isRotate false
+ShipType = 4 (p 20) isRotate false
+ShipType = 4 (f 4) isRotate false
+ShipType = 3 (l 15) isRotate false
+ShipType = 3 (d 9) isRotate true
+ShipType = 3 (f 14) isRotate false
+ShipType = 2 (i 8) isRotate false
+ShipType = 2 (u 9) isRotate false
+ShipType = 2 (u 3) isRotate false
+ShipType = 2 (l 6) isRotate false
+ShipType = 1 (t 14) isRotate true
+ShipType = 1 (p 12) isRotate true
+ShipType = 1 (l 9) isRotate false
+ShipType = 1 (w 20) isRotate false
+ShipType = 1 (j 20) isRotate false
+
+MY MOVE
+Attack Mode 1 b2
+RES FROM ATTACK Number OF SHOT : 9
+RES = 1 a1
+RES = 1 a2
+RES = 1 a3
+RES = 1 b1
+RES = 1 b2
+RES = 1 b3
+RES = 1 c1
+RES = 1 c2
+RES = 1 c3
+Gold :2455
+
+ENEMY ATTACK 
+attack type1
+Res = 1 a0
+Res = 1 b1
+Res = 1 c2
+Res = 1 a0
+Res = 1 b1
+Res = 1 c2
+Res = 1 a0
+Res = 1 b1
+Res = 1 c2
+Gold to send 0
+
+MY MOVE
+Attack Mode 1 e2
+RES FROM ATTACK Number OF SHOT : 9
+RES = 1 d1
+RES = 1 d2
+RES = 1 d3
+RES = 1 e1
+RES = 1 e2
+RES = 1 e3
+RES = 1 f1
+RES = 1 f2
+RES = 1 f3
+Gold :2355
+
+ENEMY ATTACK 
+attack type1
+Res = 1 a0
+Res = 1 b1
+Res = 1 c2
+Res = 1 a0
+Res = 1 b1
+Res = 1 c2
+Res = 1 a0
+Res = 1 b1
+Res = 2 c2
+Gold to send 62
+
+MY MOVE
+Attack Mode 1 h2
+RES FROM ATTACK Number OF SHOT : 9
+RES = 1 g1
+RES = 1 g2
+RES = 1 g3
+RES = 1 h1
+RES = 1 h2
+RES = 1 h3
+RES = 1 i1
+RES = 1 i2
+RES = 1 i3
+Gold :2255
+
+ENEMY ATTACK 
+attack type1
+Res = 1 a0
+Res = 1 b1
+Res = 1 c2
+Res = 1 a0
+Res = 1 b1
+Res = 1 c2
+Res = 1 a0
+Res = 1 b1
+Res = 1 c2
+Gold to send 0
+
+MY MOVE
+Attack Mode 1 h5
+RES FROM ATTACK Number OF SHOT : 9
+RES = 2 g4
+RES = 1 g5
+RES = 1 g6
+RES = 2 h4
+RES = 1 h5
+RES = 1 h6
+RES = 1 i4
+RES = 1 i5
+RES = 1 i6
+Gold :2355
+
+ENEMY ATTACK 
+attack type1
+Res = 1 d3
+Res = 1 e4
+Res = 1 f5
+Res = 1 d3
+Res = 1 e4
+Res = 1 f5
+Res = 1 d3
+Res = 1 e4
+Res = 1 f5
+Gold to send 0
+
+MY MOVE
+Attack Mode 1 h8
+RES FROM ATTACK Number OF SHOT : 9
+RES = 1 g7
+RES = 1 g8
+RES = 1 g9
+RES = 1 h7
+RES = 1 h8
+RES = 1 h9
+RES = 1 i7
+RES = 1 i8
+RES = 1 i9
+Gold :2255
+
+ENEMY ATTACK 
+attack type1
+Res = 1 d3
+Res = 1 e4
+Res = 1 f5
+Res = 1 d3
+Res = 1 e4
+Res = 1 f5
+Res = 2 d3
+Res = 2 e4
+Res = 2 f5
+Gold to send 186
+
+MY MOVE
+Attack Mode 1 k7
+RES FROM ATTACK Number OF SHOT : 9
+RES = 1 j6
+RES = 1 j7
+RES = 1 j8
+RES = 1 k6
+RES = 1 k7
+RES = 1 k8
+RES = 1 l6
+RES = 1 l7
+RES = 1 l8
+Gold :2155
+
+ENEMY ATTACK 
+attack type3
+Res = 1 j9
+Res = 1 h7
+Res = 1 j9
+Res = 1 i8
+Res = 1 j9
+Res = 1 j9
+Res = 1 j9
+Res = 1 k10
+Res = 1 j9
+Res = 2 l11
+Gold to send 400
+
+MY MOVE
+Attack Mode 2 n8
+RES FROM ATTACK Number OF SHOT : 9
+RES = 1 p6
+RES = 1 m7
+RES = 2 o7
+RES = 1 n8
+RES = 1 n8
+RES = 1 o9
+RES = 1 m9
+RES = 1 p10
+RES = 1 l10
+Gold :2205
+
+ENEMY ATTACK 
+attack type3
+Res = 1 l11
+Res = 1 j9
+Res = 1 l11
+Res = 1 k10
+Res = 1 l11
+Res = 1 l11
+Res = 1 l11
+Res = 1 m12
+Res = 1 l11
+Res = 2 n13
+Gold to send 100
+
+MY MOVE
+Attack Mode 2 n16
+RES FROM ATTACK Number OF SHOT : 10
+RES = 1 l14
+RES = 1 p14
+RES = 1 m15
+RES = 2 o15
+RES = 1 n16
+RES = 1 n16
+RES = 1 o17
+RES = 1 m17
+RES = 1 p18
+RES = 2 l18
+Gold :2317
+YOU CLOSE WINDOW
+2022/04/07 18:46:28
+END

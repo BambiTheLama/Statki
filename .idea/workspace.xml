@@ -17,11 +17,20 @@
       <change beforePath="$PROJECT_DIR$/.gradle/7.2/fileHashes/resourceHashesCache.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.2/fileHashes/resourceHashesCache.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/KRISTI/FON.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/KRISTI/FON2.png" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Statki.main.jar" beforeDir="false" afterPath="$PROJECT_DIR$/Statki.main.jar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Statki.rar" beforeDir="false" afterPath="$PROJECT_DIR$/Statki.rar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/Draw.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/Draw.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/DrawMenu.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/DrawMenu.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/classes/java/main/MainGameCore.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/MainGameCore.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/MenuStart.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/MenuStart.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/classes/java/main/Start.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/Start.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/tmp/compileJava/previous-compilation-data.bin" beforeDir="false" afterPath="$PROJECT_DIR$/build/tmp/compileJava/previous-compilation-data.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Draw.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Draw.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/DrawMenu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/DrawMenu.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/MainGameCore.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/MainGameCore.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/MenuStart.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/MenuStart.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Start.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Start.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -201,6 +210,15 @@
       <workItem from="1648924564662" duration="13597000" />
       <workItem from="1649015747814" duration="1419000" />
       <workItem from="1649059741094" duration="247000" />
+      <workItem from="1649060232615" duration="310000" />
+      <workItem from="1649060791269" duration="1436000" />
+      <workItem from="1649102188200" duration="781000" />
+      <workItem from="1649244711744" duration="596000" />
+      <workItem from="1649270193320" duration="7710000" />
+      <workItem from="1649327343863" duration="3427000" />
+      <workItem from="1649331192950" duration="814000" />
+      <workItem from="1649333137982" duration="2234000" />
+      <workItem from="1649358073646" duration="1207000" />
     </task>
     <servers />
   </component>
@@ -217,17 +235,6 @@
         </entry>
       </map>
     </option>
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/colorWheel.java</url>
-          <line>11</line>
-          <option name="timeStamp" value="7" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

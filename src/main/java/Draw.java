@@ -24,7 +24,6 @@ public class Draw {
     int height;
     int width;
     int sizeText;
-    static Jaylib.Color[] shipColor;
     Jaylib.Color textColor;
     Raylib.Color mapLineColor;
     Jaylib.Color mapAttackMiss;
@@ -51,11 +50,6 @@ public class Draw {
     int[][] attackWhiteList;
     boolean KristiFlag;
 
-    public static void setShipColor(Jaylib.Color[] shipColor)
-    {
-        Draw.shipColor =shipColor;
-    }
-
     Draw(Jaylib.Color textColor, Jaylib.Color mapAttackHit, Jaylib.Color mapAttackMiss) {
         this.textColor= textColor;
         mapLineColor= BLACK;
@@ -67,16 +61,11 @@ public class Draw {
         shipColorContour2=new Jaylib.Color(55,255,255,100);
         shipColor2=new Jaylib.Color(55,255,255,25);
         font=LoadFont("resources/czciaki/comici.ttf");
-        if(shipColor==null)
-        {
-            shipColor=new Jaylib.Color[5];
-            for(int i=0;i<5;i++)
-                shipColor[i]=new Jaylib.Color((i*30+69)%255,(75+i*69)%255,(42+15*i)%255,255);
-        }
+
     }
 
     Draw(byte n,int width,int height,int eqSize,int sizeBetweenEqAndMap,int cell,int sizeBetweenMaps,int sizeText,int startEnemyMapLocation,Jaylib.Color []Color,int [][]attackWhiteList,boolean KristiFlag) {
-        this(Color[0],Color[1],Color[2]);
+        this(Color[2],Color[3],Color[4]);
         this.n=n;
         this.width=width;
         this.height=height;
@@ -455,6 +444,8 @@ public class Draw {
     }
 
     void drawMap(int x,byte[][] usedMap,String name) {
+        Jaylib.Color white=new Jaylib.Color(255,255,255,200);
+        DrawRectangle(x-sizeBetweenEqAndMap,eqSize,n*cell+sizeBetweenEqAndMap,n*cell+sizeBetweenEqAndMap,white);
         if(name.equals("Twoja Mapa"))
         {
             for(int i=0;i<tmpShipOnMap;i++)

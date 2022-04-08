@@ -29,7 +29,9 @@ public class DrawMenu {
     private static Texture []attacks=new Texture[6];
 
 
-    DrawMenu(int port,int[][] ship,int[][] attackWhiteList) {
+    DrawMenu(int port, int[][] ship, int[][] attackWhiteList, Jaylib.Color[] colors) {
+        setColor(colors);
+
         this.port=port;
         this.ship = ship;
         this.attackWhiteList = attackWhiteList;
@@ -388,6 +390,32 @@ public class DrawMenu {
     Jaylib.Color getTextColor()
     {
         return textColor;
+    }
+
+    void setColor(Jaylib.Color[] colors)
+    {
+        if(colors==null) return;
+        for(int i=0;i<5;i++)
+            if(colors[i]==null)
+                return;
+
+        buttonColor=colors[0];
+        buttonPressColor=colors[1];
+        textColor=colors[2];
+        xColor=colors[3];
+        oColor=colors[4];
+
+    }
+
+    Jaylib.Color[] Color()
+    {
+        Jaylib.Color[] tmp=new Jaylib.Color[5];
+        tmp[0]=buttonColor;
+        tmp[1]=buttonPressColor;
+        tmp[2]=textColor;
+        tmp[3]=xColor;
+        tmp[4]=oColor;
+        return tmp;
     }
 
 }
