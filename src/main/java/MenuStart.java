@@ -682,7 +682,7 @@ public class MenuStart extends Thread{
         int s=0;
         for(int i=0;i<5;i++)
         {
-            s=ship[1][i];
+            s+=ship[1][i];
         }
         if(s==0)
         {

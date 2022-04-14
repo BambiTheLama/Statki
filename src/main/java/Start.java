@@ -46,9 +46,13 @@ public class Start {
             boolean play=true;
             int gold=startGold;
             int[] bombs=null;
+            int [][]shiptmp=new int[3][5];
             while(play)
             {
-                MainGameCore mainGameCore=new MainGameCore(communication,who, (byte) mapSize,ship,attackWhiteList,moveTime,startTime,gold,Colors, KristiFlag);
+                for(int i=0;i<3;i++)
+                    for(int j=0;j<5;j++)
+                        shiptmp[i][j]=ship[i][j];
+                MainGameCore mainGameCore=new MainGameCore(communication,who, (byte) mapSize,shiptmp,attackWhiteList,moveTime,startTime,gold,Colors, KristiFlag);
                 if(bombs!=null && KristiFlag)
                     mainGameCore.setNumberOfBombs(bombs);
                 play=mainGameCore.main();
