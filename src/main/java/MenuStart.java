@@ -674,8 +674,8 @@ public class MenuStart extends Thread{
         else if(moveTime>30)
             moveTime=30;
 
-        if(startTime<30)
-            startTime=30;
+        if(startTime<5)
+            startTime=5;
         else if(startTime>90)
             startTime=90;
 

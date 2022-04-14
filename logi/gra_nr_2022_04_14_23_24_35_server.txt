@@ -1,0 +1,89 @@
+2022_04_14_23_24_35
+Map size :23 NumberOfShip 15 Start gold 2555 gamemode 0
+Random Ships :
+ShipType = 5 (f 20) isRotate true
+ShipType = 4 (t 8) isRotate true
+ShipType = 4 (h 4) isRotate true
+ShipType = 3 (e 12) isRotate true
+ShipType = 3 (l 22) isRotate false
+ShipType = 3 (b 6) isRotate true
+ShipType = 2 (s 18) isRotate true
+ShipType = 2 (g 22) isRotate true
+ShipType = 2 (m 16) isRotate false
+ShipType = 2 (r 6) isRotate true
+ShipType = 1 (q 8) isRotate true
+ShipType = 1 (m 12) isRotate false
+ShipType = 1 (w 21) isRotate false
+ShipType = 1 (v 16) isRotate false
+ShipType = 1 (a 13) isRotate true
+
+ENEMY MOVE 
+attack type1
+Res = 1 e4
+Res = 1 f5
+Res = 1 g6
+Res = 1 e4
+Res = 1 f5
+Res = 1 g6
+Res = 1 e4
+Res = 1 f5
+Res = 1 g6
+Gold to send 0
+
+MY MOVE
+Attack Mode 0 a5
+RES FROM ATTACK Number OF SHOT : 1
+RES = 2 a5
+Gold :2730
+
+MY MOVE
+Attack Mode 0 b5
+RES FROM ATTACK Number OF SHOT : 1
+RES = 2 b5
+Gold :2905
+
+MY MOVE
+Attack Mode 0 c5
+RES FROM ATTACK Number OF SHOT : 1
+RES = 1 c5
+Gold :2905
+
+ENEMY MOVE 
+attack type0
+Res = 1 h7
+Gold to send 0
+
+MY MOVE
+Attack Mode 0 f9
+RES FROM ATTACK Number OF SHOT : 1
+RES = 1 f9
+Gold :2905
+
+ENEMY MOVE 
+attack type0
+Res = 2 f5
+Gold to send 100
+
+ENEMY MOVE 
+attack type0
+Res = 2 f5
+Gold to send 100
+
+ENEMY MOVE 
+attack type0
+Res = 2 f5
+Gold to send 100
+
+ENEMY MOVE 
+attack type0
+Res = 1 f5
+Gold to send 0
+
+MY MOVE
+Attack Mode 0 e4
+RES FROM ATTACK Number OF SHOT : 1
+RES = 1 e4
+Gold :2905
+YOU CLOSE WINDOW
+2022/04/14 23:25:13
+END

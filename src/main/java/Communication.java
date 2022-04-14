@@ -181,5 +181,29 @@ public class Communication extends Thread{
         return who;
     }
 
+    void close()
+    {
+        if(who.equals("server"))
+        {
+            try{
+                serverSocket.close();
+                player.close();
+            }
+            catch (Exception e)
+            {}
+
+        }
+        else
+        {
+            try{
+                server.close();
+            }
+            catch (Exception e)
+            {}
+        }
+
+
+    }
+
 
 }

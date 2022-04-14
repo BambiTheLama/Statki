@@ -96,16 +96,16 @@ public class Multithreading extends Thread {
         if(isProgramEnd)
         {
             isOpponentLeft = communication.isClose(true);
+            communication.close();
         }
         endGame=true;
     }
 
     void myMove() {
         if (isAttack) {
+            boolean move=isMyMove;
             attackRes=null;
             communication.sendInformation("attack");
-            System.out.println("MYMOVE");
-            System.out.println("1");
             while (attackType < 0) {
                 try {
                     sleep(10);
@@ -114,10 +114,7 @@ public class Multithreading extends Thread {
                 }
 
             }
-            System.out.println("mymove attack type "+attackType);
             communication.sendInformation(attackType + "");
-            System.out.println("2");
-
 
             if (attackType != 5) {
                 while (numberOfAttack < 0) {
@@ -127,7 +124,6 @@ public class Multithreading extends Thread {
                     catch (Exception ignored) {
                     }
                 }
-                System.out.println("3");
                 communication.sendInformation(numberOfAttack + "");
                 while (attack == null) {
                     try {
@@ -140,7 +136,6 @@ public class Multithreading extends Thread {
                     communication.sendInformation(attack[i][0] + "");
                     communication.sendInformation(attack[i][1] + "");
                 }
-                System.out.println("4");
 
                 byte [] tmpAttackRes=new byte[numberOfAttack];
                 for (int i = 0; i < numberOfAttack; i++) {
@@ -149,10 +144,9 @@ public class Multithreading extends Thread {
                 }
                 String tmp=communication.getInformation();
                 gold=Integer.parseInt(tmp);
-                System.out.println("5");
-
+                move=checkTurn(tmpAttackRes[0]);
                 attackRes=tmpAttackRes;
-                System.out.println("5a");
+
                 while (attackRes != null) {
                     try {
                         sleep(10);
@@ -160,13 +154,10 @@ public class Multithreading extends Thread {
                     catch (Exception ignored) {
                     }
                 }
-                System.out.println("6");
-
             }
             else
             {
                 attack=null;
-                System.out.println("q3");
                 int[][] tmpAttack=new int[1][2];
                 String tmp = communication.getInformation();
                 tmpAttack[0][0] = Integer.parseInt(tmp);
@@ -174,7 +165,6 @@ public class Multithreading extends Thread {
                 tmpAttack[0][1] = Integer.parseInt(tmp);
                 tmp = communication.getInformation();
                 gold = Integer.parseInt(tmp);
-                System.out.println("q4");
                 attack=tmpAttack;
                 while (attack != null) {
                     try {
@@ -183,12 +173,11 @@ public class Multithreading extends Thread {
                     catch (Exception ignored) {
                     }
                 }
-                System.out.println("q5");
+                move=checkTurn(0);
+
             }
-
+            isMyMove=move;
             setDefult();
-            System.out.println("7");
-
         }
         else
         {
@@ -197,15 +186,14 @@ public class Multithreading extends Thread {
     }
 
     void waiting() {
+
         String tmp = communication.getInformation();
         if (tmp.equals("attack"))
         {
+            boolean move=isMyMove;
             isAttack=true;
-            System.out.println("1");
             tmp = communication.getInformation();
             attackType = Integer.parseInt(tmp);
-            System.out.println("2");
-            System.out.println("waiting attack type "+attackType);
             if (attackType != 5)
             {
 
@@ -219,7 +207,7 @@ public class Multithreading extends Thread {
                     tmp = communication.getInformation();
                     tmpattack[i][1] = Integer.parseInt(tmp);
                 }
-                System.out.println("3");
+
                 attack=tmpattack;
                 while (attackRes == null) {
                     try {
@@ -229,14 +217,11 @@ public class Multithreading extends Thread {
                     }
 
                 }
-                System.out.println("4");
                 for (int i = 0; i < numberOfAttack; i++) {
                     communication.sendInformation(attackRes[i] + "");
                 }
                 communication.sendInformation(gold+"");
-
-                System.out.println("5");
-
+                move=checkTurn(attackRes[0]);
             }
             else
             {
@@ -247,20 +232,18 @@ public class Multithreading extends Thread {
                     catch (Exception ignored) {
                     }
                 }
+                move=checkTurn(0);
                 communication.sendInformation(attack[0][0] + "");
                 communication.sendInformation(attack[0][1] + "");
                 communication.sendInformation(gold+"");
-                System.out.println("4");
             }
-            System.out.println("6");
+            isMyMove=move;
             setDefult();
-
         }
 
     }
 
     void setDefult() {
-        isMyMove = !isMyMove;
         if(attack!=null)
             attack = null;
         if(attackRes!=null)
@@ -351,4 +334,11 @@ public class Multithreading extends Thread {
     boolean getisPlacingShipTime(){return (!isAttackTime);}
 
     int getGold(){return gold;}
+
+    boolean checkTurn(int Res)
+    {
+        if(attackType==0 && Res==2)
+            return isMyMove;
+        return !isMyMove;
+    }
 }

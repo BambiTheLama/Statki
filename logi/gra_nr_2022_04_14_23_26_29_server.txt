@@ -1,0 +1,126 @@
+2022_04_14_23_26_29
+Map size :23 NumberOfShip 15 Start gold 2555 gamemode 0
+Random Ships :
+ShipType = 5 (r 11) isRotate true
+ShipType = 4 (p 21) isRotate false
+ShipType = 4 (s 5) isRotate true
+ShipType = 3 (e 15) isRotate false
+ShipType = 3 (k 19) isRotate true
+ShipType = 3 (q 2) isRotate false
+ShipType = 2 (s 22) isRotate false
+ShipType = 2 (j 3) isRotate false
+ShipType = 2 (l 6) isRotate false
+ShipType = 2 (b 17) isRotate false
+ShipType = 1 (t 3) isRotate true
+ShipType = 1 (m 15) isRotate false
+ShipType = 1 (n 19) isRotate false
+ShipType = 1 (m 2) isRotate false
+ShipType = 1 (d 21) isRotate false
+
+ENEMY MOVE 
+attack type0
+Res = 1 g6
+Gold to send 0
+
+MY MOVE
+Attack Mode 0 a2
+RES FROM ATTACK Number OF SHOT : 1
+RES = 2 a2
+Gold :2730
+
+MY MOVE
+Attack Mode 0 a3
+RES FROM ATTACK Number OF SHOT : 1
+RES = 2 a3
+Gold :2905
+
+MY MOVE
+Attack Mode 0 a4
+RES FROM ATTACK Number OF SHOT : 1
+RES = 1 a4
+Gold :2905
+
+ENEMY MOVE 
+attack type0
+Res = 1 e4
+Gold to send 0
+
+MY MOVE
+Attack Mode 0 a5
+RES FROM ATTACK Number OF SHOT : 1
+RES = 2 a5
+Gold :2967
+
+MY MOVE
+Attack Mode 0 a6
+RES FROM ATTACK Number OF SHOT : 1
+RES = 2 a6
+Gold :3029
+
+MY MOVE
+Attack Mode 0 a7
+RES FROM ATTACK Number OF SHOT : 1
+RES = 2 a7
+Gold :3091
+
+MY MOVE
+Attack Mode 0 a8
+RES FROM ATTACK Number OF SHOT : 1
+RES = 2 a8
+Gold :3153
+
+MY MOVE
+Attack Mode 0 a10
+RES FROM ATTACK Number OF SHOT : 1
+RES = 1 a10
+Gold :3153
+
+ENEMY MOVE 
+attack type0
+Res = 1 g6
+Gold to send 0
+
+MY MOVE
+Attack Mode 0 d10
+RES FROM ATTACK Number OF SHOT : 1
+RES = 2 d10
+Gold :3193
+
+MY MOVE
+Attack Mode 0 d9
+RES FROM ATTACK Number OF SHOT : 1
+RES = 2 d9
+Gold :3233
+
+MY MOVE
+Attack Mode 0 d11
+RES FROM ATTACK Number OF SHOT : 1
+RES = 2 d11
+Gold :3273
+
+MY MOVE
+Attack Mode 0 d12
+RES FROM ATTACK Number OF SHOT : 1
+RES = 2 d12
+Gold :3313
+
+MY MOVE
+Attack Mode 0 d13
+RES FROM ATTACK Number OF SHOT : 1
+RES = 2 d13
+Gold :3353
+
+MY MOVE
+Attack Mode 0 d14
+RES FROM ATTACK Number OF SHOT : 1
+RES = 1 d14
+Gold :3353
+
+MY MOVE
+Attack Mode 0 a9
+RES FROM ATTACK Number OF SHOT : 1
+RES = 1 a9
+Gold :3353
+YOU CLOSE WINDOW
+2022/04/14 23:27:26
+END

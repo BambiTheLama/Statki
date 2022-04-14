@@ -10,11 +10,58 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f75b6a9d-a4dc-4ea2-bf35-47711c55ce36" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.gradle/7.2/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.2/executionHistory/executionHistory.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/7.2/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.2/fileHashes/fileHashes.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Statki.main.jar" beforeDir="false" afterPath="$PROJECT_DIR$/Statki.main.jar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/logi/gra_nr_2022_04_07_17_51_19client.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/logi/gra_nr_2022_04_07_17_51_19server.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/logi/gra_nr_2022_04_07_17_55_30client.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/logi/gra_nr_2022_04_07_17_55_30server.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/logi/gra_nr_2022_04_07_18_44_52_client.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/logi/gra_nr_2022_04_07_18_44_52_server.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/logi/gra_nr_2022_04_07_18_49_37_client.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/logi/gra_nr_2022_04_07_18_49_37_server.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/logi/gra_nr_2022_04_07_19_19_49_client.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/logi/gra_nr_2022_04_07_19_19_49_server.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/logi/gra_nr_2022_04_07_19_23_53_client.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/logi/gra_nr_2022_04_07_19_23_53_server.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/logi/gra_nr_2022_04_07_19_44_00_client.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/logi/gra_nr_2022_04_07_19_44_00_server.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/logi/gra_nr_2022_04_07_19_44_40_client.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/logi/gra_nr_2022_04_07_19_44_40_server.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/logi/gra_nr_2022_04_07_19_47_51_client.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/logi/gra_nr_2022_04_07_19_47_51_server.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/logi/gra_nr_2022_04_07_20_13_06_client.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/logi/gra_nr_2022_04_07_20_13_06_server.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/logi/gra_nr_2022_04_07_20_47_08_client.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/logi/gra_nr_2022_04_07_20_47_08_server.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/logi/gra_nr_2022_04_07_20_51_41_client.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/logi/gra_nr_2022_04_07_20_51_41_server.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/logi/gra_nr_2022_04_07_20_53_24_client.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/logi/gra_nr_2022_04_07_20_53_24_server.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/logi/gra_nr_2022_04_07_20_54_29_client.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/logi/gra_nr_2022_04_07_20_54_29_server.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/logi/gra_nr_2022_04_07_20_55_49_client.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/logi/gra_nr_2022_04_07_20_55_49_server.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/logi/gra_nr_2022_04_14_21_28_10_client.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/logi/gra_nr_2022_04_14_21_28_10_server.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/logi/gra_nr_2022_04_14_21_28_49_client.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/logi/gra_nr_2022_04_14_21_28_49_server.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/logi/gra_nr_2022_04_14_21_30_39_client.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/logi/gra_nr_2022_04_14_21_30_39_server.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/logi/gra_nr_2022_04_14_21_30_45_client.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/logi/gra_nr_2022_04_14_21_33_18_client.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/logi/gra_nr_2022_04_14_21_33_18_server.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/logi/gra_nr_2022_04_14_21_34_09_client.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/logi/gra_nr_2022_04_14_21_34_09_server.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/logi/gra_nr_2022_04_14_21_34_52_client.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/logi/gra_nr_2022_04_14_21_34_52_server.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/logi/gra_nr_2022_04_14_21_36_22_client.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/logi/gra_nr_2022_04_14_21_36_22_server.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Communication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Communication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Draw.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Draw.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/MainGameCore.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/MainGameCore.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/MenuStart.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/MenuStart.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Multithreading.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Multithreading.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Start.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Start.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />

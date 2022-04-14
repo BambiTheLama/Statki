@@ -190,7 +190,7 @@ public class MainGameCore {
     void gameLoop(){
         upData();
         drawUpData();
-        if(collision()&&continiuFlag&&isMyMove&&!isPlacingShipTime)
+        if(collision() && continiuFlag && isMyMove && !isPlacingShipTime)
         {
             shoot();
             multithreading.setNumberOfAttack(numberOfShot);
@@ -211,6 +211,7 @@ public class MainGameCore {
                     attack=null;
 
                 numberOfShot=0;
+
                 if((attackMode>0 && KristiFlag  && numberOfBombs[attackMode-1]<=0 )||(attackMode>0 && !KristiFlag && startGold-attackWhiteList[1][attackMode-1]<0))
                     attackMode=0;
             }
@@ -221,7 +222,7 @@ public class MainGameCore {
             if(isOpponentAttack)
             {
                 setShoot();
-                continiuFlag=false;
+
             }
         }
 
@@ -276,7 +277,6 @@ public class MainGameCore {
                         waitingFlag=true;
                     else
                     {
-                        System.out.println("jej"+attack);
                         attack=multithreading.getAttack();
                         if(attack==null)
                             waitingFlag=true;

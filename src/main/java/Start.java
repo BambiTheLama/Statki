@@ -61,6 +61,7 @@ public class Start {
                 gold=mainGameCore.startGold;
                 play=checkEnd(play);
             }
+            communication.close();
         }
 
     }
@@ -166,8 +167,7 @@ public class Start {
             {}
         }
         if(start.getMenuStage()!=3 ||start.getEnd()) {
-            communication.tryConnect("client",start.getPort(),start.getIp());
-            start.port++;
+            communication.close();
         }
         if(start.getMenuStage()==3)
         {

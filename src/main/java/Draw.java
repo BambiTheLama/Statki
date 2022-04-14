@@ -289,13 +289,13 @@ public class Draw {
 
             switch (shipType){
                 case 4:
-                    if(rotate && x-2>=0)
+                    if(rotate && x-2>=0 && x+2<n)
                     {
                         rec=new Jaylib.Rectangle(tmpx-cell*2,tmpy,cell,cell);
                         Jaylib.DrawRectangleRec(rec,shipColor2);
                         Jaylib.DrawRectangleLinesEx(rec,3,shipColorContour2);
                     }
-                    else if(!rotate && y-2>=0)
+                    else if(!rotate && y-2>=0 && y+2<n)
                     {
                         rec=new Jaylib.Rectangle(tmpx,tmpy-cell*2,cell,cell);
                         Jaylib.DrawRectangleRec(rec,shipColor2);
@@ -320,14 +320,14 @@ public class Draw {
                     else
                         break;
                 case 2:
-                    if(rotate && x-1>=0)
+                    if(rotate && x-1>=0 && x+1<n)
                     {
                         rec=new Jaylib.Rectangle(tmpx-cell,tmpy,cell,cell);
                         Jaylib.DrawRectangleRec(rec,shipColor2);
                         Jaylib.DrawRectangleLinesEx(rec,3,shipColorContour2);
 
                     }
-                    else if(!rotate && y-1>=0)
+                    else if(!rotate && y-1>=0 && y+1<n)
                     {
                         rec=new Jaylib.Rectangle(tmpx,tmpy-cell,cell,cell);
                         Jaylib.DrawRectangleRec(rec,shipColor2);
