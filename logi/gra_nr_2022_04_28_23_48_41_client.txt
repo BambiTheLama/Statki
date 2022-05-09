@@ -1,0 +1,1489 @@
+2022_04_28_23_48_41
+Map size :23 NumberOfShip 15 Start gold 0 gamemode 0
+YOU PLACE SHIP (5) AT p 9 Rotate false
+YOU PLACE SHIP (4) AT t 16 Rotate true
+YOU PLACE SHIP (4) AT h 15 Rotate false
+YOU PLACE SHIP (3) AT u 5 Rotate false
+YOU PLACE SHIP (3) AT i 4 Rotate false
+YOU PLACE SHIP (3) AT d 11 Rotate false
+YOU PLACE SHIP (2) AT o 20 Rotate false
+YOU PLACE SHIP (2) AT i 21 Rotate false
+YOU PLACE SHIP (2) AT m 15 Rotate false
+YOU PLACE SHIP (2) AT i 11 Rotate false
+YOU PLACE SHIP (1) AT p 3 Rotate false
+YOU PLACE SHIP (1) AT l 5 Rotate false
+YOU PLACE SHIP (1) AT c 4 Rotate false
+YOU PLACE SHIP (1) AT b 11 Rotate false
+YOU PLACE SHIP (1) AT c 17 Rotate false
+Random Ships :
+
+MY MOVE
+Attack Mode 4 
+RES FROM ATTACK Number OF SHOT : 18
+RES = 1 u2
+RES = 1 v1
+RES = 1 v2
+RES = 1 v2
+RES = 1 w2
+RES = 2 v3
+RES = 1 s4
+RES = 1 t3
+RES = 1 t4
+RES = 1 t4
+RES = 1 u4
+RES = 1 t5
+RES = 2 q6
+RES = 1 r5
+RES = 1 r6
+RES = 1 r6
+RES = 1 s6
+RES = 1 r7
+Gold :140
+
+ENEMY MOVE 
+attack type4
+Res = 1 b1
+Res = 1 a0
+Res = 1 b1
+Res = 1 b1
+Res = 1 b1
+Res = 1 c2
+Res = 1 f5
+Res = 1 e4
+Res = 1 f5
+Res = 1 f5
+Res = 1 f5
+Res = 1 g6
+Res = 1 j9
+Res = 1 i8
+Res = 1 j9
+Res = 1 j9
+Res = 1 j9
+Res = 1 k10
+Gold to send 0
+
+MY MOVE
+Attack Mode 0 v4
+RES FROM ATTACK Number OF SHOT : 1
+RES = 2 v4
+Gold :180
+
+MY MOVE
+Attack Mode 0 v5
+RES FROM ATTACK Number OF SHOT : 1
+RES = 2 v5
+Gold :220
+
+MY MOVE
+Attack Mode 0 v6
+RES FROM ATTACK Number OF SHOT : 1
+RES = 2 v6
+Gold :260
+
+MY MOVE
+Attack Mode 0 v7
+RES FROM ATTACK Number OF SHOT : 1
+RES = 2 v7
+Gold :300
+
+MY MOVE
+Attack Mode 0 p6
+RES FROM ATTACK Number OF SHOT : 1
+RES = 1 p6
+Gold :300
+
+ENEMY MOVE 
+attack type1
+Res = 1 c2
+Res = 2 d3
+Res = 1 e4
+Res = 1 c2
+Res = 1 d3
+Res = 1 e4
+Res = 1 c2
+Res = 1 d3
+Res = 1 e4
+Gold to send 400
+
+MY MOVE
+Attack Mode 0 q5
+RES FROM ATTACK Number OF SHOT : 1
+RES = 1 q5
+Gold :300
+
+ENEMY MOVE 
+attack type1
+Res = 1 g6
+Res = 1 h7
+Res = 1 i8
+Res = 1 g6
+Res = 1 h7
+Res = 1 i8
+Res = 1 g6
+Res = 1 h7
+Res = 1 i8
+Gold to send 0
+
+MY MOVE
+Attack Mode 0 q7
+RES FROM ATTACK Number OF SHOT : 1
+RES = 2 q7
+Gold :400
+
+MY MOVE
+Attack Mode 0 q8
+RES FROM ATTACK Number OF SHOT : 1
+RES = 2 q8
+Gold :500
+
+MY MOVE
+Attack Mode 0 q9
+RES FROM ATTACK Number OF SHOT : 1
+RES = 1 q9
+Gold :500
+
+ENEMY MOVE 
+attack type1
+Res = 1 d3
+Res = 1 e4
+Res = 1 f5
+Res = 1 d3
+Res = 1 e4
+Res = 1 f5
+Gold to send 0
+
+MY MOVE
+Attack Mode 4 
+RES FROM ATTACK Number OF SHOT : 18
+RES = 1 s7
+RES = 1 t6
+RES = 1 t7
+RES = 1 t7
+RES = 1 u7
+RES = 1 t8
+RES = 1 u9
+RES = 1 v8
+RES = 1 v9
+RES = 1 v9
+RES = 1 w9
+RES = 1 v10
+RES = 1 r10
+RES = 1 s9
+RES = 1 s10
+RES = 1 s10
+RES = 1 t10
+RES = 1 s11
+Gold :500
+
+ENEMY MOVE 
+attack type1
+Res = 1 k10
+Res = 1 l11
+Res = 1 m12
+Res = 1 k10
+Res = 1 l11
+Res = 1 m12
+Res = 1 k10
+Res = 1 l11
+Res = 1 m12
+Gold to send 0
+
+MY MOVE
+Attack Mode 4 
+RES FROM ATTACK Number OF SHOT : 18
+RES = 1 t12
+RES = 1 u11
+RES = 1 u12
+RES = 1 u12
+RES = 1 v12
+RES = 1 u13
+RES = 2 u14
+RES = 1 v13
+RES = 2 v14
+RES = 2 v14
+RES = 1 w14
+RES = 1 v15
+RES = 1 u17
+RES = 1 v16
+RES = 1 v17
+RES = 1 v17
+RES = 1 w17
+RES = 1 v18
+Gold :850
+
+ENEMY MOVE 
+attack type1
+Res = 1 l11
+Res = 1 m12
+Res = 2 n13
+Res = 2 l11
+Res = 1 m12
+Res = 1 n13
+Res = 1 l11
+Res = 1 m12
+Res = 1 n13
+Gold to send 237
+
+MY MOVE
+Attack Mode 0 t14
+RES FROM ATTACK Number OF SHOT : 1
+RES = 1 t14
+Gold :850
+
+ENEMY MOVE 
+attack type1
+Res = 1 a0
+Res = 1 b1
+Res = 1 c2
+Res = 1 a0
+Res = 1 b1
+Res = 1 c2
+Res = 1 a0
+Res = 1 b1
+Res = 1 c2
+Gold to send 0
+
+MY MOVE
+Attack Mode 4 
+RES FROM ATTACK Number OF SHOT : 18
+RES = 1 u20
+RES = 1 v19
+RES = 1 v20
+RES = 1 v20
+RES = 1 w20
+RES = 1 v21
+RES = 1 t22
+RES = 1 u21
+RES = 1 u22
+RES = 1 u22
+RES = 1 v22
+RES = 1 u23
+RES = 1 s19
+RES = 1 t18
+RES = 1 t19
+RES = 1 t19
+RES = 1 u19
+RES = 1 t20
+Gold :850
+
+ENEMY MOVE 
+attack type4
+Res = 1 k10
+Res = 1 j9
+Res = 1 k10
+Res = 1 k10
+Res = 2 k10
+Res = 1 j9
+Res = 1 i8
+Res = 1 j9
+Res = 1 j9
+Res = 1 j9
+Res = 1 k10
+Res = 1 h7
+Res = 1 g6
+Res = 1 h7
+Res = 1 h7
+Res = 1 h7
+Res = 1 i8
+Gold to send 175
+
+MY MOVE
+Attack Mode 4 
+RES FROM ATTACK Number OF SHOT : 18
+RES = 1 r21
+RES = 1 s20
+RES = 1 s21
+RES = 1 s21
+RES = 1 t21
+RES = 1 s22
+RES = 1 s16
+RES = 1 t15
+RES = 1 t16
+RES = 1 t16
+RES = 1 u16
+RES = 1 t17
+RES = 1 r13
+RES = 1 s12
+RES = 1 s13
+RES = 1 s13
+RES = 1 t13
+RES = 1 s14
+Gold :850
+
+ENEMY MOVE 
+attack type4
+Res = 1 g6
+Res = 1 f5
+Res = 1 g6
+Res = 1 g6
+Res = 1 g6
+Res = 1 h7
+Res = 1 i8
+Res = 1 h7
+Res = 1 i8
+Res = 1 i8
+Res = 1 i8
+Res = 1 j9
+Res = 1 j9
+Res = 1 i8
+Res = 2 j9
+Res = 2 j9
+Res = 2 k10
+Gold to send 200
+
+MY MOVE
+Attack Mode 4 
+RES FROM ATTACK Number OF SHOT : 18
+RES = 1 a2
+RES = 1 b1
+RES = 1 b2
+RES = 1 b2
+RES = 1 c2
+RES = 2 b3
+RES = 2 b4
+RES = 1 c3
+RES = 1 c4
+RES = 1 c4
+RES = 1 d4
+RES = 1 c5
+RES = 1 a6
+RES = 2 b5
+RES = 1 b6
+RES = 1 b6
+RES = 1 c6
+RES = 1 b7
+Gold :1150
+
+ENEMY MOVE 
+attack type4
+Res = 1 j9
+Res = 1 k10
+Res = 1 k10
+Res = 2 k10
+Res = 1 l11
+Res = 1 l11
+Res = 1 k10
+Res = 1 l11
+Res = 1 l11
+Res = 2 l11
+Res = 1 m12
+Res = 2 l11
+Res = 1 k10
+Res = 1 l11
+Res = 1 l11
+Res = 1 l11
+Res = 1 m12
+Gold to send 500
+
+MY MOVE
+Attack Mode 4 
+RES FROM ATTACK Number OF SHOT : 18
+RES = 1 a9
+RES = 1 b8
+RES = 1 b9
+RES = 1 b9
+RES = 1 c9
+RES = 1 b10
+RES = 1 b11
+RES = 1 c10
+RES = 1 c11
+RES = 1 c11
+RES = 1 d11
+RES = 1 c12
+RES = 2 a13
+RES = 1 b12
+RES = 1 b13
+RES = 1 b13
+RES = 1 c13
+RES = 1 b14
+Gold :1212
+
+ENEMY MOVE 
+attack type4
+Res = 1 m12
+Res = 1 l11
+Res = 1 m12
+Res = 1 m12
+Res = 1 n13
+Res = 1 n13
+Res = 1 m12
+Res = 1 n13
+Res = 1 n13
+Res = 1 n13
+Res = 1 o14
+Res = 1 n13
+Res = 1 m12
+Res = 1 n13
+Res = 1 n13
+Res = 1 n13
+Res = 1 o14
+Gold to send 0
+
+MY MOVE
+Attack Mode 4 
+RES FROM ATTACK Number OF SHOT : 18
+RES = 1 b15
+RES = 1 c14
+RES = 1 c15
+RES = 1 c15
+RES = 1 d15
+RES = 1 c16
+RES = 1 a17
+RES = 1 b16
+RES = 1 b17
+RES = 1 b17
+RES = 1 c17
+RES = 1 b18
+RES = 1 b19
+RES = 1 c18
+RES = 1 c19
+RES = 1 c19
+RES = 1 d19
+RES = 1 c20
+Gold :1212
+
+ENEMY MOVE 
+attack type4
+Res = 1 p15
+Res = 1 o14
+Res = 1 p15
+Res = 1 p15
+Res = 1 p15
+Res = 2 q16
+Res = 1 p15
+Res = 1 q16
+Res = 1 q16
+Res = 1 q16
+Res = 1 r17
+Res = 1 s18
+Res = 1 r17
+Res = 1 s18
+Res = 1 s18
+Res = 1 s18
+Res = 1 t19
+Gold to send 400
+
+MY MOVE
+Attack Mode 4 
+RES FROM ATTACK Number OF SHOT : 18
+RES = 1 a21
+RES = 1 b20
+RES = 1 b21
+RES = 1 b21
+RES = 1 c21
+RES = 1 b22
+RES = 1 c22
+RES = 1 d21
+RES = 1 d22
+RES = 1 d22
+RES = 1 e22
+RES = 2 d23
+RES = 1 d20
+RES = 1 e19
+RES = 1 e20
+RES = 1 e20
+RES = 1 f20
+RES = 1 e21
+Gold :1312
+
+ENEMY MOVE 
+attack type4
+Res = 1 r17
+Res = 1 q16
+Res = 1 r17
+Res = 1 r17
+Res = 1 r17
+Res = 1 s18
+Res = 1 q16
+Res = 1 p15
+Res = 1 q16
+Res = 1 q16
+Res = 1 q16
+Res = 1 r17
+Res = 1 o14
+Res = 1 n13
+Res = 1 o14
+Res = 1 o14
+Res = 1 o14
+Res = 1 p15
+Gold to send 0
+
+MY MOVE
+Attack Mode 0 c23
+RES FROM ATTACK Number OF SHOT : 1
+RES = 2 c23
+Gold :1412
+
+MY MOVE
+Attack Mode 0 e23
+RES FROM ATTACK Number OF SHOT : 1
+RES = 2 e23
+Gold :1512
+
+MY MOVE
+Attack Mode 0 f23
+RES FROM ATTACK Number OF SHOT : 1
+RES = 1 f23
+Gold :1512
+
+ENEMY MOVE 
+attack type4
+Res = 1 p15
+Res = 2 o14
+Res = 2 p15
+Res = 2 p15
+Res = 1 p15
+Res = 2 q16
+Res = 1 t19
+Res = 1 u20
+Res = 1 u20
+Res = 1 u20
+Res = 1 v21
+Res = 1 t19
+Res = 1 t19
+Res = 1 t19
+Res = 1 t19
+Res = 1 u20
+Gold to send 186
+
+MY MOVE
+Attack Mode 0 b23
+RES FROM ATTACK Number OF SHOT : 1
+RES = 1 b23
+Gold :1512
+
+ENEMY MOVE 
+attack type4
+Res = 1 v21
+Res = 1 u20
+Res = 1 v21
+Res = 1 v21
+Res = 1 v21
+Res = 1 w22
+Res = 1 u20
+Res = 1 t19
+Res = 1 u20
+Res = 1 u20
+Res = 1 u20
+Res = 1 v21
+Res = 1 s18
+Res = 1 r17
+Res = 1 s18
+Res = 1 s18
+Res = 1 s18
+Res = 1 t19
+Gold to send 0
+
+MY MOVE
+Attack Mode 0 a14
+RES FROM ATTACK Number OF SHOT : 1
+RES = 2 a14
+Gold :1574
+
+MY MOVE
+Attack Mode 0 a12
+RES FROM ATTACK Number OF SHOT : 1
+RES = 1 a12
+Gold :1574
+
+ENEMY MOVE 
+attack type4
+Res = 1 r17
+Res = 1 q16
+Res = 1 r17
+Res = 1 r17
+Res = 1 r17
+Res = 1 s18
+Res = 1 r17
+Res = 1 q16
+Res = 1 r17
+Res = 1 r17
+Res = 1 r17
+Res = 1 s18
+Res = 1 r17
+Res = 1 q16
+Res = 1 r17
+Res = 1 r17
+Res = 1 r17
+Res = 1 s18
+Gold to send 0
+
+MY MOVE
+Attack Mode 0 a15
+RES FROM ATTACK Number OF SHOT : 1
+RES = 2 a15
+Gold :1636
+
+MY MOVE
+Attack Mode 0 a16
+RES FROM ATTACK Number OF SHOT : 1
+RES = 2 a16
+Gold :1698
+
+MY MOVE
+Attack Mode 4 
+RES FROM ATTACK Number OF SHOT : 18
+RES = 1 p11
+RES = 1 q10
+RES = 1 q11
+RES = 1 q11
+RES = 1 r11
+RES = 1 q12
+RES = 1 p14
+RES = 1 q13
+RES = 1 q14
+RES = 1 q14
+RES = 1 r14
+RES = 1 q15
+RES = 1 q17
+RES = 1 r16
+RES = 1 r17
+RES = 1 r17
+RES = 1 s17
+RES = 1 r18
+Gold :1698
+
+ENEMY MOVE 
+attack type4
+Res = 1 s18
+Res = 1 r17
+Res = 1 s18
+Res = 1 s18
+Res = 1 s18
+Res = 1 t19
+Res = 1 q16
+Res = 1 p15
+Res = 1 q16
+Res = 1 q16
+Res = 1 q16
+Res = 1 r17
+Res = 1 s18
+Res = 1 r17
+Res = 1 s18
+Res = 1 s18
+Res = 1 s18
+Res = 1 t19
+Gold to send 0
+
+MY MOVE
+Attack Mode 4 
+RES FROM ATTACK Number OF SHOT : 18
+RES = 2 p22
+RES = 1 q21
+RES = 1 q22
+RES = 1 q22
+RES = 1 r22
+RES = 1 q23
+RES = 1 f22
+RES = 1 g21
+RES = 1 g22
+RES = 1 g22
+RES = 1 h22
+RES = 1 g23
+RES = 1 g20
+RES = 1 h19
+RES = 1 h20
+RES = 1 h20
+RES = 1 i20
+RES = 1 h21
+Gold :2098
+
+ENEMY MOVE 
+attack type1
+Res = 1 t19
+Res = 1 u20
+Res = 1 v21
+Res = 1 t19
+Res = 2 u20
+Res = 2 v21
+Res = 1 t19
+Res = 1 u20
+Res = 1 v21
+Gold to send 350
+
+MY MOVE
+Attack Mode 4 
+RES FROM ATTACK Number OF SHOT : 18
+RES = 1 n21
+RES = 1 o20
+RES = 1 o21
+RES = 1 o21
+RES = 1 p21
+RES = 1 o22
+RES = 1 o19
+RES = 1 p18
+RES = 1 p19
+RES = 1 p19
+RES = 1 q19
+RES = 1 p20
+RES = 1 n17
+RES = 1 o16
+RES = 1 o17
+RES = 1 o17
+RES = 1 p17
+RES = 1 o18
+Gold :2098
+
+ENEMY MOVE 
+attack type1
+Res = 1 s18
+Res = 1 t19
+Res = 1 u20
+Res = 1 s18
+Res = 2 t19
+Res = 2 u20
+Res = 1 s18
+Res = 1 t19
+Res = 1 u20
+Gold to send 350
+
+MY MOVE
+Attack Mode 4 
+RES FROM ATTACK Number OF SHOT : 18
+RES = 1 m15
+RES = 1 n14
+RES = 1 n15
+RES = 1 n15
+RES = 1 o15
+RES = 1 n16
+RES = 1 n13
+RES = 1 o12
+RES = 1 o13
+RES = 1 o13
+RES = 1 p13
+RES = 1 o14
+RES = 2 m11
+RES = 1 n10
+RES = 2 n11
+RES = 2 n11
+RES = 1 o11
+RES = 1 n12
+Gold :2448
+
+ENEMY MOVE 
+attack type4
+Res = 1 w22
+Res = 1 v21
+Res = 1 w22
+Res = 1 w22
+Res = 1 w22
+Res = 1 w22
+Res = 1 w22
+Res = 1 w22
+Res = 1 w22
+Res = 1 v21
+Res = 1 w22
+Res = 1 w22
+Res = 1 w22
+Gold to send 0
+
+MY MOVE
+Attack Mode 0 l11
+RES FROM ATTACK Number OF SHOT : 1
+RES = 1 l11
+Gold :2448
+
+ENEMY MOVE 
+attack type4
+Res = 1 w22
+Res = 1 w22
+Res = 1 w22
+Res = 1 w22
+Res = 1 v21
+Res = 1 u20
+Res = 1 v21
+Res = 1 v21
+Res = 1 v21
+Res = 1 w22
+Res = 1 w22
+Res = 1 v21
+Res = 1 w22
+Res = 1 w22
+Res = 1 w22
+Gold to send 0
+
+MY MOVE
+Attack Mode 0 p23
+RES FROM ATTACK Number OF SHOT : 1
+RES = 1 p23
+Gold :2448
+
+ENEMY MOVE 
+attack type4
+Res = 1 v21
+Res = 1 v21
+Res = 1 v21
+Res = 1 v21
+Res = 1 w22
+Res = 1 u20
+Res = 1 t19
+Res = 1 u20
+Res = 1 u20
+Res = 1 u20
+Res = 1 v21
+Res = 1 w22
+Res = 1 v21
+Res = 1 w22
+Res = 1 w22
+Res = 1 w22
+Gold to send 0
+
+MY MOVE
+Attack Mode 4 
+RES FROM ATTACK Number OF SHOT : 18
+RES = 1 e18
+RES = 1 f17
+RES = 2 f18
+RES = 2 f18
+RES = 2 g18
+RES = 1 f19
+RES = 1 d16
+RES = 1 e15
+RES = 1 e16
+RES = 1 e16
+RES = 1 f16
+RES = 1 e17
+RES = 1 g17
+RES = 1 h16
+RES = 1 h17
+RES = 1 h17
+RES = 1 i17
+RES = 2 h18
+Gold :2634
+
+ENEMY MOVE 
+attack type4
+Res = 1 t19
+Res = 1 t19
+Res = 1 t19
+Res = 1 u20
+Res = 1 v21
+Res = 1 u20
+Res = 1 v21
+Res = 1 v21
+Res = 1 v21
+Res = 1 w22
+Res = 1 t19
+Res = 1 s18
+Res = 1 t19
+Res = 1 t19
+Res = 1 t19
+Res = 1 u20
+Gold to send 0
+
+MY MOVE
+Attack Mode 4 
+RES FROM ATTACK Number OF SHOT : 18
+RES = 2 i18
+RES = 1 j17
+RES = 1 j18
+RES = 1 j18
+RES = 1 k18
+RES = 1 j19
+RES = 1 j20
+RES = 1 k19
+RES = 1 k20
+RES = 1 k20
+RES = 1 l20
+RES = 1 k21
+RES = 1 i22
+RES = 1 j21
+RES = 1 j22
+RES = 1 j22
+RES = 1 k22
+RES = 1 j23
+Gold :2696
+
+ENEMY MOVE 
+attack type1
+Res = 1 w22
+Res = 1 u20
+Res = 1 v21
+Res = 1 w22
+Res = 1 u20
+Res = 1 v21
+Res = 1 w22
+Gold to send 0
+
+MY MOVE
+Attack Mode 4 
+RES FROM ATTACK Number OF SHOT : 18
+RES = 1 l22
+RES = 1 m21
+RES = 1 m22
+RES = 1 m22
+RES = 1 n22
+RES = 1 m23
+RES = 1 l19
+RES = 1 m18
+RES = 1 m19
+RES = 1 m19
+RES = 1 n19
+RES = 1 m20
+RES = 1 k16
+RES = 1 l15
+RES = 1 l16
+RES = 1 l16
+RES = 1 m16
+RES = 1 l17
+Gold :2696
+
+ENEMY MOVE 
+attack type1
+Res = 1 a0
+Res = 1 a0
+Res = 1 b1
+Res = 1 a0
+Res = 1 b1
+Gold to send 0
+
+MY MOVE
+Attack Mode 4 
+RES FROM ATTACK Number OF SHOT : 18
+RES = 1 f15
+RES = 1 g14
+RES = 1 g15
+RES = 1 g15
+RES = 1 h15
+RES = 1 g16
+RES = 1 i15
+RES = 1 j14
+RES = 1 j15
+RES = 1 j15
+RES = 1 k15
+RES = 1 j16
+RES = 1 g13
+RES = 1 h12
+RES = 1 h13
+RES = 1 h13
+RES = 1 i13
+RES = 1 h14
+Gold :2696
+
+ENEMY MOVE 
+attack type1
+Res = 1 a0
+Res = 1 b1
+Res = 1 c2
+Res = 1 a0
+Res = 1 b1
+Res = 1 c2
+Res = 1 a0
+Res = 1 b1
+Res = 1 c2
+Gold to send 0
+
+MY MOVE
+Attack Mode 4 
+RES FROM ATTACK Number OF SHOT : 18
+RES = 1 k13
+RES = 1 l12
+RES = 1 l13
+RES = 1 l13
+RES = 1 m13
+RES = 1 l14
+RES = 1 i12
+RES = 1 j11
+RES = 1 j12
+RES = 1 j12
+RES = 1 k12
+RES = 1 j13
+RES = 1 d13
+RES = 1 e12
+RES = 1 e13
+RES = 1 e13
+RES = 1 f13
+RES = 1 e14
+Gold :2696
+
+ENEMY MOVE 
+attack type1
+Res = 1 a0
+Res = 1 b1
+Res = 2 c2
+Res = 1 a0
+Res = 1 b1
+Res = 1 c2
+Res = 1 a0
+Res = 1 b1
+Res = 1 c2
+Gold to send 100
+
+MY MOVE
+Attack Mode 4 
+RES FROM ATTACK Number OF SHOT : 18
+RES = 1 e11
+RES = 1 f10
+RES = 1 f11
+RES = 1 f11
+RES = 1 g11
+RES = 1 f12
+RES = 1 g10
+RES = 1 h9
+RES = 1 h10
+RES = 1 h10
+RES = 1 i10
+RES = 1 h11
+RES = 1 d9
+RES = 1 e8
+RES = 1 e9
+RES = 1 e9
+RES = 1 f9
+RES = 1 e10
+Gold :2696
+
+ENEMY MOVE 
+attack type1
+Res = 1 a0
+Res = 1 b1
+Res = 1 c2
+Res = 1 a0
+Res = 1 b1
+Res = 1 c2
+Res = 1 a0
+Res = 1 b1
+Res = 1 c2
+Gold to send 0
+
+MY MOVE
+Attack Mode 4 
+RES FROM ATTACK Number OF SHOT : 18
+RES = 1 j10
+RES = 1 k9
+RES = 1 k10
+RES = 1 k10
+RES = 1 l10
+RES = 1 k11
+RES = 1 l9
+RES = 1 m8
+RES = 1 m9
+RES = 1 m9
+RES = 1 n9
+RES = 1 m10
+RES = 1 n8
+RES = 1 o7
+RES = 1 o8
+RES = 1 o8
+RES = 1 p8
+RES = 1 o9
+Gold :2696
+
+ENEMY MOVE 
+attack type1
+Res = 1 a0
+Res = 1 b1
+Res = 1 c2
+Res = 1 a0
+Res = 1 b1
+Res = 2 c2
+Res = 1 a0
+Res = 1 b1
+Res = 1 c2
+Gold to send 400
+
+MY MOVE
+Attack Mode 4 
+RES FROM ATTACK Number OF SHOT : 18
+RES = 1 f8
+RES = 1 g7
+RES = 2 g8
+RES = 2 g8
+RES = 1 h8
+RES = 2 g9
+RES = 1 c7
+RES = 1 d6
+RES = 1 d7
+RES = 1 d7
+RES = 1 e7
+RES = 1 d8
+RES = 1 e6
+RES = 1 f5
+RES = 1 f6
+RES = 1 f6
+RES = 1 g6
+RES = 1 f7
+Gold :3046
+
+ENEMY MOVE 
+attack type1
+Res = 1 a0
+Res = 1 b1
+Res = 1 c2
+Res = 1 a0
+Res = 1 b1
+Res = 1 c2
+Res = 1 a0
+Res = 1 b1
+Res = 1 c2
+Gold to send 0
+
+MY MOVE
+Attack Mode 4 
+RES FROM ATTACK Number OF SHOT : 18
+RES = 1 d3
+RES = 1 e2
+RES = 1 e3
+RES = 1 e3
+RES = 1 f3
+RES = 1 e4
+RES = 1 f4
+RES = 1 g3
+RES = 1 g4
+RES = 1 g4
+RES = 1 h4
+RES = 1 g5
+RES = 1 g2
+RES = 1 h1
+RES = 1 h2
+RES = 1 h2
+RES = 2 i2
+RES = 1 h3
+Gold :3446
+
+ENEMY MOVE 
+attack type1
+Res = 1 o14
+Res = 1 p15
+Res = 1 q16
+Res = 1 o14
+Res = 1 p15
+Res = 1 q16
+Res = 1 o14
+Res = 1 p15
+Res = 1 q16
+Gold to send 0
+
+MY MOVE
+Attack Mode 4 
+RES FROM ATTACK Number OF SHOT : 18
+RES = 1 j2
+RES = 1 k1
+RES = 1 k2
+RES = 1 k2
+RES = 1 l2
+RES = 1 k3
+RES = 1 i4
+RES = 1 j3
+RES = 1 j4
+RES = 1 j4
+RES = 1 k4
+RES = 1 j5
+RES = 1 h6
+RES = 1 i5
+RES = 1 i6
+RES = 1 i6
+RES = 1 j6
+RES = 1 i7
+Gold :3446
+
+ENEMY MOVE 
+attack type1
+Res = 1 n13
+Res = 2 o14
+Res = 2 p15
+Res = 1 n13
+Res = 1 o14
+Res = 1 p15
+Res = 1 n13
+Res = 1 o14
+Gold to send 350
+
+MY MOVE
+Attack Mode 4 
+RES FROM ATTACK Number OF SHOT : 18
+RES = 1 i8
+RES = 1 j7
+RES = 1 j8
+RES = 1 j8
+RES = 1 k8
+RES = 1 j9
+RES = 1 k7
+RES = 1 l6
+RES = 1 l7
+RES = 1 l7
+RES = 1 m7
+RES = 1 l8
+RES = 2 m6
+RES = 1 n5
+RES = 1 n6
+RES = 1 n6
+RES = 1 o6
+RES = 1 n7
+Gold :3846
+
+ENEMY MOVE 
+attack type1
+Res = 1 r17
+Res = 1 r17
+Res = 1 s18
+Res = 1 r17
+Res = 1 s18
+Res = 1 t19
+Gold to send 0
+
+MY MOVE
+Attack Mode 4 
+RES FROM ATTACK Number OF SHOT : 18
+RES = 1 l4
+RES = 1 m3
+RES = 1 m4
+RES = 1 m4
+RES = 1 n4
+RES = 1 m5
+RES = 1 o4
+RES = 1 p3
+RES = 1 p4
+RES = 1 p4
+RES = 1 q4
+RES = 1 p5
+RES = 1 q3
+RES = 1 r2
+RES = 1 r3
+RES = 1 r3
+RES = 1 s3
+RES = 1 r4
+Gold :3846
+
+ENEMY MOVE 
+attack type1
+Res = 1 o14
+Res = 2 p15
+Res = 1 q16
+Res = 1 o14
+Res = 2 p15
+Res = 1 q16
+Res = 1 o14
+Res = 1 p15
+Res = 1 q16
+Gold to send 124
+
+MY MOVE
+Attack Mode 4 
+RES FROM ATTACK Number OF SHOT : 16
+RES = 1 n2
+RES = 1 o1
+RES = 1 o2
+RES = 1 o2
+RES = 1 p2
+RES = 1 o3
+RES = 1 e1
+RES = 1 f1
+RES = 1 f1
+RES = 1 g1
+RES = 1 f2
+RES = 1 s1
+RES = 1 t1
+RES = 1 t1
+RES = 1 u1
+RES = 2 t2
+Gold :4246
+
+ENEMY MOVE 
+attack type1
+Res = 1 d3
+Res = 1 e4
+Res = 1 f5
+Res = 2 d3
+Res = 2 e4
+Res = 1 f5
+Res = 1 d3
+Res = 1 e4
+Res = 1 f5
+Gold to send 200
+
+MY MOVE
+Attack Mode 6 l10
+RES FROM ATTACK Number OF SHOT : 10
+RES = 1 c1
+RES = 1 w11
+RES = 1 n18
+RES = 1 u18
+RES = 1 w3
+RES = 1 a23
+RES = 1 a7
+RES = 1 w4
+RES = 1 h5
+RES = 1 a18
+Gold :4246
+
+ENEMY MOVE 
+attack type1
+Res = 1 d3
+Res = 1 e4
+Res = 1 f5
+Res = 1 d3
+Res = 2 e4
+Res = 1 f5
+Res = 1 d3
+Res = 1 e4
+Res = 1 f5
+Gold to send 400
+
+MY MOVE
+Attack Mode 6 l10
+RES FROM ATTACK Number OF SHOT : 10
+RES = 1 t23
+RES = 1 l3
+RES = 1 r23
+RES = 1 r12
+RES = 1 f14
+RES = 1 k23
+RES = 1 q2
+RES = 1 s23
+RES = 1 u10
+RES = 1 j1
+Gold :4246
+
+ENEMY MOVE 
+attack type1
+Res = 2 d3
+Res = 2 e4
+Res = 2 f5
+Res = 1 d3
+Res = 1 e4
+Res = 1 f5
+Res = 1 d3
+Res = 1 e4
+Res = 1 f5
+Gold to send 300
+
+MY MOVE
+Attack Mode 6 l10
+RES FROM ATTACK Number OF SHOT : 10
+RES = 1 a19
+RES = 1 w5
+RES = 1 h7
+RES = 1 u15
+RES = 1 q20
+RES = 1 q1
+RES = 1 p9
+RES = 1 r15
+RES = 1 d12
+RES = 1 l23
+Gold :4246
+
+ENEMY MOVE 
+attack type1
+Res = 1 k10
+Res = 1 l11
+Res = 1 m12
+Res = 1 k10
+Res = 1 l11
+Res = 1 m12
+Res = 2 k10
+Res = 1 l11
+Res = 1 m12
+Gold to send 40
+
+MY MOVE
+Attack Mode 6 m10
+RES FROM ATTACK Number OF SHOT : 10
+RES = 1 s2
+RES = 1 r19
+RES = 1 i14
+RES = 1 i1
+RES = 1 p7
+RES = 1 p15
+RES = 1 a10
+RES = 1 q18
+RES = 1 l5
+RES = 1 v11
+Gold :4246
+
+ENEMY MOVE 
+attack type1
+Res = 1 h7
+Res = 1 i8
+Res = 1 j9
+Res = 1 h7
+Res = 1 i8
+Res = 1 j9
+Res = 2 h7
+Res = 2 i8
+Res = 2 j9
+Gold to send 120
+
+MY MOVE
+Attack Mode 6 k10
+RES FROM ATTACK Number OF SHOT : 10
+RES = 1 a22
+RES = 1 k14
+RES = 1 w13
+RES = 2 p16
+RES = 1 i11
+RES = 1 r20
+RES = 1 w10
+RES = 1 a20
+RES = 1 r9
+RES = 1 t11
+Gold :4646
+
+ENEMY MOVE 
+attack type1
+Res = 1 e4
+Res = 1 f5
+Res = 1 g6
+Res = 1 e4
+Res = 1 f5
+Res = 1 g6
+Res = 1 e4
+Res = 1 f5
+Res = 2 g6
+Gold to send 40
+
+MY MOVE
+Attack Mode 6 k10
+RES FROM ATTACK Number OF SHOT : 10
+RES = 1 a4
+RES = 1 v23
+RES = 1 f21
+RES = 1 s18
+RES = 1 w18
+RES = 1 l1
+RES = 1 o5
+RES = 1 a3
+RES = 1 w7
+RES = 1 m2
+Gold :4646
+
+ENEMY MOVE 
+attack type1
+Res = 1 n13
+Res = 1 o14
+Res = 1 p15
+Res = 1 n13
+Res = 1 o14
+Res = 1 p15
+Res = 1 n13
+Res = 1 o14
+Res = 1 p15
+Gold to send 0
+
+MY MOVE
+Attack Mode 6 k10
+RES FROM ATTACK Number OF SHOT : 10
+RES = 1 g19
+RES = 1 u5
+RES = 1 d10
+RES = 1 o23
+RES = 1 d2
+RES = 1 p1
+RES = 1 a5
+RES = 1 p12
+RES = 1 k5
+RES = 1 m1
+Gold :4646
+
+ENEMY MOVE 
+attack type1
+Res = 1 q16
+Res = 1 o14
+Res = 2 p15
+Res = 1 q16
+Res = 1 o14
+Res = 2 p15
+Res = 1 q16
+Gold to send 124
+YOU LOST
+2022/04/28 23:54:52
+END

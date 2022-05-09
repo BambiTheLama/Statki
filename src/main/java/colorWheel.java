@@ -1,6 +1,4 @@
 import com.raylib.Jaylib;
-import org.bytedeco.javacpp.BytePointer;
-
 import static com.raylib.Jaylib.*;
 import static com.raylib.Raylib.EndDrawing;
 

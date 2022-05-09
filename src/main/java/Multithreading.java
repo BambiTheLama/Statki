@@ -103,7 +103,7 @@ public class Multithreading extends Thread {
 
     void myMove() {
         if (isAttack) {
-            boolean move=isMyMove;
+            boolean move;
             attackRes=null;
             communication.sendInformation("attack");
             while (attackType < 0) {
