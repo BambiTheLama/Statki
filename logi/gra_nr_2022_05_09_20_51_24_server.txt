@@ -1,0 +1,101 @@
+2022_05_09_20_51_24
+Map size :6 NumberOfShip 3 Start gold 4055 gamemode 0
+YOU PLACE SHIP (2) AT e 3 Rotate false
+Random Ships :
+ShipType = 3 (b 3) isRotate true
+ShipType = 1 (d 5) isRotate false
+
+ENEMY MOVE 
+attack type0
+Res = 1 a0
+Gold to send 0
+
+MY MOVE
+Attack Mode 0 b3
+RES FROM ATTACK Number OF SHOT : 1
+RES = 2 b3
+Gold :4155
+
+MY MOVE
+Attack Mode 2 d3
+RES FROM ATTACK Number OF SHOT : 10
+RES = 1 b1
+RES = 2 f1
+RES = 1 c2
+RES = 1 e2
+RES = 2 d3
+RES = 2 d3
+RES = 1 e4
+RES = 1 c4
+RES = 1 f5
+RES = 1 b5
+Gold :4305
+
+ENEMY MOVE 
+attack type0
+Res = 1 a0
+Gold to send 0
+
+MY MOVE
+Attack Mode 2 d5
+RES FROM ATTACK Number OF SHOT : 5
+RES = 1 f3
+RES = 1 d5
+RES = 1 d5
+RES = 1 e6
+RES = 1 c6
+Gold :4180
+
+ENEMY MOVE 
+attack type3
+Res = 2 c2
+Res = 1 a0
+Res = 2 c2
+Res = 1 b1
+Res = 1 c2
+Res = 1 c2
+Res = 2 c2
+Res = 1 d3
+Res = 1 c2
+Res = 2 e4
+Gold to send 775
+
+MY MOVE
+Attack Mode 2 d1
+RES FROM ATTACK Number OF SHOT : 2
+RES = 1 d1
+RES = 1 d1
+Gold :4055
+
+MY MOVE
+Attack Mode 4 
+RES FROM ATTACK Number OF SHOT : 11
+RES = 1 d2
+RES = 1 e1
+RES = 2 f2
+RES = 1 e3
+RES = 1 b4
+RES = 2 c3
+RES = 1 d4
+RES = 1 c5
+RES = 1 a1
+RES = 1 c1
+RES = 1 b2
+Gold :4080
+
+ENEMY MOVE 
+attack type6
+Res = 1 d3
+Res = 1 d3
+Res = 1 e4
+Res = 2 c2
+Res = 1 f5
+Res = 1 e4
+Res = 1 a0
+Res = 1 d3
+Res = 1 b1
+Res = 1 f5
+Gold to send 100
+
+ENEMY MOVE 
+attack type5

@@ -1,0 +1,55 @@
+2022_05_09_20_49_18
+Map size :6 NumberOfShip 3 Start gold 2555 gamemode 0
+YOU PLACE SHIP (3) AT e 4 Rotate false
+YOU PLACE SHIP (2) AT b 3 Rotate false
+YOU PLACE SHIP (1) AT a 1 Rotate false
+Random Ships :
+
+ENEMY MOVE 
+attack type0
+Res = 2 a0
+Gold to send 400
+
+ENEMY MOVE 
+attack type0
+Res = 1 a0
+Gold to send 0
+
+MY MOVE
+Attack Mode 0 a1
+RES FROM ATTACK Number OF SHOT : 1
+RES = 2 a1
+Gold :2955
+
+MY MOVE
+Attack Mode 0 f1
+RES FROM ATTACK Number OF SHOT : 1
+RES = 2 f1
+Gold :3055
+
+MY MOVE
+Attack Mode 0 f2
+RES FROM ATTACK Number OF SHOT : 1
+RES = 2 f2
+Gold :3155
+
+MY MOVE
+Attack Mode 0 f3
+RES FROM ATTACK Number OF SHOT : 1
+RES = 2 f3
+Gold :3255
+
+MY MOVE
+Attack Mode 0 c4
+RES FROM ATTACK Number OF SHOT : 1
+RES = 2 c4
+Gold :3430
+
+MY MOVE
+Attack Mode 0 c5
+RES FROM ATTACK Number OF SHOT : 1
+RES = 2 c5
+Gold :3605
+YOU WIN
+2022/05/09 20:50:15
+END

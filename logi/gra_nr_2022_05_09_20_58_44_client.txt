@@ -1,0 +1,46 @@
+2022_05_09_20_58_44
+Map size :23 NumberOfShip 15 Start gold 2555 gamemode 0
+Random Ships :
+ShipType = 5 (g 14) isRotate true
+ShipType = 4 (t 21) isRotate false
+ShipType = 4 (i 5) isRotate false
+ShipType = 3 (a 20) isRotate false
+ShipType = 3 (m 15) isRotate true
+ShipType = 3 (t 8) isRotate true
+ShipType = 2 (p 20) isRotate false
+ShipType = 2 (c 10) isRotate true
+ShipType = 2 (o 16) isRotate false
+ShipType = 2 (f 12) isRotate true
+ShipType = 1 (n 9) isRotate true
+ShipType = 1 (i 16) isRotate true
+ShipType = 1 (b 8) isRotate true
+ShipType = 1 (b 6) isRotate false
+ShipType = 1 (b 1) isRotate true
+
+MY MOVE
+Attack Mode 0 h11
+RES FROM ATTACK Number OF SHOT : 1
+RES = 1 h11
+Gold :2555
+
+ENEMY MOVE 
+attack type0
+Res = 1 k10
+Gold to send 0
+
+ENEMY MOVE 
+attack type2
+Res = 1 a0
+Res = 1 a0
+Res = 1 b1
+Res = 1 b1
+Res = 1 c2
+Res = 1 c2
+Res = 1 d3
+Res = 2 d3
+Res = 1 e4
+Res = 1 e4
+Gold to send 62
+YOU CLOSE WINDOW
+2022/05/09 21:00:06
+END
