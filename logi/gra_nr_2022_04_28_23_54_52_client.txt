@@ -1,5 +1,0 @@
-2022_04_28_23_54_52
-Map size :23 NumberOfShip 15 Start gold 4646 gamemode 0
-YOU WIN Oponet left
-2022/04/28 23:55:26
-END

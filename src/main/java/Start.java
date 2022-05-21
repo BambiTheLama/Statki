@@ -10,7 +10,7 @@ public class Start {
     static int[][] attackWhiteList=new int[2][6];
     static int startGold=0;
     static Communication communication=new Communication();
-    static boolean KristiFlag=false;
+    static boolean flagKristi =false;
     static String who = null;
     
     public static void main(String[] args) {
@@ -42,25 +42,38 @@ public class Start {
                 return;
             }
             setData();
-            Jaylib.Color []Colors=start.getColors();
-            boolean play=true;
+
             int gold=startGold;
-            int[] bombs=null;
-            int [][]shiptmp=new int[3][5];
-            while(play)
+            int[] bombs=new int[6];
+            for (int i=0;i<6;i++)
+                bombs[i]=0;
+            GameCore gameCore;
+            CommunicationInterface com;
+            boolean playAgain=true;
+
+            while (playAgain)
             {
-                for(int i=0;i<3;i++)
-                    for(int j=0;j<5;j++)
-                        shiptmp[i][j]=ship[i][j];
-                MainGameCore mainGameCore=new MainGameCore(communication,who, (byte) mapSize,shiptmp,attackWhiteList,moveTime,startTime,gold,Colors, KristiFlag);
-                if(bombs!=null && KristiFlag)
-                    mainGameCore.setNumberOfBombs(bombs);
-                play=mainGameCore.main();
-                if(KristiFlag)
-                    bombs=mainGameCore.getNumberOfBombs();
-                gold=mainGameCore.startGold;
-                play=checkEnd(play);
+
+                int []shiptmp=new int[5];
+                for(int i=0;i<5;i++)
+                    shiptmp[i]=ship[1][i];
+                int []goldFromShip=new int[5];
+                for(int i=0;i<5;i++)
+                    goldFromShip[i]=ship[2][i];
+
+                if(communication.who.equals("server"))
+                    com=new Server(communication,startTime,moveTime);
+                else
+                    com=new Client(communication);
+
+                gameCore=new GameCore(com,mapSize,shiptmp,goldFromShip,attackWhiteList,gold,flagKristi,communication.who,bombs);
+                playAgain=gameCore.startGame();
+                if(communication==null)
+                    playAgain=false;
+                com.end();
             }
+
+
             communication.close();
         }
 
@@ -107,7 +120,7 @@ public class Start {
             communication.sendInformation(attackWhiteList[0][i]+"");
             communication.sendInformation(attackWhiteList[1][i]+"");
         }
-        communication.sendInformation(KristiFlag+"");
+        communication.sendInformation(flagKristi +"");
     }
 
     static void getGameInformation() {
@@ -142,7 +155,7 @@ public class Start {
             attackWhiteList[1][i]=Integer.parseInt(tmp);
         }
         tmp=communication.getInformation();
-        KristiFlag=Boolean.parseBoolean(tmp);
+        flagKristi =Boolean.parseBoolean(tmp);
     }
 
     static void getGameParameters(MenuStart start) {
@@ -152,7 +165,7 @@ public class Start {
         ship= start.ship;
         attackWhiteList=start.attackWhiteList;
         startGold=start.startGold;
-        KristiFlag= start.KristiFlag;
+        flagKristi = start.KristiFlag;
     }
 
     static boolean createServer(MenuStart start) {

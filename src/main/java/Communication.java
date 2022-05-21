@@ -87,25 +87,19 @@ public class Communication extends Thread{
             end=true;
 
             }
-
-
-
-
     }
+
     boolean isClose(boolean isProgramEnd) {
-        boolean tmp=true;
         try{
             if(Objects.equals(who, "server"))
-                tmp=isClientClose(isProgramEnd);
+                return isClientClose(isProgramEnd);
             else if(Objects.equals(who, "client"))
-                tmp=isServerClose(isProgramEnd);
+                return isServerClose(isProgramEnd);
         }
         catch (Exception e)
         {
-            return true;
         }
-
-        return tmp;
+        return true;
     }
 
     boolean isMyMove(boolean isMyMove) {
@@ -191,7 +185,6 @@ public class Communication extends Thread{
             }
             catch (Exception e)
             {}
-
         }
         else
         {
@@ -201,8 +194,6 @@ public class Communication extends Thread{
             catch (Exception e)
             {}
         }
-
-
     }
 
 

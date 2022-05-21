@@ -281,7 +281,7 @@ public class MenuStart extends Thread{
             numberOfShip();
         }
         buttonNumber++;
-        if(button(500,25+y,350,60,40,"GameMode : "+(KristiFlag ?"1":"0"),buttonNumber))
+        if(button(500,25+y,500,60,40,"GameMode : "+(KristiFlag ?"Kristi":"Standard"),buttonNumber))
         {
             if(IsMouseButtonPressed(0))
             {
@@ -674,8 +674,8 @@ public class MenuStart extends Thread{
         else if(moveTime>30)
             moveTime=30;
 
-        if(startTime<5)
-            startTime=5;
+        if(startTime<30)
+            startTime=30;
         else if(startTime>90)
             startTime=90;
 
