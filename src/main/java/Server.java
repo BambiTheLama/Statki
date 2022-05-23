@@ -60,17 +60,23 @@ public class Server extends Thread implements CommunicationInterface {
                 placeShipStage();
                 continue;
             }
-            String tmp=toSend;
+            String tmp=toSend+"";
             communication.sendInformation(tmp);
             if(i==5)
             {
+                data.defoliate();
                 toSend="Accepted";
             }
-            if(i==8 || tmp.equals("YOU WIN"))
+            if(i==7 || tmp.equals("YOU WIN"))
             {
+                if(i==7)
+                    data.win=true;
+
                 data.defoliate();
                 end=true;
+                toSend="";
             }
+
 
         }
     }
@@ -131,7 +137,6 @@ public class Server extends Thread implements CommunicationInterface {
     {
         String isEnd=communication.getInformation();
         String move=communication.getInformation();
-        System.out.println(move);
         if(move.equals("MyMove"))
         {
             myMove=true;
@@ -239,11 +244,9 @@ public class Server extends Thread implements CommunicationInterface {
         toSend="";
         if(!readyToStart)
         {
-            System.out.println("GOTOW");
             readyToStart=true;
             return false;
         }
-        System.out.println("START");
         attackStage=true;
         setTime(attackTurnTime);
         communication.sendInformation("Knock Knock");
@@ -266,4 +269,11 @@ public class Server extends Thread implements CommunicationInterface {
     {
         toSend="YOU WIN";
     }
+
+    @Override
+    public void def() {
+        data.defoliate();
+    }
+
+
 }

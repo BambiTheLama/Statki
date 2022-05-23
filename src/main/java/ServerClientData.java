@@ -3,6 +3,7 @@ public class ServerClientData {
     String attack[];
     int gold;
     boolean win=false;
+    boolean lost=false;
     int size;
     boolean szpieg=false;
 

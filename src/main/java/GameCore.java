@@ -21,6 +21,7 @@ public class GameCore {
     boolean end=false;
     boolean win=false;
     boolean lost=false;
+    DrawEndScrean endGame;
 
     GameCore(CommunicationInterface communication, int n, int []ship,int[] goldFromShip,
              int[][] attackWhiteList, int startGold, boolean flagKristi,String who,int[] bombs)
@@ -48,6 +49,7 @@ public class GameCore {
         this.flagKristi=flagKristi;
         this.bombs =bombs;
         draw=new DrawBoard(parameters,numberOfShip,attackWhiteList,flagKristi,this.bombs);
+        endGame = new DrawEndScrean();
 
     }
 
@@ -60,13 +62,11 @@ public class GameCore {
             Jaylib.BeginDrawing();
             draw();
             Jaylib.EndDrawing();
-            if(end && DrawEndScrean.newGame == true)
+            if(end && endGame.newGame == true)
             {
                 break;
-                //Jaylib.CloseWindow();
-                //return true;
             }
-            if(end && DrawEndScrean.endGame == true)
+            if(end && endGame.endGame == true)
                 break;
 
 
@@ -102,14 +102,16 @@ public class GameCore {
         }
         if(end)
         {
-            DrawEndScrean.draw(win,lost);
+            endGame.draw(win,lost);
         }
     }
 
     void updata()
     {
         time = communication.getTime();
-        end = communication.getEnd();
+        end  = communication.getEnd();
+        if(end)
+            win=communication.getWin();
         if(placeShipStage)
         {
             placeShipStage= !communication.isAttackStage();
@@ -158,7 +160,7 @@ public class GameCore {
         collision.upData();
 
         if(end)
-            DrawEndScrean.collison(collision.getMouseX(),collision.getMouseY(),collision.getMousePress());
+            endGame.collison(collision.getMouseX(),collision.getMouseY(),collision.getMousePress());
 
         if(placeShipStage)
         {
@@ -254,9 +256,7 @@ public class GameCore {
             return;
         gold+=communication.getGold();
         map.shotRes(pos,res,size);
-        System.out.println("pos "+pos[0]);
-        communication.setAttackRes(null,-1,0);
-        communication.setAttackPos(null,-1);
+        communication.def();
         communication.setToSend("Accepted");
         if(bombUse == 0 && res[0] == 2)
             communication.setMyMove(myMove);
@@ -273,7 +273,6 @@ public class GameCore {
 
         setBombUse();
         canAttack=true;
-        win=communication.getWin();
     }
 
     void setRes()
@@ -288,7 +287,6 @@ public class GameCore {
         int[] res=map.shot(pos,n);
         int gold=map.getGold();
         communication.setAttackRes(res,n,gold);
-        communication.setAttackPos(null,n);
         if(res==null)
             return;
         if(map.getNumberOfShip()<=0)

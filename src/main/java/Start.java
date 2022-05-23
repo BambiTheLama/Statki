@@ -49,30 +49,22 @@ public class Start {
                 bombs[i]=0;
             GameCore gameCore;
             CommunicationInterface com;
-            boolean playAgain=true;
-
-            while (playAgain)
+            int []goldFromShip=new int[5];
+            int []shiptmp=new int[5];
+            for(int i=0;i<5;i++)
             {
-
-                int []shiptmp=new int[5];
-                for(int i=0;i<5;i++)
-                    shiptmp[i]=ship[1][i];
-                int []goldFromShip=new int[5];
-                for(int i=0;i<5;i++)
-                    goldFromShip[i]=ship[2][i];
-
-                if(communication.who.equals("server"))
-                    com=new Server(communication,startTime,moveTime);
-                else
-                    com=new Client(communication);
-
-                gameCore=new GameCore(com,mapSize,shiptmp,goldFromShip,attackWhiteList,gold,flagKristi,communication.who,bombs);
-                playAgain=gameCore.startGame();
-                if(communication==null)
-                    playAgain=false;
-                com.end();
+                shiptmp[i]=ship[1][i];
+                goldFromShip[i]=ship[2][i];
             }
 
+            if(communication.who.equals("server"))
+                com=new Server(communication,startTime,moveTime);
+            else
+                com=new Client(communication);
+
+            gameCore=new GameCore(com,mapSize,shiptmp,goldFromShip,attackWhiteList,gold,flagKristi,communication.who,bombs);
+            gameCore.startGame();
+            com.end();
 
             communication.close();
         }

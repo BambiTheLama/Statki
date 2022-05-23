@@ -43,15 +43,14 @@ public class Client extends Thread implements CommunicationInterface {
 
             getDataFromServer();
 
-            String tmp=toSend;
+            String tmp=toSend+"";
             communication.sendInformation(tmp);
-
-
             CheckOrder order=new CheckOrder(communication.getInformation());
             int i=data.readOrder(order);
             order(tmp,i);
         }
     }
+
     void getDataFromServer()
     {
         String serverClose = communication.getInformation();
@@ -61,6 +60,7 @@ public class Client extends Thread implements CommunicationInterface {
         if(serverClose.equals("true"))
             end=true;
     }
+
     void updataToServer()
     {
         communication.sendInformation(windowClose+"");
@@ -112,22 +112,19 @@ public class Client extends Thread implements CommunicationInterface {
         if(i==6)
             attackStage=true;
         if(i==5)
-        {
-            toSend="";
-            data.defoliate();
-        }
+            def();
+
         if(toSend.equals("Accepted") && tmp.equals(toSend))
-        {
-            data.defoliate();
-            toSend="";
-        }
+            def();
+
         if(toSend.equals("Ready") && tmp.equals(toSend))
+            def();
+
+        if(i==7 || tmp.equals("YOU WIN"))
         {
-            toSend="";
-        }
-        if(i==8 || tmp.equals("YOU WIN"))
-        {
-            data.defoliate();
+            if(i==7)
+                data.win=true;
+            def();
             end=true;
         }
 
@@ -200,5 +197,11 @@ public class Client extends Thread implements CommunicationInterface {
     public void setLost()
     {
         toSend="YOU WIN";
+    }
+
+    @Override
+    public void def() {
+        toSend="";
+        data.defoliate();
     }
 }

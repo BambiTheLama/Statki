@@ -1,12 +1,15 @@
 import com.raylib.Jaylib;
 import com.raylib.Raylib;
-
 import static com.raylib.Jaylib.*;
 import static com.raylib.Raylib.IsKeyDown;
 import static com.raylib.Raylib.KEY_TAB;
 
 public class DrawOnMap {
 
+    static int endMapY;
+    static int endMapX;
+    static int startMapX;
+    static int startMapY;
 
     public static void drawShipWhereMouse(int x, int y,int cell,int size,boolean rotate, Raylib.Texture ship)
     {
@@ -77,7 +80,12 @@ public class DrawOnMap {
                 Jaylib.DrawCircle(x + cell / 2,y + cell / 2,cell / 2 - 3,WHITE);
                 break;
             case 2:
-                drawX(x,y,cell,Colors.mapAttackHit);
+                Jaylib.Vector2 start=new Jaylib.Vector2(x,y);
+                Jaylib.Vector2 end =new Jaylib.Vector2(x + cell,y + cell);
+                Jaylib.DrawLineEx(start,end,3,Colors.mapAttackHit);
+                start.x(x + cell);
+                end.x(x);
+                Jaylib.DrawLineEx(start,end,3,Colors.mapAttackHit);
                 break;
             case 8:
                 if(IsKeyDown(KEY_TAB))
@@ -91,6 +99,11 @@ public class DrawOnMap {
 
     static void drawX(int x,int y,int cell,Raylib.Color color)
     {
+        if(x < startMapX || y < startMapY)
+            return;
+        if(x + cell >endMapX || y + cell > endMapY)
+            return;
+
         Jaylib.Vector2 start=new Jaylib.Vector2(x,y);
         Jaylib.Vector2 end =new Jaylib.Vector2(x + cell,y + cell);
         Jaylib.DrawLineEx(start,end,3,color);
@@ -106,4 +119,11 @@ public class DrawOnMap {
         drawSide(x,y,cell,1);
     }
 
+    static void mapPos(int startMapX,int startMapY,int size)
+    {
+        DrawOnMap.startMapX = startMapX;
+        DrawOnMap.startMapY = startMapY;
+        DrawOnMap.endMapX = startMapX + size;
+        DrawOnMap.endMapY = startMapY + size;
+    }
 }

@@ -1,8 +1,5 @@
 public interface CommunicationInterface {
 
-    boolean attackStage=false;
-    boolean windowClose=false;
-    boolean end=false;
     String time="";
     ServerClientData data=new ServerClientData();
 
@@ -74,8 +71,14 @@ public interface CommunicationInterface {
 
     default boolean getEnd()
     {
-        return end;
+        return true;
     }
 
     default void setLost(){}
+
+    default boolean getLost(){return false;}
+
+    default boolean isAlive(){return false;}
+
+    default void def(){}
 }

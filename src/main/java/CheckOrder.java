@@ -13,6 +13,7 @@ public class CheckOrder {
             return 0;
         if(order.equals("Knock"))
             return 0;
+        System.out.println(order);
         if(order.indexOf("AttackRes")==0)
             return 1;
         if(order.indexOf("Attack")==0)

@@ -46,6 +46,9 @@ public class MapParameters {
         sizeBuyButton = 100;
         sizeBetweenBuyButton = 60;
 
+        int tmp=cell*n;
+        DrawOnMap.mapPos(startEnemyLocationMap,mapStartY,tmp);
+        System.out.println(startEnemyLocationMap+" kurwa "+mapStartY+" kurwa "+tmp);
 
     }
 

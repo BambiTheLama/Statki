@@ -1,23 +1,25 @@
 import com.raylib.Jaylib;
 
 public class DrawEndScrean {
-    static boolean newGame = false;
-    static boolean endGame = false;
-    static Jaylib.Vector2 textPos=new Jaylib.Vector2(500,310);
-    static Jaylib.Vector2 textPos2=new Jaylib.Vector2(500,355);
-    static Jaylib.Vector2 textPos3=new Jaylib.Vector2(500,455);
-    static Jaylib.Vector2 textPos4=new Jaylib.Vector2(500,555);
-    static Jaylib.Rectangle pos=new Jaylib.Rectangle(490,300,300,100);
-    static Jaylib.Rectangle pos2=new Jaylib.Rectangle(490,450,300,50);
-    static Jaylib.Rectangle pos3=new Jaylib.Rectangle(490,550,300,50);
-    static int button=0;
+    boolean newGame = false;
+    boolean endGame = false;
+    Jaylib.Vector2 textPos=new Jaylib.Vector2(500,310);
+    Jaylib.Vector2 textPos2=new Jaylib.Vector2(500,355);
+    Jaylib.Vector2 textPos3=new Jaylib.Vector2(500,455);
+    Jaylib.Vector2 textPos4=new Jaylib.Vector2(500,555);
+    Jaylib.Rectangle pos=new Jaylib.Rectangle(490,300,300,100);
+    Jaylib.Rectangle pos2=new Jaylib.Rectangle(490,450,300,50);
+    Jaylib.Rectangle pos3=new Jaylib.Rectangle(490,550,300,50);
+    int button=0;
 
-    static void draw(boolean win,boolean lost)
+
+
+    void draw(boolean win,boolean lost)
     {
         Jaylib.DrawRectangleRec(pos,Colors.buttonColor);
 
         Jaylib.DrawTextEx(Colors.font,"Koniec Gry ",textPos,45,6,Colors.textColor);
-        Jaylib.DrawTextEx(Colors.font,(win?"Wygrałes":"")+(lost?"Przegrales":""),textPos2,45,6,Colors.textColor);
+        Jaylib.DrawTextEx(Colors.font,(win?"Wygrales":"")+(lost?"Przegrales":""),textPos2,45,6,Colors.textColor);
 
         Jaylib.DrawRectangleRec(pos2,Colors.buttonColor);
         if(button==1)
@@ -31,7 +33,7 @@ public class DrawEndScrean {
 
 
     }
-    static void collison(int x,int y,boolean press)
+    void collison(int x,int y,boolean press)
     {
         if(x < pos2.x() || x > pos2.x() + pos2.width())
             return;
