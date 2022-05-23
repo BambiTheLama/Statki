@@ -9,39 +9,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f75b6a9d-a4dc-4ea2-bf35-47711c55ce36" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.gradle/7.2/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.2/executionHistory/executionHistory.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/7.2/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.2/executionHistory/executionHistory.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/7.2/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.2/fileHashes/fileHashes.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/7.2/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.2/fileHashes/fileHashes.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/7.2/fileHashes/resourceHashesCache.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.2/fileHashes/resourceHashesCache.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Colors.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Colors.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Statki.main.jar" beforeDir="false" afterPath="$PROJECT_DIR$/Statki.main.jar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/CheckOrder.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/CheckOrder.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/Client.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/Client.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/CommunicationInterface.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/CommunicationInterface.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/DrawEndScrean.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/DrawEndScrean.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/DrawOnMap.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/DrawOnMap.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/GameCore.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/GameCore.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/MapParameters.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/MapParameters.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/Server.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/Server.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/ServerClientData.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/ServerClientData.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/tmp/compileJava/previous-compilation-data.bin" beforeDir="false" afterPath="$PROJECT_DIR$/build/tmp/compileJava/previous-compilation-data.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/tla/tlo1.png" beforeDir="false" afterPath="$PROJECT_DIR$/resources/tla/tlo1.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/tla/tlo2.png" beforeDir="false" afterPath="$PROJECT_DIR$/resources/tla/tlo2.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/CheckOrder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/CheckOrder.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Client.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Client.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/CommunicationInterface.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/CommunicationInterface.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/DrawEndScrean.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/DrawEndScrean.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/DrawOnMap.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/DrawOnMap.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/GameCore.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/GameCore.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/MapParameters.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/MapParameters.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Server.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Server.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ServerClientData.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ServerClientData.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Start.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Start.java" afterDir="false" />
-    </list>
+    <list default="true" id="f75b6a9d-a4dc-4ea2-bf35-47711c55ce36" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
